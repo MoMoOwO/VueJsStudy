@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 jQuery 依赖 -->
+    <script src="./js/jquery-3.4.1.js"></script>
+    <!-- 引入 Vue 依赖 -->
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="msgdiv1"></div>
+    <div id="msgdiv2"></div>
+    <!-- 
+        插值表达式 {{}}：
+            将数据填充到 HTML 标签中
+            插值表达式支持基本的计算操作
+    -->
+    <div id="msgdiv3">{{ msg }}</div>
+
+    <script>
+        // 使用原生 js 在 div 中输出 Hello World
+        let msg = 'Hello World! --- JS';
+        let div = document.querySelector("#msgdiv1"); // 获取DOM元素
+        div.innerHTML = msg;
+
+        // 使用 jQuery 在 div 中输出 Hello World
+        msg = 'Hello World! --- jQuery';
+        $('#msgdiv2').html(msg);
+
+        // 使用 Vue 在 div 中输出 Hello World
+        /*
+            Vue 的基本使用步骤：
+                1. 需要提供标签用于填充数据
+                2. 引入 vue.js 库文件
+                3. 可以使用 Vue 的语法做具体工作了
+                4. 把 Vue 提供的数据填充到标签里面
+        */
+        let vm = new Vue({
+            el: '#msgdiv3',     // 元素的挂载的位置(值可以是 CSS 选择器或者 DOM 元素)
+            data: {         // 模型数量(值是一个对象)
+                msg: 'Hello World! --- Vue'
+            }
+        })
+    </script>
+</body>
+</html>
