@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div v-cloak>{{msg1}}</div>
+        <!-- `v-text` 指令：绑定数据信息，相比插值表达式更加简洁。 -->
+        <div v-text="msg2"></div>
+        <!-- `v-html` 指令：绑定 HTML文 档信息，存在安全问题；本网站内部数据可以使用，来自第三方的数据不可以使用。 -->
+        <div v-html="msg3"></div>
+        <!-- `v-pre` 指令：显示原始信息，跳过编译过程 -->
+        <div v-pre>{{msg1}}</div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg1: 'Hello World!',
+                msg2: 'Hello Vue.js!',
+                msg3: '<h1>HTML</h1>'
+            }
+        });
+    </script>
+</body>
+</html>
