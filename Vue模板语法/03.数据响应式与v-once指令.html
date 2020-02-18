@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{ msg }}</div>
+        <!-- 
+            v-once 的应用场景：如果显示的信息后续不需要再修改，我们可以使用v-once，这样可以提高性能
+        -->
+        <div v-once>{{ info }}</div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: 'Hello World!',
+                info: 'Hello Vue.js!'
+            }
+        });
+        console.log(`vm.msg = ${vm.msg} v.info = ${vm.info}`);
+        setTimeout(() => {
+            console.log('2s后...');
+            vm.msg = 'Hello!';
+            vm.info = 'Hello!';
+            console.log(`vm.msg = ${vm.msg} v.info = ${vm.info}`);
+        }, 2000);
+    </script>
+</body>
+</html>
