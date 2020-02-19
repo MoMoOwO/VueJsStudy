@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{ num }}</div>
+        <!-- 
+            v-on 指令的用法是在 v-on:监听事件名，可以使用 @ 来对 v-on: 进行简写。
+
+            事件响应函数调用可以直接绑定函数名称，也可以通过调用函数的方式。
+            事件响应函数定义在 Vue 实例u第项的 methods 对象属性中。
+        -->
+
+        <div><input type="button" value="点击增加" v-on:click="addNum"></div>
+        <div><input type="button" value="点击减少" @click="subNum()"></div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                num: 0
+            },
+            methods: {
+                addNum(){
+                    // 这里的 this 指向的是 Vue 实例对象
+                    this.num++;
+                },
+                subNum(){
+                    this.num--;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
