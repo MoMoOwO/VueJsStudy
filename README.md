@@ -137,8 +137,9 @@
 
       (2) 双向绑定分析，如何实现双向绑定，`v-model` 指令
         + 使用 `v-model` 指令来实现数据的双向绑定，一方的数据发生变化会影响另一方的数据。
+        + 实例：
 
-        + ``` HTML
+          ``` HTML
           <!-- 使用 v-model 指令来实现双向数据绑定 -->
           <input type="text" v-model="msg">
           ```
@@ -147,6 +148,78 @@
         + M：Model、V：View、VM：ViewModel。
         + [Vue 与 MVVM](https://is.gd/aE5ZYh)
         + ![Vue.js 中的 MVVM](http://image.acmx.xyz/msj%2F4.png)
+
+  5. 事件绑定  
+
+      (1) Vue 如何处理事件？
+        + `v-on` 指令来实现事件的监听。
+        + 实例：
+
+          ``` HTML
+          <div id="app">
+            <div>{{ num }}</div>
+            <!-- 
+                v-on 指令的用法是在 v-on:监听事件名，可以使用 @ 来对 v-on: 进行简写
+            -->
+            <div><input type="button" value="点击增加" v-on:click="num++"></div>
+            <div><input type="button" value="点击减少" @click="num--"></div>
+          </div>
+          ```
+
+      (2) Vue 中事件处理/响应函数的调用方式。
+        + Vue 中在绑定时间响应函数的时候可以直接使用函数名也可以使用调用函数的方式。
+        + 实例：
+
+          ``` HTML
+          <div id="app">
+            <div>{{ num }}</div>
+            <!-- 
+                事件响应函数调用可以直接绑定函数名称，也可以通过调用函数的方式。
+                事件响应函数定义在 Vue 实例u第项的 methods 对象属性中。
+            -->
+
+            <div><input type="button" value="点击增加" v-on:click="addNum"></div>
+            <div><input type="button" value="点击减少" @click="subNum()"></div>
+          </div>
+          ```
+
+      (3) 事件函数的参数传递
+        + 传递的参数有两类：普通参数和事件对象。传递参数的方式也有所不同。
+        + 实例：
+
+          ``` HTML JavaScript
+          <div id="app">
+            <div>{{ num }}</div>
+            <!-- 
+                事件响应函数与参数传递
+                1.如果时间直接绑定函数名称，那么默认会传递事件对象作为事件函数的第一个参数
+                2.如果事件绑定函数调用，那么事件兑现必须作为最后一个参数显示传递，并且事件名称的名字必须是 $event。
+            -->
+            <div><input type="button" value="+3" v-on:click="addNum"></div>
+            <div><input type="button" value="-2" @click="subNum('减', '二', $event)"></div>
+          </div>
+
+          <script>
+              let vm = new Vue({
+                  el: '#app',
+                  data: {
+                      num: 0
+                  },
+                  methods: {
+                      addNum(event){
+                          console.log(event.target.tagName);
+                          // 这里的 this 指向的是 Vue 实例对象
+                          this.num += 3;
+                      },
+                      subNum(p1, p2, event){
+                          console.log(p1, p2);
+                          console.log(event.target.tagName);
+                          this.num -= 2;
+                      }
+                  }
+              });
+          </script>
+          ```
 
 ## Vue 基础案例
 
