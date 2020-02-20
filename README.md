@@ -96,7 +96,7 @@
         + 插值表达式存在的问题：“闪动/闪烁”；
         + 如何解决该问题：使用 `v-cloak` 指令；
         + 解决该问题的原理：先隐藏，替换好值之后再显示最终的值。
-        + v-cloak指令的用法：首先提供如下样式，之后在插值表达式所在的标签中添加v-cloak指令。 
+        + v-cloak指令的用法：首先提供如下样式，之后在插值表达式所在的标签中添加v-cloak指令。
 
           ``` CSS
             [v-cloak]{
@@ -219,6 +219,44 @@
                   }
               });
           </script>
+          ```
+
+      (4) 事件修饰符
+        + `.stop` 阻止事件冒泡，实例：
+
+          ``` HTML
+          <div style="height: 300px; width: 300px; background-color: red;" v-on:click='divClick'>
+            <!-- 
+                传统的阻止冒泡的方式为通过js调用事件对象的 stopPropagation() 方法。
+                Vue 提供了事件修饰符 .stop 来阻止事件冒泡，即子元素的事件触发不会触发父元素的事件。
+                使用方式为：在绑定事件监听时在事件名称后面紧跟 .stop 修饰符。
+            -->
+            <input type="button" value="点击我" v-on:click='btnClick'>
+          </div>
+          ```
+
+        + `.prevent` 阻止默认行为，实例：
+
+          ``` HTML
+          <div style="height: 300px; width: 300px; background-color: green;">
+              <!-- 
+                  传统的的阻止默认行为的方式为通过js调用事件对象的 preventDefault() 方法
+                  Vue 提供了事件修饰符 .prevent 来阻止默认行为，即取消特定标签的默认行为，如 a 标签的跳转刷新。
+                  使用方式为：在绑定事件监听时在事件名称后面紧跟 .prevent 修饰符。
+              -->
+              <a href="www.baidu.com" v-on:click.prevent="aClick">去百度</a>
+          </div>
+          ```
+
+        + `.self` 只当事件是从侦听器绑定的元素本身触发时才触发回调，实例：
+
+          ``` HTML
+          <!-- 
+              Vue 提供了时间修饰符 .self 只当事件是从侦听器绑定的元素本身触发时才触发回调。
+          -->
+          <div style="height: 300px; width: 300px; background-color: blue;" v-on:click.self="cdivClick">
+              <button v-on:click="cbtnClick">点击</button>
+          </div>
           ```
 
 ## Vue 基础案例
