@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <form action="#">
+            <div>
+                用户名：
+                <!-- 
+                    按键修饰符 .delete 当delete删除案件出发时进行响应。
+                    此处效果为按下delete用户名清空
+                -->
+                <input type="text" name="username" @keydown.delete="clearContent" v-model="userName">
+            </div>
+            <div>
+                密&nbsp;&nbsp;&nbsp;码：
+                <!-- 
+                    按键修饰符 .enter 当enter回车按键触发时进行响应。
+                    此处效果为输入完毕密码之后回车提交
+                -->
+                <input type="text" name="password" @keyup.enter="handleSubmit" v-model="passWord">
+            </div>
+            <div>
+                <input type="submit" value="提交" @click="handleSubmit">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                userName: '',
+                passWord: ''
+            },
+            methods: {
+                clearContent() {
+                    // 清空用户名
+                    this.userName = '';
+                },
+                handleSubmit() { // 提交信息
+                    console.log(this.userName, this.passWord);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
