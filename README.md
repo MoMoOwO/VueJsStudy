@@ -259,6 +259,27 @@
           </div>
           ```
 
+      (5) 按键修饰符
+        + `.enter` 当回车键触发事件时产生回调，实例：
+
+          ``` HTML
+          <input type="text" name="password" @keyup.enter="handleSubmit" v-model="passWord">
+          ```
+
+        + `.delete` 当删除键出发事件时产生回调，实例：
+
+          ``` HTML
+          <input type="text" name="username" @keydown.delete="clearContent" v-model="userName">
+          ``` 
+
+      (6) 自定义按键修饰符
+        + 通过全局 `config.keyCodes` 对象来自定义按键修饰符。
+        + 规则：自定义按键修饰符名字是自定义的，但是对应的值必须是案件对应 event.keyCode 值，实例：
+
+          ``` JavaScript
+          Vue.config.keyCodes.f1 = 112;
+          ```
+
 ## Vue 基础案例
 
 ## Vue 常用特性
