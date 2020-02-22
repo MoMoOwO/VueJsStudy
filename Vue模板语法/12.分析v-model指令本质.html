@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{ msg }}</div>
+        <!-- 
+            v-model 数据双向绑定的原理实际上是通过 v-bind 将数据向前端进行单向绑定，
+            然后使用 v-on 监听前端数据变换然后修改 Vue 实例中 data 中的相应数据。
+        -->
+        <input type="text" v-bind:value="msg" v-on:input="handleInput">
+        <br>
+        <input type="text" v-bind:value="msg" v-on:input="msg = $event.target.value">
+        <br>
+        <input type="text" v-model="msg">
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "hello"
+            },
+            methods: {
+                handleInput(event) {
+                    // 使用作用域中最新数据覆盖原来的数据
+                    this.msg = event.target.value;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
