@@ -270,7 +270,7 @@
 
           ``` HTML
           <input type="text" name="username" @keydown.delete="clearContent" v-model="userName">
-          ``` 
+          ```
 
       (6) 自定义按键修饰符
         + 通过全局 `config.keyCodes` 对象来自定义按键修饰符。
@@ -278,6 +278,29 @@
 
           ``` JavaScript
           Vue.config.keyCodes.f1 = 112;
+          ```
+
+  6. 属性绑定  
+
+      (1) Vue 如何动态处理属性？
+        + `v-bind` 指令用法，实例：
+
+          ``` HTML
+          <a v-bind:href="url">百度</a>
+          ```
+
+        + `v-bind` 指令可以只缩写为 `:`，实例：
+
+          ``` HTML
+          <a :href="url">百度</a>
+          ```
+
+      (2) `v-model` 的底层实现原理分析。
+        + `v-model` 数据双向绑定的原理实际上是通过 `v-bind` 将数据向前端进行单向绑定，
+            然后使用 `v-on` 监听前端数据变换然后修改 Vue 实例中 data 中的相应数据。实例：
+
+          ``` HTML
+          <input type="text" v-bind:value="msg" v-on:input="msg = $event.target.value">
           ```
 
 ## Vue 基础案例
