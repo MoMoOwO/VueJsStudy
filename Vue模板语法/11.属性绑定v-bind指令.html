@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <a v-bind:href="url">百度</a>
+        <button @click="changeUrl">切换</button>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                url: "www.baidu.com"
+            },
+            methods: {
+                changeUrl() { 
+                    this.url = "cn.vuejs.org";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
