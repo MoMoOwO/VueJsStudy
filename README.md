@@ -303,6 +303,21 @@
           <input type="text" v-bind:value="msg" v-on:input="msg = $event.target.value">
           ```
 
+  7. 样式绑定
+
+      (1) class样式处理
+        + 对象语法：通过 `v-bind` 为 `class` 属性值绑定一个对象，对象中属性名为不同的样式名，属性值为 true/false 表示是否使用该样式，实例：
+
+          ``` HTML
+          <div  v-bind:class="{active: isActive, error: isError}">测试样式</div>
+          ```
+
+        + 数组语法：通过 `v-bind` 为 class 属性值绑定一个数组，数组为 vm 实例的 data 中与样式对应的属性的属性值，而属性名为样式名。
+
+          ``` HTML
+          <div v-bind:class="[activeClass, errorClass]">测试样式</div>
+          ```
+
 ## Vue 基础案例
 
 ## Vue 常用特性
