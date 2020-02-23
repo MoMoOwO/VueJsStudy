@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <style>
+        .active {
+            height: 100px;
+            width: 100px;
+            border: green 1px solid;
+        }
+        .error {
+            background-color: red;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 
+            class 样式处理
+            对象语法：通过 v-bind 为 class 属性值绑定一个对象，对象中属性名为不同的样式名，
+            属性值为 true/false 表示是否使用该样式。
+        -->
+        <div  v-bind:class="{active: isActive, error: isError}">
+            测试Div
+        </div>
+        <button @click="toggle">切换</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                isActive: true,
+                isError: false
+            },
+            methods: {
+                toggle() {
+                    // 控制 isActive 的值在 true 和 false 之间进行切换
+                    this.isActive = !this.isActive;
+                    this.isError = !this.isError;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
