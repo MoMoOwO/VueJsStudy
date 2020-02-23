@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <style>
+        .active {
+            height: 100px;
+            width: 100px;
+            border: green 1px solid;
+        }
+        .error {
+            background-color: red;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 
+            class 样式处理绑定
+            数组语法：通过 v-bind 为 class 属性值绑定一个数组，数组为 vm 实例的 data 中与样式对应的
+            属性的属性值，而属性名为样式名。
+        -->
+        <div v-bind:class="[activeClass, errorClass]">测试样式</div>
+        <button @click="toggle">切换</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                activeClass: 'active',
+                errorClass: ''
+            },
+            methods: {
+                toggle() {
+                    // 通过切换对应的样式名来切换样式
+                    this.activeClass = '';
+                    this.errorClass = 'error';
+                }
+            }
+        })
+    </script>
+</body>
+</html>
