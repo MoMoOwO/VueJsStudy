@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        对象语法，类似 style 内联样式，属性名为 style 样式属性名，属性值为 vm 实例的data中的数据值。
+    -->
+    <div id="app">
+        <div :style="{border: borderStyle, width: widthStyle, height: heightStyle}"></div>
+        <br>
+        <div :style="objClasses"></div>
+        <button @click="toggle">切换</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                borderStyle: "1px solid blue",
+                widthStyle: "100px",
+                heightStyle: "200px",
+                // 对象样式简写方式
+                objClasses: {
+                    border: "1px solid Red",
+                    width: "200px",
+                    height: "100px"
+                }
+            },
+            methods: {
+                toggle() {
+                    this.heightStyle = "100px";
+
+                    this.objClasses.width = "100px";
+                }
+            }
+        })
+    </script>
+</body>
+</html>
