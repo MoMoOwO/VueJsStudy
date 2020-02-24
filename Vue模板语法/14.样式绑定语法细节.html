@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <style>
+        .active {
+            height: 100px;
+            width: 100px;
+            border: green 1px solid;
+        }
+        .error {
+            background-color: red;
+        }
+        .highlight {
+            color: blue;
+        }
+        .base {
+            font-size: 24px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        样式绑定的相关语法细节：
+        1.对象绑定和数组绑定可以结合使用
+        2.class 绑定的值可以简化操作
+        3.默认的 class 如何处理？more
+    -->
+    <div id="app">
+        <div :class="[activeClass, errorClass, {highlight: isHighlight}]">测试文本</div>
+        <br>
+        <div :class="arrClasses">测试文本</div>
+        <br>
+        <div class="base" :class="objClasses">测试文本</div>
+        <br>
+        <button @click="toggle">切换</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                activeClass: "active",
+                errorClass: "error",
+                isHighlight: true,
+                // class 绑定的值可以简化操作
+                arrClasses: ['active', 'error', 'highlight'],
+                objClasses: {
+                    active: true,
+                    error: true,
+                    highlight: true
+                }
+            },
+            methods: {
+                toggle() {
+                    this.isHighlight = !this.isHighlight;
+
+                    this.arrClasses.pop();
+                    this.objClasses.highlight = false;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
