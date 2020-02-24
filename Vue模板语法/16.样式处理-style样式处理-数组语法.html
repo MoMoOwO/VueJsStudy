@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        数组语法，数组中的每一项都是要给对象形式的 style，
+        位置靠后的对象样式属性会替换前面重复的样式并增添新的样式。
+    -->
+    <div id="app">
+        <div :style="baseClasses"></div>
+        <br>
+        <div :style="[baseClasses, overridingStyle]"></div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                baseClasses: {
+                    border: "1px solid red",
+                    width: "200px",
+                    height: "100px"
+                },
+                overridingStyle: {
+                    border: "2px solid blue",
+                    backgroundColor: "green"
+                }
+            },
+            methods: {
+                toggle() {
+                    this.heightStyle = "100px";
+
+                    this.objClasses.width = "100px";
+                }
+            }
+        })
+    </script>
+</body>
+</html>
