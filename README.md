@@ -305,7 +305,7 @@
 
   7. 样式绑定
 
-      (1) class样式处理
+      (1) class 样式处理
         + 对象语法：通过 `v-bind` 为 `class` 属性值绑定一个对象，对象中属性名为不同的样式名，属性值为 true/false 表示是否使用该样式，实例：
 
           ``` HTML
@@ -316,6 +316,24 @@
 
           ``` HTML
           <div v-bind:class="[activeClass, errorClass]">测试样式</div>
+          ```
+
+      (2) class 样式处理的细节
+        + 对象绑定和数组绑定可以结合使用；
+        + class 绑定的值可以简化操作；
+        + 默认的 class 如何处理？默认的 class 样式会保留。
+
+      (3) style 样式处理
+        + 对象语法：类似 style 内联样式，属性名为 style 样式属性名，属性值为 vm 实例的 data 中的数据值，可以使用简写的对象方式，即将整个对象放到 vm 实例的 data 中。实例：
+
+          ``` HTML
+          <div :style="{border: borderStyle, width: widthStyle, height: heightStyle}"></div>
+          ```
+
+        + 数组语法：数组中的每一项都是要给对象形式的 style，位置靠后的对象样式属性会替换前面重复的样式并增添新的样式。实例：
+
+          ``` HTML
+          <div :style="[baseClasses, overridingStyle]"></div>
           ```
 
 ## Vue 基础案例
