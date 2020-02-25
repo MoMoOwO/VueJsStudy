@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>城市列表</div>
+        <ul>
+            <li v-for="item in cityList">{{ item }}</li>
+        </ul>
+        <div>汽车列表</div>
+        <ul>
+            <li v-for="(item, index) in carList">{{ item }} --- {{ index }}</li>
+        </ul>
+        <div>水果列表</div>
+        <ul>
+            <li v-for="item in fruitList" :key="item.id">{{ item.eName }} --- {{ item.cName }}</li>
+        </ul>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                cityList: ["北京", "上海", "广州"],
+                carList: ["宝马", "奔驰", "奥迪"],
+                fruitList: [
+                    {
+                        id: 1,
+                        eName: "Apple",
+                        cName: "苹果"
+                    },
+                    {
+                        id: 2,
+                        eName: "Orange",
+                        cName: "橘子"
+                    },
+                    {
+                        id: 3,
+                        eName: "Banana",
+                        cName: "香蕉"
+                    }
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
