@@ -336,6 +336,37 @@
           <div :style="[baseClasses, overridingStyle]"></div>
           ```
 
+  8. 分支循环结构
+
+      (1) 分支结构
+        + `v-if`，`v-else-if`，`v-else` 指令：与 JavaScript 中的 `if else` 条件判断类似，在 DOM 元素中配合使这些指令可以实现当满足某些条件时显示特定的 DOM 元素。
+        + `v-show` 指令：通过控制 DOM 元素 `display` 样式属性来控制 DOM 元素的显示。
+        + `v-if` 与 `v-show` 的区别：`v-if` 控制的是元素是否渲染到页面；而 `v-show` 控制的是元素是否显示（已经渲染到了页面）。
+        + `v-if` 与 `v-show` 的使用场景：如果前端的 DOM 元素需要频繁的显示与隐藏，则是推荐使用 `v-show`；相反若元素渲染到页面后就不会或很少改变则可以使用 `v-if`。
+
+      (2) 循环结构
+        + `v-for` 指令遍历数组，与 JavaScript 中的 `for` 循环语句类似，实例：
+
+          ``` HTML
+          <div>城市列表</div>
+          <ul>
+              <li v-for="item in cityList">{{ item }}</li>
+          </ul>
+          <div>汽车列表</div>
+          <ul>
+              <li v-for="(item, index) in carList">{{ item }} --- {{ index }}</li>
+          </ul>
+          ```
+
+        + key 的作用：帮助 Vue 区分不同的元素，从而提高性能；所以选取具有唯一性的属性项作为 key，实例：
+
+          ``` HTML
+          <div>水果列表</div>
+          <ul>
+              <li v-for="item in fruitList" :key="item.id">{{ item.eName }} --- {{ item.cName }}</li>
+          </ul>
+          ```
+
 ## Vue 基础案例
 
 ## Vue 常用特性
