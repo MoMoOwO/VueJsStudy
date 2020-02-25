@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div v-if="score >= 90">优秀</div>
+        <div v-else-if="score >= 70 && score < 90">良好</div>
+        <div v-else-if="score >= 60 && score < 80">及格</div>
+        <div v-else>较差</div>
+
+        <div v-show="isShow">v-show 比较</div>
+        <button @click="toggle">显示/隐藏</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                score: 70,
+                isShow: true
+            },
+            methods: {
+                toggle() {
+                    this.isShow = !this.isShow;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
