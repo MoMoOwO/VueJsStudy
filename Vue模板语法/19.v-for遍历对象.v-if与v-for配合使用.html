@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-for 遍历对象时，value 为属性值、key 为属性名，index 为索引 -->
+        <div v-for="(value, key, index) in peo">{{ value }} --- {{ key }} --- {{ index }}</div>
+        <hr>
+        <!-- v-if 与 v-for 可以配合使用来控制循环时满足条件的数据来显示 -->
+        <div v-for="(value, key, index) in peo" v-if="value==18">{{ value  }}</div>
+    </div>
+
+    <script>
+        // 原生 js 遍历对象
+        let obj = {
+            name: "Sam",
+            age: 18,
+            gender: "man"
+        };
+        for (let key in obj) {
+            console.log(key, obj[key]);
+        }
+
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                peo: {
+                    name: "Sam",
+                    age: 18,
+                    gender: "man"
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
