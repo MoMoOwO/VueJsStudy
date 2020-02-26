@@ -367,8 +367,32 @@
           </ul>
           ```
 
+        + `v-for` 不仅可以遍历对象，还可以遍历数组，遍历时：value 为属性值、key 为属性名、index 为索引，实例：
+
+          ``` HTML
+          <div v-for="(value, key, index) in object">{{ value }} --- {{ key }} --- {{ index }}</div>
+          ```
+
+        + `v-if` 与 `v-for` 可以配合使用来控制循环时满足条件的数据来显示，实例：
+
+          ``` HTML
+          <div v-for="(value, key, index) in object" v-if="value==18">{{ value  }}</div>
+          ```
+
 ## Vue 基础案例
+
+  1. 案例名称：Tab 选项卡，实现效果如下：
+
+  2. 案例实现步骤：
+
+      (1) 实现静态 UI 效果
+        + 用传统的方式实现标签结构和样式
+
+      (2) 基于数据重构 UI 效果
+        + 将静态的结构和样式重构为基于 Vue 模板语法的形式；
+        + 处理事件绑定和 js 控制逻辑。
+        + ![设计过程](http://image.acmx.xyz/msj%2F20202262252456592.jpg)
 
 ## Vue 常用特性
 
-## Vue综合案例
+## Vue 综合案例
