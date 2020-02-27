@@ -37,12 +37,16 @@
         .tab div {
             width: 500px;
             height: 300px;
-            /* display: none; */
+            display: none;
             text-align: center;
             font-size: 30px;
             line-height: 300px;
             border: 1px solid blue;
             border-top: 0px;
+        }
+
+        .tab div.current {
+            display: block;
         }
     </style>
     <title>Document</title>
@@ -52,10 +56,12 @@
     <div id="app">
         <div class="tab">
             <ul>
+                <!-- .active 为当前选中项 -->
                 <li class="active">apple</li>
                 <li>orange</li>
                 <li>lemon</li>
             </ul>
+            <!-- .current 为当前选中项对应的图片项 -->
             <div class="current">
                 <img src="./img//apple.jpg">
             </div>
