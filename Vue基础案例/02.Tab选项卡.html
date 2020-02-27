@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <style>
+        .tab ul {
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tab ul li {
+            box-sizing: border-box;
+            padding: 0px;
+            float: left;
+            width: 100px;
+            height: 45px;
+            line-height: 45px;
+            list-style: none;
+            text-align: center;
+            border-top: 1px solid blue;
+            border-right: 1px solid blue;
+            cursor: pointer;
+        }
+
+        .tab ul li:first-child {
+            border-left: 1px solid blue;
+        }
+
+        .tab ul li.active {
+            background-color: orange;
+        }
+
+        .tab div {
+            width: 500px;
+            height: 300px;
+            display: none;
+            text-align: center;
+            font-size: 30px;
+            line-height: 300px;
+            border: 1px solid blue;
+            border-top: 0px;
+        }
+
+        .tab div.current {
+            display: block;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="tab">
+            <ul>
+                <!-- 
+                    列表项采用 v-for 来循环遍历产生，使用插值表达式来绑定名称数据 
+                    使用 currentIndex 与 列表项的 index 对比，如果相同则添加 .active 类，否则不添加
+                    监听 li 的单击事件，当选项单击时将 index 索引传递过去，修改 vm 中的 currentIndex 进而修改 class 来实现切换效果
+                -->
+                <li @click="change(index)" :class="currentIndex == index ? 'active' : ''" :key="item.id"
+                    v-for="(item, index) in fruitList">
+                    {{ item.name }}</li>
+            </ul>
+            <!-- 
+                图片则绑定为 picUrl
+                使用 currentIndex 与 列表项的 index 对比，如果相同则添加 .current 类，否则不添加
+            -->
+            <div :class="currentIndex == index ? 'current' : ''" :key="item.id" v-for="(item, index) in fruitList">
+                <img :src="item.picUrl">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                currentIndex: 0, // 记录当前所选项的索引，默认为 0
+                // 数据采用对象数组的方式，id 保证每一项的唯一性标识，name 与 picUrl 一一对应
+                fruitList: [{
+                        id: 1,
+                        name: "apple",
+                        picUrl: "./img/apple.jpg"
+                    },
+                    {
+                        id: 2,
+                        name: "orange",
+                        picUrl: "./img/orange.jpg"
+                    },
+                    {
+                        id: 3,
+                        name: "lemon",
+                        picUrl: "./img/lemon.jpg"
+                    }
+                ]
+            },
+            methods: {
+                change(index) {
+                    // 这里实现点击选项卡切换选项的逻辑，本质上是在操作类名
+                    // 如何操作类名？就是通过 currentIndex 来实现
+                    this.currentIndex = index;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
