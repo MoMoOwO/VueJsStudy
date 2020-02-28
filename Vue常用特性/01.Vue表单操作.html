@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <style>
+        form div {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        form div:nth-child(4) {
+            height: auto;
+        }
+
+        form div span:first-child {
+            display: inline-block;
+            width: 100px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <form>
+            <div>
+                <span>姓名：</span>
+                <span>
+                    <!-- 
+                        input text 输入框可以使用 v-model 指令进行数据双向绑定，
+                        从而能够方便获取输入值和提供默认值
+                    -->
+                    <input type="text" v-model="userName">
+                </span>
+            </div>
+            <div>
+                <span>性别：</span>
+                <span>
+                    <!-- 
+                        input radio 单选框也可以使用 v-model 进行双向绑定，由于是单选框，
+                        所以一组单选按钮绑定到同一个数据上，数据值为每一个单选按钮的 value 属性值
+                    -->
+                    <input type="radio" id="male" value="male" v-model="gender">
+                    <label for="male">男</label>
+                    <input type="radio" id="female" value="female" v-model="gender">
+                    <label for="female">女</label>
+                </span>
+            </div>
+            <div>
+                <span>爱好：</span>
+                <span>
+                    <!-- 
+                        input checkbox 多选框也可以使用 v-model 进行双向绑定，由于是多选框，
+                        所以一组多选框按钮绑定到同一个数组上，数组的值为选中的项目的 value 的属性值
+                    -->
+                    <input type="checkbox" id="ball" value="ball" v-model="hobby">
+                    <label for="ball">篮球</label>
+                    <input type="checkbox" id="sing" value="sing" v-model="hobby">
+                    <label for="sing">唱歌</label>
+                    <input type="checkbox" id="code" value="code" v-model="hobby">
+                    <label for="code">编程</label>
+                </span>
+            </div>
+            <div>
+                <span>职业：</span>
+                <!-- 
+                    select 下拉选择框可以为多选也可以为单选，由 multiple 属性值决定，
+                    当为单选时 v-model 绑定一个常用数据类型，而当多选时 v-model 需要
+                    绑定到一个数组上。
+                -->
+                <select v-model="occupation" multiple="true">
+                    <option value="default">请选择职业...</option>
+                    <option value="teacher">教师</option>
+                    <option value="softwareEngineers">软件工程师</option>
+                    <option value="lawyer">律师</option>
+                </select>
+            </div>
+            <div>
+                <span>个人简历：</span>
+                <!-- 
+                    textarea 可以直接使用 v-model 进行数据双向绑定
+                -->
+                <textarea v-model="desc"></textarea>
+            </div>
+            <div>
+                <!-- 
+                    表单提交若只发生在当前页面，而不需要页面刷新和跳转，则需要阻止表单提交的默认行为
+                    具体监听提交按钮的点击事件并使用 .prevent 来修饰。
+                -->
+                <input type="submit" value="提交" @click.prevent="submit">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 表单的基本操作
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                userName: "李四",
+                gender: "male",
+                hobby: [],
+                //occupation: "default",
+                occupation: [],
+                desc: "你好！"
+            },
+            methods: {
+                submit() {
+                    console.log("userName:", this.userName);
+                    console.log("gender:", this.gender);
+                    console.log("hobby:", this.hobby);
+                    console.log("occupation:", this.occupation);
+                    console.log("desc:", this.desc);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
