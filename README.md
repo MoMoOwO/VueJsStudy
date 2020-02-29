@@ -500,7 +500,53 @@
      <input type="submit" value="提交" @click.prevent="submit">
      ```
 
+   (2) 表单域修饰符
+
+   - number：转化为数值，实例：
+
+      ``` HTML
+      <input type="text" v-model.number="num">
+      ```
+
+   - trim：去掉开始和结尾的空格，实例：
+
+      ``` HTML
+      <!-- .trim 修饰符只能去掉开始和结尾的空格，不能去除字符串中间的空格 -->
+      <input type="text" v-model.trim="info">
+      ```
+
+   - lazy：将 input 时间切换为 change 事件，实例：
+
+      ``` HTML
+      <!-- input 事件在文本框输入改变时触发， change 事件在文本框失去焦点时触发 -->
+      <input type="text" v-model.lazy="msg">
+      ```
+
 2. 自定义指令
+
+   (1) 为何需要自定义指令？内置的指令不能满足需求。内置的指令：`v-text`，`v-html`，`v-show`，`v-if`，`v-else`，`v-else-if`，`v-for`，`v-on`，`v-bind`，`v-model`，`v-pre`，`v-cloak`，`v-once`。
+
+   (2) 自定义指令的语法规则（应用场景：获取元素焦点）
+
+      ``` JavaScript
+      /*
+        使用 Vue 的 directive 方法来自定义指令，需要两个参数，第一个参数为指令名称，
+        注意在使用指令的时候需要使用 v-指令名称 着中国方式，第二个参数为钩子函数，
+        目前先知道使用 inserted 来进行操作。
+      */
+      Vue.directive('focus', {
+        inserted: function(el) {
+          // 获取元素的焦点
+          el.focus();
+        }
+      });
+      ```
+
+   (3) 自定义指令用法
+
+      ``` HTML
+      <input type="text" v-focus>
+      ```
 
 3. 计算属性
 
