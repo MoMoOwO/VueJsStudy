@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            .number 将字符串转换为数值类型<br>
+            <input type="text" v-model.number="num">
+            <h4>{{num}}</h4>
+        </div>
+        <hr>
+        <div>
+            .trim 去处字符串前后的空格<br>
+            <input type="text" v-model.trim="info">
+            <h4>{{info}}</h4>
+        </div>
+        <hr>
+        <div>
+            <!-- input 事件在文本框输入改变时触发， change 事件在文本框失去焦点时触发 -->
+            .lazy 将 input 事件改为 change 事件<br>
+            <input type="text" v-model.lazy="msg">
+            <h4>{{msg}}</h4>
+        </div>
+        <button @click="getData">获取数据</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                num: '',
+                info: '',
+                msg: '',
+            },
+            methods: {
+                getData() {
+                    console.log('num:', this.num, typeof (this.num));
+                    console.log('info:', this.info, this.info.length);
+                    console.log('msg:', this.msg);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
