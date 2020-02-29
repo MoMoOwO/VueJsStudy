@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text">
+        <input type="text" v-focus>
+    </div>
+
+    <script>
+        // 自定义指令
+        /*
+            使用 Vue 的 directive 方法来自定义指令，需要两个参数，第一个参数为指令名称，
+            注意在使用指令的时候需要使用 v-指令名称 着中国方式，第二个参数为钩子函数，
+            目前先知道使用 inserted 来进行操作。
+        */
+        Vue.directive("focus", {
+            inserted: function (el) {
+                // el 标识指令所绑定的元素
+                el.focus();
+            }
+        });
+
+        let vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+
+</html>
