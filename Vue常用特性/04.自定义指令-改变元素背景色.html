@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-color="msg">
+    </div>
+
+    <script>
+        // 自定义指令 - 带参数
+        /*
+            带参数的自定义指令同样使用 Vue 提供的 directive 接口，使用钩子函数 inserted 或
+            bind (此应用场景这两个钩子函数都可以实现)来设置指令的功能，第一个参数为元素对象，
+            第二个参数为绑定元素过程的信息，其中可以通过 binding,value 获取传递的参数。
+        */
+        Vue.directive('color', {
+            bind: function (el, binding) {
+                // 可以通过 binding 对象的 value 属性拿到传递的参数
+                //console.log(binding);
+
+                // 根据指令的参数设置背景色
+                el.style.backgroundColor = binding.value;
+            }
+        });
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "orange"
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>
