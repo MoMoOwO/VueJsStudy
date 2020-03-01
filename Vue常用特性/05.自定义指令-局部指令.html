@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-focus v-color="color">
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                color: "blue"
+            },
+            methods: {
+
+            },
+            // 局部指令 定义在单个 Vue 实例中
+            directives: {
+                focus: {
+                    inserted: function (el) {
+                        el.focus();
+                    }
+                },
+                color: {
+                    bind: function (el, binding) {
+                        el.style.backgroundColor = binding.value;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
