@@ -526,7 +526,8 @@
 
    (1) 为何需要自定义指令？内置的指令不能满足需求。内置的指令：`v-text`，`v-html`，`v-show`，`v-if`，`v-else`，`v-else-if`，`v-for`，`v-on`，`v-bind`，`v-model`，`v-pre`，`v-cloak`，`v-once`。
 
-   (2) 自定义指令的语法规则（应用场景：获取元素焦点）
+   (2) 普通自定义指令
+   -语法规则（应用场景：获取元素焦点）
 
       ``` JavaScript
       /*
@@ -542,10 +543,56 @@
       });
       ```
 
-   (3) 自定义指令用法
+   - 普通自定义指令用法
 
       ``` HTML
+      <!-- 在使用普通自定义指令时，只需要像 v-cloak 指令一样，直接加上指令名称即可 -->
       <input type="text" v-focus>
+      ```
+
+   (3) 带参数的自定义指令
+   - 语法规则（应用场景：改变元素背景色）
+
+      ``` JavaScript
+      /*
+        带参数的自定义指令同样使用 Vue 提供的 directive 接口，使用钩子函数 inserted 或
+        第二个参数为绑定元素过程的信息，其中可以通过 binding,value 获取传递的参数。
+      */
+      Vue.directive('color', {
+          bind: function (el, binding) {
+              // 可以通过 binding 对象的 value 属性拿到传递的参数
+              //console.log(binding);
+
+              // 根据指令的参数设置背景色
+              el.style.backgroundColor = binding.value;
+          }
+      });
+      ```
+
+   - 带参数的指令的用法
+
+      ``` HTML
+      <!-- 在使用传递参数的自定义指令时可以像 v-model 等指令一样在后面加个等号来传递参数 -->
+      <input type="text" v-color="msg">
+      ```
+
+   (4) 局部指令，定义在单个 Vue 实例中的指令，尽在该 Vue 实例组件中可用。
+   - 语法规则
+
+      ``` JavaScript
+      // 定义在某个 Vue 实例的 directives 属性下
+      directives: {
+          focus: {
+              inserted: function (el) {
+                  el.focus();
+              }
+          },
+          color: {
+              bind: function (el, binding) {
+                  el.style.backgroundColor = binding.value;
+              }
+          }
+      }
       ```
 
 3. 计算属性
