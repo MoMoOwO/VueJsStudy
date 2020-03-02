@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h6>{{ msg }}</h6>
+        <!-- 若不是用计算属性，需要再绑定时进行大量计算操作 -->
+        <h5>{{ msg.split("").reverse().join("") }}</h5>
+        <!-- 使用计算属性来进行大量计算 -->
+        <h4>{{ reversedMessage }}</h4>
+        <button @click="change">变换</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "Hello"
+            },
+            methods: {
+                change() {
+                    this.msg = "World";
+                }
+            },
+            /*
+                Vue 中的计算属性在在 Vue 实例的 computed 属性中声明，computed 的属性值为一个对象；
+                键为计算属性名称，之后使用计算属性也是使用该名称，值为一个回调函数用来进行复杂计算操作
+                并返回计算结果
+            */
+            computed: {
+                //
+                reversedMessage: function () {
+                    return this.msg.split("").reverse().join("");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
