@@ -504,98 +504,120 @@
 
    - number：转化为数值，实例：
 
-      ``` HTML
-      <input type="text" v-model.number="num">
-      ```
+     ```HTML
+     <input type="text" v-model.number="num">
+     ```
 
    - trim：去掉开始和结尾的空格，实例：
 
-      ``` HTML
-      <!-- .trim 修饰符只能去掉开始和结尾的空格，不能去除字符串中间的空格 -->
-      <input type="text" v-model.trim="info">
-      ```
+     ```HTML
+     <!-- .trim 修饰符只能去掉开始和结尾的空格，不能去除字符串中间的空格 -->
+     <input type="text" v-model.trim="info">
+     ```
 
    - lazy：将 input 时间切换为 change 事件，实例：
 
-      ``` HTML
-      <!-- input 事件在文本框输入改变时触发， change 事件在文本框失去焦点时触发 -->
-      <input type="text" v-model.lazy="msg">
-      ```
+     ```HTML
+     <!-- input 事件在文本框输入改变时触发， change 事件在文本框失去焦点时触发 -->
+     <input type="text" v-model.lazy="msg">
+     ```
 
 2. 自定义指令
 
    (1) 为何需要自定义指令？内置的指令不能满足需求。内置的指令：`v-text`，`v-html`，`v-show`，`v-if`，`v-else`，`v-else-if`，`v-for`，`v-on`，`v-bind`，`v-model`，`v-pre`，`v-cloak`，`v-once`。
 
    (2) 普通自定义指令
-   -语法规则（应用场景：获取元素焦点）
 
-      ``` JavaScript
-      /*
-        使用 Vue 的 directive 方法来自定义指令，需要两个参数，第一个参数为指令名称，
-        注意在使用指令的时候需要使用 v-指令名称 着中国方式，第二个参数为钩子函数，
-        目前先知道使用 inserted 来进行操作。
-      */
-      Vue.directive('focus', {
-        inserted: function(el) {
-          // 获取元素的焦点
-          el.focus();
-        }
-      });
-      ```
+   - 语法规则（应用场景：获取元素焦点）
+
+     ```JavaScript
+     /*
+       使用 Vue 的 directive 方法来自定义指令，需要两个参数，第一个参数为指令名称，
+       注意在使用指令的时候需要使用 v-指令名称 着中国方式，第二个参数为钩子函数，
+       目前先知道使用 inserted 来进行操作。
+     */
+     Vue.directive('focus', {
+       inserted: function(el) {
+         // 获取元素的焦点
+         el.focus();
+       }
+     });
+     ```
 
    - 普通自定义指令用法
 
-      ``` HTML
-      <!-- 在使用普通自定义指令时，只需要像 v-cloak 指令一样，直接加上指令名称即可 -->
-      <input type="text" v-focus>
-      ```
+     ```HTML
+     <!-- 在使用普通自定义指令时，只需要像 v-cloak 指令一样，直接加上指令名称即可 -->
+     <input type="text" v-focus>
+     ```
 
    (3) 带参数的自定义指令
+
    - 语法规则（应用场景：改变元素背景色）
 
-      ``` JavaScript
-      /*
-        带参数的自定义指令同样使用 Vue 提供的 directive 接口，使用钩子函数 inserted 或
-        第二个参数为绑定元素过程的信息，其中可以通过 binding,value 获取传递的参数。
-      */
-      Vue.directive('color', {
-          bind: function (el, binding) {
-              // 可以通过 binding 对象的 value 属性拿到传递的参数
-              //console.log(binding);
+     ```JavaScript
+     /*
+       带参数的自定义指令同样使用 Vue 提供的 directive 接口，使用钩子函数 inserted 或
+       第二个参数为绑定元素过程的信息，其中可以通过 binding,value 获取传递的参数。
+     */
+     Vue.directive('color', {
+         bind: function (el, binding) {
+             // 可以通过 binding 对象的 value 属性拿到传递的参数
+             //console.log(binding);
 
-              // 根据指令的参数设置背景色
-              el.style.backgroundColor = binding.value;
-          }
-      });
-      ```
+             // 根据指令的参数设置背景色
+             el.style.backgroundColor = binding.value;
+         }
+     });
+     ```
 
    - 带参数的指令的用法
 
-      ``` HTML
-      <!-- 在使用传递参数的自定义指令时可以像 v-model 等指令一样在后面加个等号来传递参数 -->
-      <input type="text" v-color="msg">
-      ```
+     ```HTML
+     <!-- 在使用传递参数的自定义指令时可以像 v-model 等指令一样在后面加个等号来传递参数 -->
+     <input type="text" v-color="msg">
+     ```
 
    (4) 局部自定义指令，定义在单个 Vue 实例中的指令，尽在该 Vue 实例组件中可用。
+
    - 语法规则
 
-      ``` JavaScript
-      // 定义在某个 Vue 实例的 directives 属性下
-      directives: {
-          focus: {
-              inserted: function (el) {
-                  el.focus();
-              }
-          },
-          color: {
-              bind: function (el, binding) {
-                  el.style.backgroundColor = binding.value;
-              }
-          }
-      }
-      ```
+     ```JavaScript
+     // 定义在某个 Vue 实例的 directives 属性下
+     directives: {
+         focus: {
+             inserted: function (el) {
+                 el.focus();
+             }
+         },
+         color: {
+             bind: function (el, binding) {
+                 el.style.backgroundColor = binding.value;
+             }
+         }
+     }
+     ```
 
 3. 计算属性
+
+   (1) 为何需要计算属性？表达式的计算逻辑可能会比较复杂，使用计算属性可以是模板内容更加简洁。
+
+   (2) 计算属性的用法：Vue 中的计算属性在在 Vue 实例的 `computed` 属性中声明，computed 的属性值为一个对象；键为计算属性名称，之后使用计算属性也是使用该名称，值为一个回调函数用来进行复杂计算操作并返回计算结果。实例：
+
+   ```JavaScript
+   // JS Vue 实例中
+   computed: {
+       reversedMessage: function () {
+           return this.msg.split("").reverse().join("");
+       }
+   }
+   ```
+
+   (3) 计算属性与方法的区别
+
+   - 计算属性是基于他们的依赖进行缓存的，方法不存在缓存。
+   - 缓存就是只要计算属性计算的 `data` 的数据不改变，那么计算属性只执行一次；而这个计算的 `data` 中的值就称为计算属性的依赖。
+   - 由于计算属性存在缓存机制，所以若遇到耗时费力的计算时可以节省性能和时间。
 
 4. 过滤器
 
