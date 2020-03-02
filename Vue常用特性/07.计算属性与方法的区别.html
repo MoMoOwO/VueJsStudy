@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h6>{{ msg }}</h6>
+        <h5>{{ reverseMessage() }}</h5>
+        <h5>{{ reverseMessage() }}</h5>
+        <h4>{{ reverseString }}</h4>
+        <h4>{{ reverseString }}</h4>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "Hello",
+                num: 0
+            },
+            methods: {
+                reverseMessage: function () {
+                    // 方法没调用几次就执行几次
+                    console.log('methods');
+                    return this.msg.split("").reverse().join("");
+                }
+            },
+            computed: {
+                reverseString: function () {
+                    // 缓存就是只要计算属性计算的 data 的数据不改变，那么计算属性只执行一次
+                    console.log('computed');
+                    // 由于计算属性存在缓存机制，所以若遇到耗时费力的计算时可以节省性能和时间
+                    let total = 0;
+                    for (let i = 0; i < this.num; i++) {
+                        total += i;
+                    }
+                    return this.msg.split("").reverse().join("");
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
