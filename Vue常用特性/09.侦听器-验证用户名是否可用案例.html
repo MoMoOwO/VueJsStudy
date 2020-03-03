@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        案例：验证用户名是否可用
+        要求：输入框中输入姓名，失去焦点时验证是否存在该用户名；
+        如果已经存在，提示重新输入，如果不存在，提示可以使用。
+    -->
+    <div id="app">
+        <div>
+            <span>用户名：</span>
+            <span>
+                <!-- 使用 .lazy 修饰符来替换 input 事件为失去焦点事件 -->
+                <input type="text" v-model.lazy="uName">
+            </span>
+            <span>{{ tip }}</span>
+        </div>
+    </div>
+
+    <script>
+        /*
+            1.采用侦听器监听用户名的变化
+            2.调用后台接口进行验证
+            3.根据验证的结果调整提示信息
+        */
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                uName: "",
+                tip: ""
+            },
+            methods: {
+                // 抽象验证用户名合法性的函数
+                checkName(uname) {
+                    // 调用后台接口，但是可以使用定时器来模拟借口调用
+                    // 缓存 this，因为 setTimeout 接口中的 this 指向 window
+                    let that = this;
+                    setTimeout(function () {
+                        // 模拟接口调用
+                        let uNameArr = ["admin", "tom", "jack"];
+                        if (uNameArr.indexOf(uname) < 0) {
+                            that.tip = "用户名可以使用。";
+                        } else {
+                            that.tip = "用户名已存在，请更换一个。";
+                        }
+                    }, 2000);
+                }
+            },
+            watch: {
+                uName: function (val) {
+                    // 调用后台接口验证用户名的合法性
+                    this.checkName(val);
+                    this.tip = "检查用户名是否可用..."
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
