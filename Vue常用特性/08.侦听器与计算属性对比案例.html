@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <span>First name: </span>
+            <span>
+                <input type="text" v-model="firstName">
+            </span>
+        </div>
+        <div>
+            <span>Last name: </span>
+            <span>
+                <input type="text" v-model="lastName">
+            </span>
+        </div>
+        <div>{{ fullName }}</div>
+        <div>{{ getFullName }}</div>
+    </div>
+
+    <script>
+        // 案例：改变 firstName 和 lastName 最后显示的全名也发生改变
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                firstName: "Jim",
+                lastName: "Green",
+                fullName: "Jim Green"
+            },
+            computed: {
+                // 使用计算属性来实现类似的功能
+                /*
+                    可以看到此时使用计算属性来实现此功能比较方便，但是当遇到异步操作或开销较大时仍然需要侦听器来实现
+                */
+                getFullName: function () {
+                    return this.firstName + " " + this.lastName;
+                }
+            },
+            // 在 watch 属性下创建侦听器
+            watch: {
+                // 监听 firstName 和 lastName 两个数据的变化，来拼接 fullName
+                /*
+                    watch 属性值为一个对象，对象的属性名为要监听的数据的数据名，
+                    对象的属性值为回调函数，即该数据发生变化时执行的行为，该函数有两个参数，
+                    第一个为数据发生变化后的新的值，第二个为发生变化前的旧的值
+                */
+                firstName: function (newVal, oldVal) {
+                    this.fullName = newVal + " " + this.lastName;
+                },
+                lastName: function (newVal, oldVal) {
+                    this.fullName = this.firstName + " " + newVal;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
