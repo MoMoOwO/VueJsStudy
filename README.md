@@ -619,9 +619,34 @@
    - 缓存就是只要计算属性计算的 `data` 的数据不改变，那么计算属性只执行一次；而这个计算的 `data` 中的值就称为计算属性的依赖。
    - 由于计算属性存在缓存机制，所以若遇到耗时费力的计算时可以节省性能和时间。
 
-4. 过滤器
+4. 侦听器
 
-5. 侦听器
+   (1) 侦听器的概念及作用：侦听器用于监听数据的变化，数据一旦发生变化就通知侦听器所绑定的方法，从而执行一定的操作。
+   ![侦听器](http://image.acmx.xyz/msj%2F20203322976701.jpg)
+
+   (2) 侦听器的应用场景：数据变化时值型异步或开销较大的操作。
+
+   (3) 侦听器的用法：
+
+   ```JavaScript
+   // 在 watch 属性下创建侦听器
+   watch: {
+       // 监听 firstName 和 lastName 两个数据的变化，来拼接 fullName
+       /*
+           watch 属性值为一个对象，对象的属性名为要监听的数据的数据名，
+           对象的属性值为回调函数，即该数据发生变化时执行的行为，该函数有两个参数，
+           第一个为数据发生变化后的新的值，第二个为发生变化前的旧的值
+       */
+       firstName: function (newVal, oldVal) {
+           this.fullName = newVal + " " + this.lastName;
+       },
+       lastName: function (newVal, oldVal) {
+           this.fullName = this.firstName + " " + newVal;
+       }
+   }
+   ```
+
+5. 过滤器
 
 6. 生命周期
 
