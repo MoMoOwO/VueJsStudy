@@ -648,6 +648,67 @@
 
 5. 过滤器
 
+   (1) 多滤器的作用是什么：格式化数据，比如将字符串格式化为首字母大写，将日期格式化为指定的格式等。
+   ![过滤器](http://image.acmx.xyz/msj%2F10.png)
+
+   (2) 自定义过滤器
+
+   ```JavaScript
+   /*
+       使用 Vue 的 filter 接口来创建过滤器，第一个参数为过滤器的名称，之后使用过滤器也是通过该名称，
+       第二个参数为回调函数，即对数据要进行的格式化工作，接受的参数为要进行格式化的数据
+   */
+   Vue.filter("upper", function (val) {
+       // 过滤器业务逻辑，最后将结果 return 出去
+       return val.charAt(0).toUpperCase() + val.slice(1);
+   });
+   ```
+
+   (3) 过滤器的使用
+
+   ```HTML
+   <!-- 在插值表达式的数据后面加上过滤器名称中间使用竖线(按位或符) -->
+   <div>{{ msg | upper }}</div>
+   <!-- 一个插值表达式中可以在数据后面携带多个过滤器，前面过滤器的结果作为后面过滤器的输入 -->
+   <div>{{ msg | upper | lower }}</div>
+   <!-- 再进行属性绑定的时候也可以使用过滤器 -->
+   <div :id="msg | upper"></div>
+   ```
+
+   (4) 局部过滤器，类似于自定义指令，过滤器也有局部过滤器
+
+   ```JavaScript
+   // 在 Vue 实例中可以在 filters 属性值下声明创建局部过滤器，仅在该 Vue 上生效
+   /*
+       filters 的属性值为一个对象，属性名为过滤器名称，属性值为格式化数据的回调函数
+   */
+   filters: {
+       upper: function (val) {
+           return val.charAt(0).toUpperCase() + val.slice(1);
+       }
+   }
+   ```
+
+   (5) 带参数的过滤器
+
+   - 定义规范
+
+     ```JavaScript
+     // 在定义过滤器的回调函数的时候可以传递第二个参数来接受使用过滤器时传递的参数
+     Vue.filter('dateFormat', function (val, arg) {
+         if (arg === "yyyy-MM-dd") {
+             return `${val.getFullYear()}-${val.getMonth() + 1}-${val.getDate()}`;
+         }
+     });
+     ```
+
+   - 使用
+
+     ```HTML
+     <!-- 使用时像调用方法一样传递参数 -->
+     <div>{{ date | dateFormat("yyyy-MM-dd") }}</div>
+     ```
+
 6. 生命周期
 
 ## Vue 综合案例
