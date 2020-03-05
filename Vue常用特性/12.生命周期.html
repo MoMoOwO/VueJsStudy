@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ msg }}</div>
+        <button @click="update">更新</button>
+        <button @click="destroy">销毁</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "Hello Vue!"
+            },
+            // 前四个为挂载阶段
+            beforeCreate() {
+                console.log("beforeCreate");
+            },
+            created() {
+                console.log("created");
+            },
+            beforeMount() {
+                console.log("beforeMount");
+            },
+            mounted() {
+                // 此钩子函数常用，因为此时 Vue 实例的中的数据和方法已经初始化好了
+                // 常在此时发起后台请求，为数据赋值。
+                console.log("mounted");
+            },
+            // 更新时触发
+            beforeUpdate() {
+                console.log("beforeUpdated");
+            },
+            updated() {
+                console.log("updated");
+            },
+            // Vue 实例销毁时触发
+            beforeDestroy() {
+                console.log("beforeDestroy");
+            },
+            destroyed() {
+                console.log("destroyed");
+            },
+            methods: {
+                update() {
+                    this.msg = "Vue 大法好！";
+                },
+                destroy() {
+                    this.$destroy();
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
