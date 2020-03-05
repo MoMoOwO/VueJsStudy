@@ -16,11 +16,11 @@
 
     <script>
         // 在定义过滤器的回调函数的时候可以传递第二个参数来接受使用过滤器时传递的参数
-        Vue.filter('dateFormat', function (val, arg) {
+        /* Vue.filter('dateFormat', function (val, arg) {
             if (arg === "yyyy-MM-dd") {
                 return `${val.getFullYear()}-${val.getMonth() + 1}-${val.getDate()}`;
             }
-        });
+        }); */
 
         let vm = new Vue({
             el: "#app",
@@ -28,7 +28,16 @@
                 date: new Date()
             },
             methods: {
-                dateFormatFun(date, format) {
+
+            },
+            filters: {
+                dateFormat: function (date, format) {
+                    // 格式化日期的函数
+                    /*
+                    yyyy: 年分 MM：月份 dd：日
+                    hh：时 mm：分 ss：秒
+                    q：季度 S：毫秒
+                    */
                     if (typeof date === "string") {
                         let mts = date.match(/(\/Date\((\d+)\)\/)/);
                         if (mts && mts.length >= 3) {
@@ -48,14 +57,25 @@
                         "m": date.getMinutes(), // 分
                         "s": date.getSeconds(), // 秒
                         "q": Math.floor((date.getMonth() + 3) / 3), // 季度
-                        "S": date.gerMilliseconds() // 毫秒
+                        "S": date.getMilliseconds() // 毫秒
                     };
 
+                    format = format.replace(/([yMdhmsqS])*/g, function (all, t) {
+                        let v = map[t];
+                        if (v !== undefined) {
+                            if (all.length > 1) {
+                                v = "0" + v;
+                                v = v.substr(v.length - 2);
+                            }
+                            return v;
+                        } else if (t === "y") {
+                            return (date.getFullYear() + "").substr(4 - all.length);
+                        }
+                        return all;
+                    });
 
+                    return format;
                 }
-            },
-            filters: {
-
             }
         });
     </script>
