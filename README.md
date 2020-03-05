@@ -711,4 +711,22 @@
 
 6. 生命周期
 
+   (1) 主要阶段
+
+   - 挂载（初始化相关属性）：beforeCreate -> created -> beforeMount -> mounted
+   - 更新（元素或组件的变更操作）：beforeUpdate -> updated
+   - 销毁（销毁相关属性）：beforeDestroy -> destroyed
+   - ![生命周期图示](http://image.acmx.xyz/msj%2Flifecycle.png)
+
+   (2)
+
+   - beforeCreate：在实例初始化之后，数据观测和时间配置之前调用。
+   - created：在实例创建完成后立即调用。
+   - beforeMount：在挂载开始之前被调用。
+   - mounted：`el` 被新创建的 `vm.$el` 替换，并挂载到实例上去之后调用该钩子。
+   - beforeUpdate：数据更新时调用，发生在虚拟 DOM 打补丁之前。
+   - updated：由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
+   - beforeDestroy：实例销毁之前调用。
+   - destroyed：实例销毁后调用。
+
 ## Vue 综合案例
