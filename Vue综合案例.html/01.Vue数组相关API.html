@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <span>
+                <input type="text" v-model="newFruit">
+                <button @click="add">添加</button>
+            </span>
+            <span>
+                <button @click="del">删除一个</button>
+            </span>
+            <span>
+                <button @click="sli">截取数组</button>
+            </span>
+        </div>
+        <ul>
+            <li :key="index" v-for="(item, index) in fruitsList">{{ item }}</li>
+        </ul>
+        <hr>
+        <div>
+            <ul>
+                <li :key="index" v-for="(item, index) in animalsList">{{ item }}</li>
+            </ul>
+        </div>
+        <hr>
+        <div>
+            <div>{{ people.name }}</div>
+            <div>{{ people.gender }}</div>
+            <div>{{ people.age }}</div>
+        </div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                newFruit: "",
+                fruitsList: ["orange", "apple", "banana", "watermelon", "pear"],
+                animalsList: ["cat", "dog", "monkey"],
+                people: {
+                    name: "Sam",
+                    gender: "male",
+                    age: 18
+                }
+            },
+            methods: {
+                /*
+                    变异方法，这些方法会改变原有的数据从而绑定该数组的 DOM 组件会发生变化
+                    这些方法有：push()，pop()，shift()，unshift()，splice()，sort()，reverse()
+                */
+                add() {
+                    this.fruitsList.push(this.newFruit);
+                },
+                del() {
+                    this.fruitsList.pop();
+                },
+                /*
+                    替换数组，有些方法会保留之前的数组，生成新的数组作为返回值，
+                    这些方法有：filter()，concat()，slice()
+                    一般若要使用新的数组重新渲染 DOM (数组操作影响 DOM) 采取的方法是用新数组代替旧数组
+                */
+                sli() {
+                    this.fruitsList = this.fruitsList.slice(1, 3);
+                }
+            },
+        });
+
+        // 修改响应式数据
+        /*
+            两个接口：Vue.set(vm.items, indexOfItem, newVale)，Vue.$set(vm.items, indexOfItem, newVale)
+            参数列表：
+            注：经过这两种方式任意一种方式设置后的数组/对象中的数据项将变为响应式，之后直接修改该数据那么 DOM 中将响应式的发生改变。
+        */
+        //vm.animalsList[1] = "lion"; // 这样直接修改只能改变 vm 实例中的数据，但是 DOM 中还是使用的原来的数据
+        // 响应式数据设置方式一
+        Vue.set(vm.animalsList, 1, "lion"); // 使用该接口修改的数据双向发生改变，响应式数据设置
+        //vm.animalsList[1] = "pig"; // 经过响应式设置后，该数据变为响应式数据，之后再修改该数据即可影响 DOM
+
+        vm.people.age = 23; // 直接修改，只能影响 vm 不能影响 DOM
+        // 响应式数据设置方式二
+        vm.$set(vm.people, "age", 23);
+        //vm.people.age = 32; // 经过响应式设置后的数据具有了响应式性质
+    </script>
+</body>
+
+</html>
