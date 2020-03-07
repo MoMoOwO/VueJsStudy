@@ -46,7 +46,8 @@
                 <div class="book">
                     <div>
                         <label for="id">编号</label>
-                        <input type="text" id="id" v-model="id">
+                        <!-- disabled 输入框不可编辑状态 -->
+                        <input type="text" id="id" v-model="id" :disabled="isDisabled">
                         <label for="name" id="name">名称</label>
                         <input type="text" id="name" v-model="name">
                         <button @click="submit">提交</button>
@@ -69,9 +70,9 @@
                         <td>{{ item.date }}</td>
                         <td>
                             <!-- 采用 .prevent 事件修饰符来屏蔽 a 标签的刷新默认功能 -->
-                            <a href="" @click.prevent="change">修改</a>
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a>
                             <span>|</span>
-                            <a href="" @click.prevent="delete">删除</a>
+                            <a href="" @click.prevent="">删除</a>
                         </td>
                     </tr>
                 </tbody>
@@ -105,11 +106,13 @@
                         name: "西游记",
                         date: ""
                     }
-                ]
+                ],
+                isDisabled: false
             },
             methods: {
                 // 添加图书
                 submit() {
+                    // 添加图书
                     let book = {};
                     book.id = this.id;
                     book.date = "";
@@ -121,14 +124,21 @@
                     this.id = "";
                     this.name = "";
                 },
-                change() {
+                toEdit(id) {
 
-                },
-                delete() {
-
+                    // 将 id 输入框设为不可编辑状态
+                    this.isDisabled = true;
+                    // 遍历获取 id 的书籍信息
+                    let book = this.books.filter((item) => {
+                        // 符合条间的返回
+                        return item.id == id;
+                    });
+                    // 修改 id name
+                    this.id = book[0].id;
+                    this.name = book[0].name;
                 }
-            },
-        })
+            }
+        });
     </script>
 </body>
 
