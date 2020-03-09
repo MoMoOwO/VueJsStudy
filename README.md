@@ -753,26 +753,31 @@
 3. 案例实现：
 
    (1) 图书列表展示功能
+
    - 实现静态列表效果
    - 基于数据实现模板效果
    - 处理每行的操作按钮
 
    (2) 添加图书
+
    - 实现表单的静态效果
    - 添加图书表单域数据绑定
    - 添加按钮事件绑定
    - 实现添加业务逻辑
 
    (3) 修改图书
+
    - 修改信息填充到表单
    - 修改后重新提交表单
    - 重用添加和修改的方法
 
    (4) 删除图书
+
    - 删除按钮绑定事件处理方法
    - 实现删除业务逻辑
 
    (5) 常用特性应用场景，在案例中使用前面学习的 Vue 常用特性
+
    - 过滤器（格式化日期）
    - 自定义指令（获取表单焦点）
    - 计算属性（统计图书数量）
@@ -804,12 +809,59 @@
 
 3. 组件化规范：Web Components
 
-  (1) 我们希望尽可能多的重用代码；
+   (1) 我们希望尽可能多的重用代码；
 
-  (2) 自定义组件的方式不太容易（html、css和js三者组合）；
+   (2) 自定义组件的方式不太容易（html、css 和 js 三者组合）；
 
-  (3) 多次使用组件可能导致冲突；
+   (3) 多次使用组件可能导致冲突；
 
-  (4) Web Components 通过创建封装好功能的定制元素解决上述问题。[Web_Components介绍网站](https://developer.mozilla.org/zh-CN/docs/Web/Web_Components)
+   (4) Web Components 通过创建封装好功能的定制元素解决上述问题。[Web_Components 介绍网站](https:// developer.mozilla.org/zh-CN/docs/Web/Web_Components)
 
-  (5) Vue.js 框架部分上实现了上述的规范。
+   (5) Vue.js 框架部分上实现了上述的规范。
+
+### 组件注册
+
+1. 全局组件
+
+   (1) 全局组件注册语法
+
+   ```JavaScript
+   Vue.component(组件名称, {
+     data: 组件数据,
+     template: 组件模板内容
+   });
+
+   // 定义一个名为button-comunter
+   Vue.component("button-counter", {
+       data: function () {
+           return {
+               count: 0
+           };
+       },
+       template: "<button @click='count++'>点击了{{ count }}下</button>",
+       methods: {
+           // 在组件内部，也可以使用 methods 属性来为组件添加方法
+           handle: function () {
+               this.count += 2;
+           }
+       }
+   });
+   ```
+
+   (2) 全局组件用法
+
+   ````HTML
+   // 使用组建的命名来调用组件
+   <div id="#app">
+     <button-counter></button-counter>
+   </div>
+
+   // 组件注册后可以重复使用
+
+   ``` HTML
+   <div id="#app">
+     <button-counter></button-counter>
+     <button-counter></button-counter>
+     <button-counter></button-counter>
+   </div>
+   ````
