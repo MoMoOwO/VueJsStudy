@@ -856,7 +856,7 @@
      <button-counter></button-counter>
    </div>
 
-   // 组件注册后可以重复使用
+   // 组件注册后可以重复使用，组件之间数据相互独立
 
    ``` HTML
    <div id="#app">
