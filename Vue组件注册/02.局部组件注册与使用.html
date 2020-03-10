@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <hello-world></hello-world>
+        <hello-tom></hello-tom>
+        <hello-amy></hello-amy>
+        <test-com></test-com>
+    </div>
+
+    <script>
+        // 局部组件只能在对应的 Vue 实例对象中使用，在其他地方如全局作用域中无法使用
+        Vue.component("test-com", {
+            template: "<div>Test <hello-tom></hello-ton></div>"
+        })
+        // 组件模板对象
+        let HelloWorld = {
+            data() {
+                return {
+                    msg: "Hello World"
+                };
+            },
+            template: "<div>{{ msg }}</div>"
+        };
+        let HelloTom = {
+            data() {
+                return {
+                    msg: "Hello Tom"
+                };
+            },
+            template: "<div>{{ msg }}</div>"
+        };
+        let HelloAmy = {
+            data() {
+                return {
+                    msg: "Hello Amy"
+                };
+            },
+            template: "<div>{{ msg }}</div>"
+        };
+        let vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            },
+            components: {
+                "hello-world": HelloWorld,
+                "hello-tom": HelloTom,
+                "hello-amy": HelloAmy
+            }
+        })
+    </script>
+</body>
+
+</html>
