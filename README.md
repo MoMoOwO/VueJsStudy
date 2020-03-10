@@ -827,11 +827,15 @@
 
    ```JavaScript
    Vue.component(组件名称, {
-     data: 组件数据,
+     data(): {
+       return {
+         组件数据
+       };
+     },
      template: 组件模板内容
    });
 
-   // 定义一个名为button-comunter
+   // 定义一个名为 button-counter
    Vue.component("button-counter", {
        data: function () {
            return {
@@ -865,3 +869,68 @@
      <button-counter></button-counter>
    </div>
    ````
+
+2. 组件注册中的注意事项：
+
+   (1) 组件中的 `data` 必须是一个函数，该函数需要返回一个对象，对象中包括组件中需要的数据；
+
+   (2) 组件模板内容必须是单个根元素；
+
+   (3) 组件模板内容可以是模板字符串，模板字符串需要浏览器提供支持(ES6 语法)。
+
+   (4) 组件命名方式：
+
+   - 短横线方式：
+
+     ```JavaScript4
+     Vue.component("my-component", { /* ... */ });
+     ```
+
+   - 驼峰命名方式，使用该方式命名的组件只有在其他的自定义组件的字符串模板中才能直接使用驼峰名称来使用，在普通标签中需要转换为短横线方式，即单词首字母小写单词间使用短横线相隔。
+
+     ```JavaScript
+     Vue.component("MyComponent", { /* ... */ })
+     ```
+
+3. 局部组件
+
+   (1) 局部组件注册语法
+
+   ```JavaScript
+   let ComponentA = { /* ... */};
+   let ComponentB = { /* ... */};
+   let ComponentC = { /* ... */};
+
+   new Vue({
+     el: "#app",
+     components: {
+       "component-a": ComponentA,
+       "component-b": ComponentB,
+       "component-c": ComponentC
+     }
+   });
+   ```
+
+   (2) 局部组建的使用与全局组件相同，但是局部组件只能在对应 Vue 实例的 `el` 中使用，在其他地方如另外的全局组件中则不能使用。
+
+### Vue 调试工具用法
+
+1. 调式工具安装：
+
+   (1) 克隆仓库：[仓库地址](https://github.com/vuejs/vue-devtools)；
+
+   (2) 安装依赖包；
+
+   (3) 构建项目，生成 Chrome 扩展程序包；
+
+   (4) 打开 Chrome 浏览器扩展页面；
+
+   (5) 选中开发者模式；
+
+   (6) 加载已解压的扩展，选择 `shells/chrome`。
+
+   (7) 快捷安装：国内厂商浏览器扩展商店可以直接搜索下载，或者 Chrome [网上商店扩展](https://chrome.google.com/webstore/category/extensions)下载，搜索 Vue.js devtools 并[下载](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)。
+
+2. 调式工具的使用：  
+   在安装完调式工具之后，在浏览采用 Vue.js 框架构建的网页，进入开发者模式则会注意到多了 Vue 一项，点击并进入，我们可以看到 Vue 组件之间的关系和数据等信息。
+   ![VueDevtools](http://image.acmx.xyz/msj%2FVueDevtools.png)
