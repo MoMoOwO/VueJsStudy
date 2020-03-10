@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .root {
+            background-color: orange;
+        }
+
+        .second {
+            background-color: lightgreen;
+        }
+
+        .third {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="root">
+        <div>{{ root }}</div>
+        <second-com></second-com>
+        <second-com></second-com>
+    </div>
+
+    <script>
+        Vue.component('second-com', {
+            data() {
+                return {
+                    second: "二级组件"
+                };
+            },
+            template: `
+                <div class="second">
+                    <div>{{ second }}</div>
+                    <third-com></third-com>
+                    <third-com></third-com>
+                    <third-com></third-com>
+                </div>
+            `
+        });
+        Vue.component('third-com', {
+            data() {
+                return {
+                    third: "三级组件"
+                };
+            },
+            template: '<div class="third"><div>{{ third }}</div></div>'
+        });
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                root: "顶层组件"
+            },
+        });
+    </script>
+</body>
+
+</html>
