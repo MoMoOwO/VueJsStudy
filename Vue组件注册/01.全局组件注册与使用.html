@@ -12,6 +12,9 @@
     <div id="app">
         <!-- 全局组件使用 -->
         <button-counter></button-counter>
+        <!-- 若要在使用 Vue 实例中直接使用驼峰命名的组件，需要使用短横线方式来使用，首字母变小写，单词间加短横线 -->
+        <hello-world></hello-world>
+        <div>在普通标签中需要转换为短横线方式，即单词首字母小写单词间使用短横线相隔</div>
     </div>
 
     <script>
@@ -22,7 +25,16 @@
                     count: 0
                 };
             },
-            template: "<button @click='handle'>点击了{{ count }}下</button>",
+            //template: "<button @click='handle'>点击了{{ count }}下</button>",
+            // 模板字符串方式
+            template: `
+                <div>
+                    <button @click='handle'>点击了{{ count }}下</button>
+                    <div>唯一的根元素；模板字符串使用反引号来包括，是 ES6 中的语法</div>
+                    <HelloWorld></HelloWorld>
+                    <div>使用驼峰方式命名的组件可以在其他 Vue 组件中直接使用驼峰名字调用</div>
+                </div>
+            `,
             methods: {
                 // 在组件内部，也可以使用 methods 属性来为组件添加方法
                 handle: function () {
@@ -30,6 +42,16 @@
                 }
             }
         });
+
+        Vue.component("HelloWorld", {
+            data() {
+                return {
+                    msg: "Hello World"
+                };
+            },
+            template: "<div>{{ msg }}</div>"
+        });
+
         let vm = new Vue({
             el: "#app",
             data: {
