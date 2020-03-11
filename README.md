@@ -934,3 +934,51 @@
 2. 调式工具的使用：  
    在安装完调式工具之后，在浏览采用 Vue.js 框架构建的网页，进入开发者模式则会注意到多了 Vue 一项，点击并进入，我们可以看到 Vue 组件之间的关系和数据等信息。
    ![VueDevtools](http://image.acmx.xyz/msj%2FVueDevtools.png)
+
+### 组件间数据交互
+
+1. 父组件向子组件传值
+
+   (1) 组件内部通过 `props` 属性接受传递过来的值，属性值为一个数组。
+
+    ``` JavaScript
+    Vue.component("menu-item", {
+      data(){
+        return {}; // 组件中的数据
+      },
+      props: ["title"], // props 数组接受父组件传递过来的数据
+      template: "<div></div>"
+    });
+    ```
+
+   (2) 父组件通过属性将值传递给子组件
+
+    ``` HTML
+    <!-- 通过直接赋值方式传递数据 -->
+    <menu-item title="来自父组件的数据"></menu-item>
+    <!-- 通过属性绑定方式传递数据 -->
+    <menu-item :title="Hello"></menu-item>
+    ```
+
+   (3) `props` 属性名规则：
+   - 在 `props` 中使用驼峰形式，模板中需要使用短横线的形式，
+   - 字符串形式的模板中没有这个限制。
+
+     ``` JavaScript + HTML
+     Vue.component("menu-item", {
+       // 在 JavaScript 中是驼峰式的
+       props: ['menuTile'],
+       // 在普通字符串模板中可以直接使用
+       template: "<div>{{ menuTile }}</div>"
+     });
+
+     <!-- 在 HTML 中需要使用短横线方式 -->
+     <menu-item menu-item="hello"></menu-item>
+     ```
+
+   (4) `props` 属性值类型
+   - 字符串 String
+   - 数值 Number
+   - 布尔值 Boolean
+   - 数组 Array
+   - 对象 Object
