@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ id }}</div>
+        <!-- 在 props 中使用驼峰形式，模板中需要使用短横线的形式， -->
+        <second-com from-parent="Hello1"></second-com>
+        <third-com></third-com>
+    </div>
+
+    <script>
+        /*
+            props 属性名规则：
+            - 在 props 中使用驼峰形式，模板中需要使用短横线的形式，
+            - 字符串形式的模板中没有这个限制。
+        */
+        Vue.component("second-com", {
+            props: ["fromParent"],
+            data() {
+                return {
+                    id: 2
+                };
+            },
+            // 字符串形式的模板中没有这个限制。
+            template: "<div>{{ fromParent }}</div>"
+        });
+        Vue.component("third-com", {
+            data() {
+                return {
+                    id: 3
+                };
+            },
+            template: "<div><second-com fromParent='Hello2'></second-com></div>"
+        });
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                id: 1
+            }
+        });
+    </script>
+</body>
+
+</html>
