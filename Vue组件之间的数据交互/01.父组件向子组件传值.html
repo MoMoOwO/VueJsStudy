@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ pmsg }}</div>
+        <menu-item></menu-item>
+        <menu-item title="父组件传递的静态数据"></menu-item>
+        <menu-item title="父组件传递的静态数据" :content="fpmsg"></menu-item>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                pmsg: "父组件中的数据",
+                fpmsg: "父组件向子组件传递的动态绑定数据"
+            },
+            // 子组件
+            components: {
+                "menu-item": {
+                    // props 属性接受父组件的传值，属性值为一个数组，存放传递值的变量名
+                    props: ["title", "content"],
+                    data() {
+                        return {
+                            cmsg: "子组件中的数据"
+                        }
+                    },
+                    template: "<div>{{ cmsg + '---' + title + '---' + content }}</div>"
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
