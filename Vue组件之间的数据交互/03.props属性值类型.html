@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ msg }}</div>
+        <!-- 注意：若不适用数值绑定的形式则数据都是用字符串类型传递，前三种为常用数据类型，数组和对象数据类型，数组也是对象类型 -->
+        <child-com :pstr="pstr" :pnum="23" :pbool=true :parr="parr" :pobj="pobj"></child-com>
+    </div>
+    <script>
+        /*
+            props 可传递的数据类型
+            - 字符串 String
+            - 数值 Number
+            - 布尔值 Boolean
+            - 数组 Array
+            - 对象 Object
+        */
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "props 可传递数据类型：",
+                pstr: "字符串",
+                parr: ["apple", "orange", "pear"],
+                pobj: {
+                    name: "小强",
+                    age: 16
+                }
+            },
+            components: {
+                "child-com": {
+                    props: ["pstr", "pnum", "pbool", "parr", "pobj"],
+                    data() {
+                        return {};
+                    },
+                    template: `
+                        <div>
+                            <div>{{ pstr + "---" + typeof pstr }}</div>
+                            <div>{{ pnum + "---" + typeof pnum }}</div>
+                            <div>{{ pbool + "---" + typeof pbool }}</div>
+                            <ul>
+                                <li :key="index" v-for="(item, index) in parr">{{ item }}</li>
+                            </ul>
+                            <div>{{ "---" + typeof parr }}</div>
+                            <div>
+                                <span>{{ pobj.name }}</span>
+                                <span>{{ pobj.age }}</span>
+                                <span>{{ "---" + typeof pobj }}</span>
+                            </div>
+                        </div>
+                    `
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
