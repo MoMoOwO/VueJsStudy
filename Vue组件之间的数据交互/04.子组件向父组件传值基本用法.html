@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div :style="{ fontSize: fontSize + 'px' }">{{ msg }】</div>
+        <menu-item :fruits="parr" v-on:enlarge-text="enlarge"></menu-item>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "父组件中的数据",
+                parr: ["apple", "banana", "pear"],
+                fontSize: 10
+            },
+            methods: {
+                enlarge() {
+                    this.fontSize += 5;
+                }
+            },
+            /*
+                子组件向父组件传值-基本用法
+                props传递数据原则：单项数据流，只允许父组件向子组件传递数据
+            */
+            components: {
+                "menu-item": {
+                    props: ["fruits"],
+                    template: `
+                        <div>
+                            <ul>
+                                <li v-for="(item, index) in fruits" :key="index">{{item}}</li>
+            </ul>
+            <button @click="fruits.push('lemon')">添加</button>
+            <button @click="$emit('enlarge-text')">增大字体</button>
+        </div>
+        `
+        }
+        }
+        });
+        </script>
+</body>
+
+</html>
