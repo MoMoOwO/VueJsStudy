@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div :style="{ fontSize: fontSize + 'px' }">{{ msg }}</div>
+        <change-button @change-fontsize="handle($event)"></change-button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "父组件中的数据",
+                fontSize: 10
+            },
+            components: {
+                "change-button": {
+                    data() {
+                        return {
+                            a: 5,
+                            b: -5
+                        };
+                    },
+                    template: `
+                        <div>
+                            <button @click="$emit('change-fontsize', a)">增大字体</button>
+                            <button @click="$emit('change-fontsize', b)">减小字体</button>
+                        </div>
+                    `
+                }
+            },
+            methods: {
+                handle(val) {
+                    this.fontSize += val;
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
