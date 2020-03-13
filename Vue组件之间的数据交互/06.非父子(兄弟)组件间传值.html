@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .father {
+            border: solid 1px red;
+            padding: 2px;
+        }
+
+        .son1 {
+            border: solid 1px green;
+            padding: 2px;
+        }
+
+        .son2 {
+            border: solid 1px blue;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="father">
+        <div>{{ msg }}</div>
+        <button @click="destroyEvent">销毁事件</button>
+        <child-com1 class="son1"></child-com1>
+        <child-com2 class="son2"></child-com2>
+    </div>
+
+    <script>
+        /*
+            非父子，兄弟组件之间传值
+            需要使用单独的时间管理中心来管理组件之间的通信
+        */
+        // 1.创建事件处理中心  new Vue()  实例化一个事件处理中心
+        let eventHub = new Vue();
+
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "我是父组件"
+            },
+            components: {
+                "child-com1": {
+                    data() {
+                        return {
+                            msg1: "子组件1",
+                            val1: 0
+                        };
+                    },
+                    template: `
+                    <div>
+                        <div>{{ msg1 + "---" + val1 }}</div>
+                        <button @click="addNum">子组件2 加2</button>
+                    </div>
+                    `,
+                    mounted() {
+                        // 2.添加事件监听
+                        // 使用事件处理中心的 $on 接口监听事件，绑定事件名称(参数1)和事件处理函数（参数2）
+                        eventHub.$on("com1-add", val => this.val1 += val);
+                    },
+                    methods: {
+                        addNum() {
+                            // 3.触发事件
+                            eventHub.$emit("com2-add", 2);
+                        }
+                    },
+                },
+                "child-com2": {
+                    data() {
+                        return {
+                            msg2: "子组件2",
+                            val2: 0
+                        };
+                    },
+                    template: `
+                    <div>
+                        <div>{{ msg2 + "---" + val2 }}</div>
+                        <button @click="addNum">子组件1 加1</button>
+                    </div>
+                    `,
+                    mounted() {
+                        // 2.添加事件监听
+                        // 使用事件处理中心的 $emit 接口触发事件，参数一出发事件的名称参数二为传递的参数
+                        eventHub.$on("com2-add", val => this.val2 += val);
+                    },
+                    methods: {
+                        addNum() {
+                            eventHub.$emit("com1-add", 1);
+                        }
+                    },
+                }
+            },
+            methods: {
+                destroyEvent() {
+                    // 销毁自定义事件
+                    // 使用事件处理中心的 $off 接口销毁事件
+                    eventHub.$off("com1-add");
+                    eventHub.$off("com2-add");
+                }
+            },
+
+        });
+    </script>
+</body>
+
+</html>
