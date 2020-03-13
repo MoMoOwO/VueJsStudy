@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Something bad happened. 会替换子组件模板中的插槽和里面的默认内容-->
+        <alert-box>Something bad happened.</alert-box>
+        <alert-box>发生错误！</alert-box>
+        <!-- 会显示子组件插槽中的默认内容 -->
+        <alert-box></alert-box>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            components: {
+                // 
+                "alert-box": {
+                    // 插槽定义在组件的模板中，使用 <slot></slot> 标签进行占位，
+                    // 标签内部可以添加默认信息，在父组件中使用子组件，并在子组件标签中传递内容时，
+                    // 该内容会替换子组件中插槽的位置
+                    template: `
+                        <div>
+                            <strong>Error!</strong>
+                            <slot>默认内容</slot>
+                        </div>
+                    `
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
