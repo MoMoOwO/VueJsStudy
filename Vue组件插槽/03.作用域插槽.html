@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .current {
+            color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>{{ appName }}</h1>
+        <fruits-list :fruits="fruitsList">
+            <!-- 使用作用域插槽时，需要在 template 标签内操作，
+                首先使用 template 的 slot-scope 属性拿到插槽中的值，
+                slot-scope 的属性值是一个对象，使用 . 运算符即可拿到插槽中的值，进行加工处理 -->
+            <template slot-scope="slotProps">
+                <p v-if="slotProps.info.id % 2 === 0" class="current">{{ slotProps.info.name }}</p>
+                <p v-else>{{ slotProps.info.name }}</p>
+            </template>
+        </fruits-list>
+    </div>
+
+    <script>
+        /*
+            作用域插槽，
+            应用场景：父组件得到子组件的数据并对子组件的内容进行加工处理
+
+            水果列表，父组件控制子组件列表中某些高亮
+        */
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                appName: "Fruits-List",
+                fruitsList: [{
+                        id: 1,
+                        name: "apple"
+                    },
+                    {
+                        id: 2,
+                        name: "pear"
+                    },
+                    {
+                        id: 3,
+                        name: "orange"
+                    },
+                    {
+                        id: 4,
+                        name: "lemon"
+                    }
+                ]
+            },
+            components: {
+                "fruits-list": {
+                    props: ["fruits"],
+                    // 在父组件需要操作的子组件的地方使用插槽并在插槽中绑定给一个自定义属性要操作的数据
+                    template: `
+                        <ul>
+                            <li :key="item.id" v-for="item in fruits">
+                                <slot :info="item">{{ item.name }}</slot>
+                            </li>
+                        </ul>
+                    `
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
