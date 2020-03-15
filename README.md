@@ -888,7 +888,7 @@
 
     (6) 加载已解压的扩展，选择 `shells/chrome`。
 
-    (7) 快捷安装：国内厂商浏览器扩展商店可以直接搜索下载，或者 Chrome [网上商店扩展](https://chrome. google.com/webstore/category/extensions)下载，搜索 Vue.js devtools 并[下载](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)。
+    (7) 快捷安装：国内厂商浏览器扩展商店可以直接搜索下载，或者 Chrome [网上商店扩展](https://chrome.google.com/webstore/category/extensions)下载，搜索 Vue.js devtools 并[下载](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)。
 
 2. 调式工具的使用：
 
@@ -1125,3 +1125,20 @@
         </template>
     </fruits-list>
     ```
+
+### 基于组件的案例
+
+1. 购物车案例，最终效果如下：
+
+2. 按照组件化方式实现业务需求
+
+    (1) 根据业务功能进行组件化划分
+    - 标题组件（展示文本）
+    - 列表组件（列表显示、商品数量变更、商品删除）
+    - 结算组件（计算商品总额）
+
+    (2) 功能实现步骤
+    - 实现整体布局和样式效果
+    - 划分独立的功能组件
+    - 组合所有的子组件形成整体结构
+    - 逐个实现各个组件功能：标题组件，列表组件，结算组件
