@@ -71,6 +71,7 @@
             font-size: 20px;
             width: 30px;
             text-decoration: none;
+            cursor: pointer;
             background-color: lightgray;
             vertical-align: middle;
         }
@@ -107,88 +108,170 @@
     <script>
         // 三个子组件
         let cartTitle = {
+            props: ["uname"],
             template: `
-                <div class="title">我的商品</div>
+                <div class="title">{{ uname }}的商品</div>
             `
         };
         let cartList = {
+            props: ["list"],
             template: `
                 <div>
-                    <div class="item">
-                        <img src="./img/a.jpg">
-                        <div class="name"></div>
+                    <div :key="item.key" v-for="item in list" class="item">
+                        <img :src="item.img">
+                        <div class="name">{{ item.name }}</div>
                         <div class="change">
-                            <a href="">－</a>
-                            <input type="text" class="num">
-                            <a href="">＋</a>
+                            <a @click.prevent="subNum(item.id)">－</a>
+                            <input type="text" class="num" :value="item.num" @blur="changeNum(item.id, $event)">
+                            <a @click.prevent="addNum(item.id)">＋</a>
                         </div>
-                        <div class="del">×</div>
-                    </div>
-                    <div class="item">
-                        <img src="./img/b.jpg">
-                        <div class="name"></div>
-                        <div class="change">
-                            <a href="">－</a>
-                            <input type="te×xt" class="num">
-                            <a href="">＋</a>
-                        </div>
-                        <div class="del">×</div>
-                    </div>
-                    <div class="item">
-                        <img src="./img/c.jpg">
-                        <div class="name"></div>
-                        <div class="change">
-                            <a href="">－</a>
-                            <input type="text" class="num">
-                            <a href="">＋</a>
-                        </div>
-                        <div class="del">×</div>
-                    </div>
-                    <div class="item">
-                        <img src="./img/d.jpg">
-                        <div class="name"></div>
-                        <div class="change">
-                            <a href="">－</a>
-                            <input type="text" class="num">
-                            <a href="">＋</a>
-                        </div>
-                        <div class="del">×</div>
-                    </div>
-                    <div class="item">
-                        <img src="./img/e.jpg">
-                        <div class="name"></div>
-                        <div class="change">
-                            <a href="">－</a>
-                            <input type="text" class="num">
-                            <a href="">＋</a>
-                        </div>
-                        <div class="del">×</div>
+                        <div class="del" @click="del(item.id)">×</div>
                     </div>
                 </div>
-            `
+            `,
+            methods: {
+                changeNum(id, event) {
+                    // 输入框失去焦点时修改商品数量，由父组件完成
+                    // 修改数据由父组件完成，所以 value 使用简单的属性绑定来完成而不是 v-model
+                    // 通过 $event 来获取事件源对象，从而获取最新的 value 值
+                    //console.log(id, event.target.value);
+                    // 向父组件发起广播，因为两个数据所以适用对象形式发送
+                    this.$emit("change-num", {
+                        id,
+                        type: "change",
+                        num: +event.target.value
+                    });
+                },
+                subNum(id) {
+                    // 增一减一与直接修改公用一个广播，使用 type 来进行标识
+                    this.$emit("change-num", {
+                        id,
+                        type: "sub"
+                    });
+                },
+                addNum(id) {
+                    this.$emit("change-num", {
+                        id,
+                        type: "add"
+                    });
+                },
+                del(id) {
+                    // 从购物车列表中删除该商品
+                    // 数据是从负组件中传递过来的，所以对数据的操作要由父组件来完成
+                    // 使用自定义事件，来向父组件广播数据，传递商品 id
+                    this.$emit("cart-del", id);
+                }
+            },
         };
         let cartTotal = {
+            props: ["list"],
             template: `
                 <div class="total">
-                    <span>总价：123</span>
+                    <span>总价：{{ total }}</span>
                     <button>结算</button>
                 </div>
-            `
+            `,
+            computed: {
+                total: function () {
+                    // 计算购物车商品总价
+                    let t = 0;
+                    this.list.forEach(item => {
+                        t += item.price * item.num;
+                    });
+                    return t;
+                }
+            },
         };
         // 购物车组件
         Vue.component("my-cart", {
+            data() {
+                return {
+                    userName: "张三",
+                    cartList: [{
+                        id: 1,
+                        name: 'TCL彩电',
+                        price: 1000,
+                        num: 1,
+                        img: 'img/a.jpg'
+                    }, {
+                        id: 2,
+                        name: '机顶盒',
+                        price: 1000,
+                        num: 1,
+                        img: 'img/b.jpg'
+                    }, {
+                        id: 3,
+                        name: '海尔冰箱',
+                        price: 1000,
+                        num: 1,
+                        img: 'img/c.jpg'
+                    }, {
+                        id: 4,
+                        name: '小米手机',
+                        price: 1000,
+                        num: 1,
+                        img: 'img/d.jpg'
+                    }, {
+                        id: 5,
+                        name: 'PPTV电视',
+                        price: 1000,
+                        num: 2,
+                        img: 'img/e.jpg'
+                    }]
+                }
+            },
             template: `
                 <div class="cart">
-                    <cart-title></cart-title>
-                    <cart-list></cart-list>
-                    <cart-total></cart-total>
+                    <cart-title :uname="userName"></cart-title>
+                    <cart-list :list="cartList" @change-num="changeNum($event)" @cart-del="cartDel($event)"></cart-list>
+                    <cart-total :list="cartList"></cart-total>
                 </div>
             `,
             components: {
                 "cart-title": cartTitle,
                 "cart-list": cartList,
                 "cart-total": cartTotal
-            }
+            },
+            methods: {
+                changeNum(val) {
+                    // 父组件接受广播
+                    // 根据 id 更新对应商品的 num
+                    if (val.type === "change") {
+                        this.cartList.some(item => {
+                            if (item.id === val.id) {
+                                item.num = val.num;
+                                // 终止遍历
+                                return true;
+                            }
+                        });
+                    } else if (val.type === "add") {
+                        this.cartList.some(item => {
+                            if (item.id === val.id) {
+                                item.num++;
+                                return true;
+                            }
+                        });
+                    } else {
+                        this.cartList.some(item => {
+                            if (item.id === val.id) {
+                                item.num--;
+                                return true;
+                            }
+                        });
+                    }
+
+                },
+                cartDel(id) {
+                    // 父组件监听子组件的广播，再事件处理函数中使用 $event 接受广播的数据
+                    // 根据 id 删除 cartList 中对应的数据
+                    // 1.找到 id 对应数据的索引
+                    let index = this.cartList.findIndex(item => {
+                        return item.id === id;
+                    });
+                    // 2.根据索引删除对应数据
+                    this.cartList.splice(index, 1);
+                }
+            },
         });
 
         let vm = new Vue({
