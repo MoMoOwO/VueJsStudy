@@ -1218,3 +1218,44 @@
     (5) 接口调用 - async/await 用法
 
     (6) 基于接口的案例
+
+### 前后端交互模式
+
+1. 接口调用方式：
+
+    (1) 原生 Ajax
+
+    (2) 基于 jQuery 的 Ajax
+
+    (3) fetch
+
+    (5) axios
+
+2. URL 地址格式
+
+    (1) 传统形式的 URL：`schema://host:post/path?query#fragment`
+    - `schema`：协议，例如 `http`、`https`、`ftp`等。
+    - `host`：域名或者 IP 地址。
+    - `post`：端口，http 默认端口 80，可以省略。
+    - `path`：路径，例如 `/abc/a/b/c`。
+    - `query`：查询参数，`例如 uname=lisi&age=12`。
+    - `fragment`：锚点（哈希 Hash），用于定位页面的某个位置。
+
+    (2) Restful 形式的 URL，HTTP 请求方式有：
+    - GET 查询。
+    - POST 添加。
+    - PUT 修改。
+    - DELETE 删除。
+
+### Promise 用法
+
+1. 异步调用
+
+    (1) 异步效果分析
+    - 定时任务。
+    - Ajax。
+    - 事件函数。
+
+    (2) 多次异步调用的依赖分析
+    - 多次异步调用的结果顺序不确定。
+    - 异步调用的结果如果存在依赖则需要嵌套。
