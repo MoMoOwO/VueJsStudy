@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Promise 基本使用
+        /* console.log(typeof Promise);
+        console.dir(Promise); */
+
+        let p = new Promise(function (resolve, reject) {
+            // 这里用于实现异步任务
+            setTimeout(function () {
+                let flag = false;
+                if (flag) {
+                    // 任务操作成功，调用 resolve 回调，并可在参数列表中传递数据
+                    resolve("Success！Hello！");
+                } else {
+                    // 任务操作失败，调用 reject 回调，亦可传参
+                    reject("Error！No！");
+                }
+            }, 1000);
+        });
+
+        p.then(function (data) {
+            console.log("成功的回调：", data);
+        }, function (info) {
+            console.log("失败的回调：", info);
+        });
+    </script>
+</body>
+
+</html>
