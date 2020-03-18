@@ -1249,13 +1249,50 @@
 
 ### Promise 用法
 
-1. 异步调用
+1. DemoServer 提供后端测试接口，安装运行方式如下：
+
+    ``` brush
+    cd DemoServer
+    npm i
+    node index.js
+    ```
+
+2. 异步调用
 
     (1) 异步效果分析
-    - 定时任务。
+    - 定时任务 `setTimeout()` 与 `setInterval()`。
     - Ajax。
     - 事件函数。
 
     (2) 多次异步调用的依赖分析
     - 多次异步调用的结果顺序不确定。
     - 异步调用的结果如果存在依赖则需要嵌套。
+
+3. Promise 概述
+
+    (1) Promise 是异步编程的一种解决方案，从语法上讲，Promise 是一个对象，使用它可以获取异步操作的消息。
+
+    (2) 使用 Promise 主要有以下好处：
+    - 可以避免多层i不调用嵌套问题（回调地狱）。
+    - Promise 对象提供了简洁的 API，是得控制异步操作更加容易。
+
+    (3) Promise 基本用法
+    - 实例化 Promise 对象，构造函数中传递一个回调函数，该函数中用于处理异步操作。
+    - `resolve` 和 `reject` 两个参数用于处理成功和失败两种情况，并通过 `p.then` 获取处理结果。
+
+      ``` JavaScript
+      let p = new Promise(function (resolve, reject) {
+          // 这里用于实现异步任务
+
+          // 任务操作成功，调用 resolve 回调，并可在参数列表中传递数据
+          //resolve("Success！Hello！");
+          // 任务操作失败，调用 reject 回调，亦可传参
+          //reject("Error！No！");
+      });
+
+      p.then(function (data) {
+          console.log("成功的回调：", data);
+      }, function (info) {
+          console.log("失败的回调：", info);
+      });
+      ```
