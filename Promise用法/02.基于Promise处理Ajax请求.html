@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 基于 Promise 处理 Ajax 请求
+
+        function queryData(url) {
+            let p = new Promise((resolve, reject) => {
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState != 4) return;
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // 后台正常响应的处理
+                        resolve(xhr.responseText);
+                    } else {
+                        // 后台异常的处理
+                        reject("服务器无响应！");
+                    }
+                };
+                xhr.open("get", url);
+                xhr.send(null);
+            });
+
+            return p; // 返回该 Promise 对象，可以连续链式像后台发起请求
+        }
+
+        // 发送一次请求
+        /* queryData("http://localhost:3000/data").then(data => {
+            // 后台正常响应并返回数据后的业务逻辑
+            console.log(data);
+        }, error => {
+            // 后台异常，返回错误信息
+            console.log(error);
+        }); */
+
+        // 发送多次请求
+        queryData("http://localhost:3000/data").then(data => {
+            console.log(data);
+            return queryData("http://localhost:3000/data1");
+        }).then(data => {
+            console.log(data);
+            return queryData("http://localhost:3000/data2");
+        }).then(data => console.log(data));
+    </script>
+</body>
+
+</html>
