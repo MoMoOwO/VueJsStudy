@@ -1296,3 +1296,53 @@
           console.log("失败的回调：", info);
       });
       ```
+
+    (4) 基于 Promise 处理 Ajax 请求
+    - 处理原生 Ajax
+
+      ``` JavaScript
+      function queryData(url) {
+          let p = new Promise((resolve, reject) => {
+              let xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState != 4) return;
+                  if (xhr.readyState == 4 && xhr.status == 200) {
+                      // 后台正常响应的处理
+                      resolve(xhr.responseText);
+                  } else {
+                      // 后台异常的处理
+                      reject("服务器无响应！");
+                  }
+              };
+              xhr.open("get", url);
+              xhr.send(null);
+          });
+          return p; // 返回该 Promise 对象，可以连续链式像后台发起请求
+      }
+
+      // 发送一次请求
+      queryData("http://localhost:3000/data").then(data => {
+          // 后台正常响应并返回数据后的业务逻辑
+          console.log(data);
+      }, error => {
+          // 后台异常，返回错误信息
+          console.log(error);
+      });
+      ```
+
+    - 处理连续的 Ajax 请求
+
+      ```JavaScript
+      // 发送多次请求
+      queryData("http://localhost:3000/data").then(data => {
+          console.log(data);
+          return queryData("http://localhost:3000/data1");
+      }).then(data => {
+          console.log(data);
+          return queryData("http://localhost:3000/data2");
+      }).then(data => console.log(data));
+      ```
+
+    (5) `then` 参数中的函数返回值。
+    - 返回 Promise 实例对象，返回的该实例对象可以调用下一个 `then`。这时 下一个 `then` 可以拿到上一个 Promise 对象中的返回值。
+    - 返回普通值，返回的普通值会直接传递给下一个 `then`，通过 `then` 参数中函数的参数接受该值。
