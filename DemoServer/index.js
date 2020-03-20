@@ -32,6 +32,22 @@ app.get("/data2", (req, res) => {
   res.send("Hello JERRY!");
 });
 
+app.get("/a1", (req, res) => {
+  setTimeout(function () {
+    res.send("Hello a1!");
+  }, 1000);
+});
+app.get("/a2", (req, res) => {
+  setTimeout(function () {
+    res.send("Hello a2!");
+  }, 2000);
+});
+app.get("/a3", (req, res) => {
+  setTimeout(function () {
+    res.send("Hello a3!");
+  }, 3000);
+});
+
 // 启动监听
 app.listen(3000, () => {
   console.log("running...");
