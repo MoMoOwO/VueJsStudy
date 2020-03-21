@@ -19,7 +19,7 @@ app.all("*", function (req, res, next) {
   next();
 });
 
-// 路由
+// Ajax、Promise基本使用测试接口
 app.get("/data", (req, res) => {
   res.send("Hello World!");
 });
@@ -32,6 +32,7 @@ app.get("/data2", (req, res) => {
   res.send("Hello JERRY!");
 });
 
+// Promise 常用 API 测试接口
 app.get("/a1", (req, res) => {
   setTimeout(function () {
     res.send("Hello a1!");
@@ -46,6 +47,11 @@ app.get("/a3", (req, res) => {
   setTimeout(function () {
     res.send("Hello a3!");
   }, 3000);
+});
+
+// fetch 用法测试接口
+app.get("/fdata", (req, res) => {
+  res.send("Hello Fetch!");
 });
 
 // 启动监听
