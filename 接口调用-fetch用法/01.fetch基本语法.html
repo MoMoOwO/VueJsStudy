@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // fetch 基本用法
+        fetch("http://localhost:3000/fdata").then(data => {
+            // text() 方法属于 fetch API的一部分，它返回一个 Promise实例对象，用于获取后台返回的数据
+            return data.text(); // 返回的是一个 Promise 对象实例，下一次调用 .then 才能拿到数据
+        }).then(data => console.log(data));
+    </script>
+</body>
+
+</html>
