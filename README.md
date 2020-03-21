@@ -1357,3 +1357,36 @@
 
       ``` JavaScript
       ```
+
+### 接口调用 - fetch 用法
+
+1. fetch 概述
+
+    (1) 基本特征
+      - 更加简单的数据获取方式，功能更强大、更灵活，可以看作是 xhr 的升级版
+      - 基于 Promise 实现。
+
+    (2) 语法结构：[API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
+
+    ``` JavaScript
+    fetch(url).then(fn2)
+              .then(fn3)
+              ...
+              .then(fnn);
+    ```
+
+2. fetch 的基本用法
+
+    ``` JavaScript
+    fetch("http://localhost:3000/fdata").then(data => {
+           // text() 方法属于 fetch API的一部分，它返回一个 Promise实例对象，用于获取后台返回的数据
+           return data.text(); // 返回的是一个 Promise 对象实例，下一次调用 .then 才能拿到数据
+       }).then(data => console.log(data)); // 此时得到的才是最终的数据。
+    ```
+
+3. fetch 请求参数
+
+    (1) 常用配置选项：
+    - method(String)：HTTP 请求方法，默认为 Get，请求方法都有：GET、POST、PUT、DELETE。
+    - body(String)：HTTP 的请求参数。
+    - headers(Object)：HTTP的请求头，默认为 0。
