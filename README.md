@@ -1390,3 +1390,43 @@
     - method(String)：HTTP 请求方法，默认为 Get，请求方法都有：GET、POST、PUT、DELETE。
     - body(String)：HTTP 的请求参数。
     - headers(Object)：HTTP的请求头，默认为 0。
+
+      ``` JavaScript
+      fetch("/abc", {
+        method: "get"
+      }).then(data => {
+        return data.text();
+      }).then(result => {
+        console.log(result);
+      })
+      ```
+
+    (2) Get 方式传参
+
+    ``` JavaScript
+    // get请求方式1：传统 url 传递参数
+    fetch("http://localhost:3000/books?id=233", {
+            // 请求地址后加一个对象，method 属性的属性值为设置的请求类型
+            method: "get"
+        })
+        .then(data => data.text())
+        .then(result => console.log(result));
+
+    // get请求方式2：通过 Restful 形式的 url 传递参数
+    fetch("http://localhost:3000/fruits/456", {
+            methods: "get"
+        })
+        .then(data => data.text())
+        .then(res => console.log(res));
+    ```
+
+    (3) Delete 方式传参，与 Get 请求类似。Get 与 Delete 传参都是通过 url 来传递参数
+
+    ``` JavaScript
+    // delete 请求方式：与 get 类似。
+    fetch("http://localhost:3000/books/987", {
+            method: "delete"
+        })
+        .then(data => data.text())
+        .then(result => console.log(result));
+    ```
