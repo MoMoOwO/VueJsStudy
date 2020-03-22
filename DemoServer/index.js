@@ -53,6 +53,18 @@ app.get("/a3", (req, res) => {
 app.get("/fdata", (req, res) => {
   res.send("Hello Fetch!");
 });
+app.get("/books", (req, res) => {
+  // req.query是包含传统 url 请求传递的参数的。
+  res.send("传统的 url 传递参数：" + req.query.id);
+});
+app.get("/fruits/:id", (req, res) => {
+  // req.params是包含 Restful 形式的 url 请求传递的参数的。
+  res.send("Restful 形式的 url 传递参数：" + req.params.id);
+});
+app.delete("/books/:id", (req, res) => {
+  // req.params是包含 Restful 形式的 url 请求传递的参数的。
+  res.send("delete 请求传递参数：" + req.params.id);
+});
 
 // 启动监听
 app.listen(3000, () => {
