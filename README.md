@@ -1404,7 +1404,7 @@
     (2) Get 方式传参
 
     ``` JavaScript
-    // get请求方式1：传统 url 传递参数
+    // get请求方式1：传统 url 传递参数，后端使用 req.query 来挥去传递的参数
     fetch("http://localhost:3000/books?id=233", {
             // 请求地址后加一个对象，method 属性的属性值为设置的请求类型
             method: "get"
@@ -1412,7 +1412,7 @@
         .then(data => data.text())
         .then(result => console.log(result));
 
-    // get请求方式2：通过 Restful 形式的 url 传递参数
+    // get请求方式2：通过 Restful 形式的 url 传递参数，后端使用 req.params 来挥去传递的参数
     fetch("http://localhost:3000/fruits/456", {
             methods: "get"
         })
@@ -1430,3 +1430,39 @@
         .then(data => data.text())
         .then(result => console.log(result));
     ```
+
+    (4) POST 请求方式的参数传递，需要另外两个属性帮助，其中 `body` 属性用来传递数据，`headers` 用来指定请求的内容类型。
+
+    ``` JavaScript
+    // POST 请求方式1 url 传参方式
+    fetch("http://localhost:3000/books", {
+            method: "post",
+            // body 用来传递参数
+            body: "username=lisi&pwd=123321",
+            headers: {
+                // 设置请求头
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        })
+        .then(data => data.text())
+        .then(res => console.log(res));
+
+    // Post 请求方式，json 形式参数传递
+    fetch("http://localhost:3000/books", {
+            method: "post",
+            // body 用来传递参数
+            body: JSON.stringify({
+                username: "张三",
+                pwd: "321123"
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(data => data.text())
+        .then(res => console.log(res));
+    ```
+
+    todo：方法二存在跨域问题
+
+    (5) PUT 请求方式的参数传递，一般用于修改数据，在请求 url 中传递 id，配置对象的 body 属性中传递参数。
