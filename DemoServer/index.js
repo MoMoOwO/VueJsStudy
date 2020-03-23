@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+// post、put 请求传参的中间件
 const bodyParser = require("body-parser");
 // 处理静态资源
 app.use(express.static("public"));
@@ -10,12 +11,13 @@ app.use(bodyParser.urlencoded({
 }));
 
 // 设置允许跨域访问该服务
-app.all("*", function (req, res, next) {
+app.all('*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  res.header("Access-Control-Allow-Headers", "mytoken");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  // res.header('Content-Type', 'application/json;charset=utf-8');
+  res.header('Access-Control-Allow-Headers', 'mytoken');
   next();
 });
 
@@ -54,17 +56,23 @@ app.get("/fdata", (req, res) => {
   res.send("Hello Fetch!");
 });
 app.get("/books", (req, res) => {
-  // req.query是包含传统 url 请求传递的参数的。
+  // req.query 是包含传统 url get 请求传递的参数的。
   res.send("传统的 url 传递参数：" + req.query.id);
 });
 app.get("/fruits/:id", (req, res) => {
-  // req.params是包含 Restful 形式的 url 请求传递的参数的。
+  // req.params 是包含 Restful 形式的 url get 请求传递的参数的。
   res.send("Restful 形式的 url 传递参数：" + req.params.id);
 });
 app.delete("/books/:id", (req, res) => {
-  // req.params是包含 Restful 形式的 url 请求传递的参数的。
   res.send("delete 请求传递参数：" + req.params.id);
 });
+app.post("/books", (req, res) => {
+  // req.body 中包含 post 请求传递的参数
+  res.send("post 请求传参：" + req.body.username + "---" + req.body.pwd);
+});
+app.put("books/:id", (req, res) => {
+  res.send("put 请求传参：" + req.params.id + "---" + req.body.username + "---" + req.body.pwd)
+})
 
 // 启动监听
 app.listen(3000, () => {
