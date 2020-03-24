@@ -58,7 +58,7 @@
                     pwd: "321123"
                 }),
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    "Content-Type": "application/json"
                 }
             })
             .then(data => data.text())
@@ -73,11 +73,26 @@
                     pwd: "321123"
                 }),
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    "Content-Type": "application/json"
                 }
             })
             .then(data => data.text())
             .then(res => console.log(res));
+
+        fetch("http://localhost:3000/books", {
+                method: "put",
+                // body 用来传递参数
+                body: "username=zhangsan&pwd=321123",
+                headers: {
+                    // 设置请求头
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            })
+            .then(data => data.text())
+            .then(res => console.log(res));
+
+        // application/json 为非简单请求，此处存在跨域，虽然解决了跨域，但是这种请求会先传递一个options检测，
+        // 从而还是造成了跨域，根据网上尝试了几种方法仍然没有解决，建议使用application/text/plain等方式。
     </script>
 </body>
 
