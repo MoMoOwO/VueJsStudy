@@ -1466,3 +1466,74 @@
     todo：方法二存在跨域问题
 
     (5) PUT 请求方式的参数传递，一般用于修改数据，在请求 url 中传递 id，配置对象的 body 属性中传递参数。
+
+    ``` JavaScript
+    // 方式1
+    fetch("http://localhost:3000/books", {
+            method: "put",
+            // body 用来传递参数
+            body: "username=zhangsan&pwd=321123",
+            headers: {
+                // 设置请求头
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        })
+        .then(data => data.text())
+        .then(res => console.log(res));
+    // 方式二
+    fetch("http://localhost:3000/books/77", {
+            method: "PUT",
+            // body 用来传递参数
+            body: JSON.stringify({
+                username: "张三",
+                pwd: "321123"
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(data => data.text())
+        .then(res => console.log(res));
+    ```
+
+    (6) fetch 响应结果
+    - text()：将返回体处理成字符串类型；
+    - json()：返回结果和 `JSON.parse(responseText)` 一样。
+
+      ``` JavaScript
+      // 后端
+      app.get("/json", (req, res) => {
+        res.json({  // 发送 json 数据
+          username: "张三",
+          gender: "男",
+          age: 17
+        });
+      });
+
+      // 前端
+      fetch("http://localhost:3000/json")
+          .then(data => data.json()) // 转换为 json 格式数据
+          .then(res => console.log(typeof res, res, res.username));
+      ```
+
+### 接口调用 - axios 用法
+
+1. axios 的基本特性
+
+    (1) axios （[官网](https://github.com/axios/axios)）是一个基于 Promise 用于浏览器和 node.js 的 HTTP 客户端。
+
+    (2) 特征：
+    - 支持浏览器和 node.js
+    - 支持 Promise
+    - 能拦截请求和响应
+    - 自动转换 JSON 数据
+
+2. axios 的基本用法
+
+    ``` JavaScript
+    // axios 需要单独引入 axios.js 的依赖
+    axios.get("http://localhost:3000/adata").then(res => {
+        // 通过 res.data 获取后台响应的数据，data 属性是固定的用法
+        console.log(res.data);
+    });
+    ```
