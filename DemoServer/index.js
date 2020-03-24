@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 app.use(express.static("public"));
 // 处理参数
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -13,12 +14,16 @@ app.use(bodyParser.urlencoded({
 // 设置允许跨域访问该服务
 app.all('*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', "PUT, GET, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authoriaztion");
   // res.header('Content-Type', 'application/json;charset=utf-8');
   res.header('Access-Control-Allow-Headers', 'mytoken');
-  next();
+
+  if (req.method.toLowerCase() === 'options') {
+    res.sendStatus(200); // 让options尝试请求快速结束
+  } else {
+    next();
+  }
 });
 
 // Ajax、Promise基本使用测试接口
@@ -72,6 +77,19 @@ app.post("/books", (req, res) => {
 });
 app.put("books/:id", (req, res) => {
   res.send("put 请求传参：" + req.params.id + "---" + req.body.username + "---" + req.body.pwd)
+});
+app.get("/json", (req, res) => {
+  // 发送 json 数据
+  res.json({
+    username: "张三",
+    gender: "男",
+    age: 17
+  });
+});
+
+// axios 后台 API 接口
+app.get("/adata", (rea, res, next) => {
+  res.send("Hello axios!");
 })
 
 // 启动监听
