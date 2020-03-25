@@ -1501,7 +1501,12 @@
     - json()：返回结果和 `JSON.parse(responseText)` 一样。
 
       ``` JavaScript
-      // 后端
+      // web
+      fetch("http://localhost:3000/json")
+          .then(data => data.json()) // 转换为 json 格式数据
+          .then(res => console.log(typeof res, res, res.username));
+
+      // server
       app.get("/json", (req, res) => {
         res.json({  // 发送 json 数据
           username: "张三",
@@ -1509,11 +1514,6 @@
           age: 17
         });
       });
-
-      // 前端
-      fetch("http://localhost:3000/json")
-          .then(data => data.json()) // 转换为 json 格式数据
-          .then(res => console.log(typeof res, res, res.username));
       ```
 
 ### 接口调用 - axios 用法
@@ -1537,3 +1537,55 @@
         console.log(res.data);
     });
     ```
+
+3. axios 的常用 API
+
+    (1) GET 传递参数，用来获取数据
+    - 通过 URL 传递参数
+
+      ``` JavaScript
+      // 通过传统 url 传参发起 get 请求
+      // web
+      axios.get("http://localhost:3000/axios?id=32").then(res => {
+          console.log(res.data);
+      });
+      // server
+      app.get("/axios", (req, res, next) => {
+        res.send("axios get （URL）传递的参数：" + req.query.id);
+      });
+
+      // 通过 Restful 形式传参发起 get 请求
+      // web
+      axios.get("http://localhost:3000/axios/33").then(res => {
+          console.log(res.data);
+      });
+      // server
+      app.get("/axios/:id", (req, res, next) => {
+        res.send("axios get （Restful）传递的参数：" + req.params.id);
+      });
+      ```
+
+    - 通过 params 选项传递参数
+
+      ``` JavaScript
+      // 通过 params 属性传递参数发起 get 请求
+      // web
+      axios.get("http://localhost:3000/axios", {
+          params: {
+              id: 31
+          }
+      }).then(res => console.log(res.data));
+
+        // server
+      app.get("/axios", (req, res, next) => {
+        res.send("axios get （params）传递的参数：" + req.query.id);
+      });
+      ```
+
+    (2) Delete 传递参数，用来删除数据，使用方式与 GET 类似，只是使用的是 axios 的 `delete` 接口。
+
+    (3) post 传递参数，用来添加数据。
+    - 通过选项传递参数（默认传递的是 json 格式的数据）
+    - 通过
+
+    (4) put: 修改数据
