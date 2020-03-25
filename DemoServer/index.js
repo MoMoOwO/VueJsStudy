@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 app.use(express.static("public"));
 // 处理参数
 app.use(bodyParser.json());
-app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -19,11 +18,7 @@ app.all('*', function (req, res, next) {
   // res.header('Content-Type', 'application/json;charset=utf-8');
   res.header('Access-Control-Allow-Headers', 'mytoken');
 
-  if (req.method.toLowerCase() === 'options') {
-    res.sendStatus(200); // 让options尝试请求快速结束
-  } else {
-    next();
-  }
+  next();
 });
 
 // Ajax、Promise基本使用测试接口
@@ -90,7 +85,23 @@ app.get("/json", (req, res) => {
 // axios 后台 API 接口
 app.get("/adata", (rea, res, next) => {
   res.send("Hello axios!");
+});
+app.get("/axios", (req, res, next) => {
+  res.send("axios get （URL 或 params）传递的参数：" + req.query.id);
+});
+app.get("/axios/:id", (req, res, next) => {
+  res.send("axios get （Restful）传递的参数：" + req.params.id);
+});
+app.delete("/axios", (req, res, next) => {
+  res.send("axios delete （URL 或 params）传递的参数：" + req.query.id);
+});
+app.delete("/axios/:id", (req, res, next) => {
+  res.send("axios delete （Restful）传递的参数：" + req.params.id);
+});
+app.post("/axios", (req, res, next) => {
+  res.send("axios post （选项列表）传递参数：" + req.body + req.body.uname);
 })
+
 
 // 启动监听
 app.listen(3000, () => {
