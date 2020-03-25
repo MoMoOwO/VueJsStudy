@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/axios.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 通过传统 url 传参发起 get 请求
+        axios.get("http://localhost:3000/axios?id=33").then(res => {
+            console.log(res.data);
+        });
+        // 通过 Restful 形式传参发起 get 请求
+        axios.get("http://localhost:3000/axios/32").then(res => {
+            console.log(res.data);
+        });
+        // 通过 params 属性传递参数发起 get 请求
+        axios.get("http://localhost:3000/axios", {
+            params: {
+                id: 31
+            }
+        }).then(res => console.log(res.data));
+
+        // delete 方式传递参数，通样可以使用 get 请求的三种方式，只是使用的是 delete 接口
+        axios.delete("http://localhost:3000/axios?id=23").then(res => console.log(res.data));
+        axios.delete("http://localhost:3000/axios/22").then(res => console.log(res.data));
+        axios.delete("http://localhost:3000/axios", {
+            params: {
+                id: 21
+            }
+        }).then(res => console.log(res.data));
+
+        // post 传递参数
+        // 通过选项传递参数（默认传递的是 json 格式的数据）
+        axios.post("http://localhost:3000/axios", {
+            uname: "李四",
+            age: 18
+        }).then(res => console.log(res.data));
+    </script>
+</body>
+
+</html>
