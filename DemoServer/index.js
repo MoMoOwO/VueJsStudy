@@ -99,8 +99,18 @@ app.delete("/axios/:id", (req, res, next) => {
   res.send("axios delete （Restful）传递的参数：" + req.params.id);
 });
 app.post("/axios", (req, res, next) => {
-  res.send("axios post （选项列表）传递参数：" + req.body + req.body.uname);
-})
+  res.send("axios post 传递参数：" + req.body.name + "---" + req.body.age);
+});
+app.put("/axios", (req, res, next) => {
+  res.send("axios put 传递参数" + req.body.id + "---" + req.body.name + "---" + req.body.age);
+});
+app.get("/axios-json", (req, res, next) => {
+  res.json({
+    name: "钱前",
+    age: 19,
+    gender: "男"
+  });
+});
 
 
 // 启动监听
