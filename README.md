@@ -1582,10 +1582,75 @@
       });
       ```
 
-    (2) Delete 传递参数，用来删除数据，使用方式与 GET 类似，只是使用的是 axios 的 `delete` 接口。
+    (2) DELETE 传递参数，用来删除数据，使用方式与 GET 类似，只是使用的是 axios 的 `delete` 接口。
 
-    (3) post 传递参数，用来添加数据。
+    (3) POST 传递参数，用来添加数据。
     - 通过选项传递参数（默认传递的是 json 格式的数据）
-    - 通过
 
-    (4) put: 修改数据
+      ``` JavaScript
+      axios.post("http://localhost:3000/axios", {
+          // 数据直接在第二个参数中以对象形式传递
+          name: "李四",
+          age: 18
+      }).then(res => console.log(res.data));
+      ```
+
+    - 通过 URLSearchParams 传递参数（application/x-www/form-urlencoded）
+
+      ``` JavaScript
+      // web
+      let params = new URLSearchParams();
+      params.append("name", "张三");
+      params.append("age", 19);
+      axios.post("http://localhost:3000/axios", params).then(res => console.log(res.data));
+
+      // server  post
+      app.post("/axios", (req, res, next) => {
+        res.send("axios post （选项列表）传递参数：" + req.body.name + "---" + req.body.age);
+      });
+      ```
+
+    (4) PUT 传递参数，用于修改数据
+    - 参数传递方式与 POST 类似，同样支持选项传递和 URLSearchParams 传参。
+
+4. axios 的主要响应结果与全局配置
+
+    (1) 响应结果的主要属性
+    - data：实际相应回来的数据
+    - headers：响应头信息
+    - status：响应状态码
+    - statusText：响应状态信息
+
+    (2) axios 的全局配置
+    - `axios.defaults.timeout = 3000`：超时时间
+    - `axios.defaults.baseURL = "http://localhost:3000/app"`：默认地址
+    - `axios.defaults.headers['mytoken'] = "aquefdasdfdaf234dsaf32d`：设置请求头
+
+5. axios 拦截器
+
+    (1) 请求拦截器，在请求发出之前设置一些信息。
+    ![请求拦截器](http://image.acmx.xyz/msj%2FreqIntor.jpg)
+
+    ``` JavaScript
+    // 创建一个请求拦截器
+    axios.interceptors.request.use(function(config){
+      // 在请求发出之前通过 config 进行一些信息设置，并返回设置好的 config
+      ...
+      return config;
+    }, function(err){
+      // 处理响应错误信息
+    });
+    ```
+
+    (2) 响应拦截器，再获取数据之前递数据做一些加工处理。
+    ![响应拦截器](http://image.acmx.xyz/msj%2FresIntor.jpg)
+
+    ``` JavaScript
+    // 添加一个响应拦截器
+    axios.interceptors.response.use(function(res){
+      // 在这里对返回的数据进行处理，并将新数据返回
+      return res.data;
+    },function(err){
+      // 处理响应的错误信息
+    });
+    ```
