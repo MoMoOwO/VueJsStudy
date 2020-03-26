@@ -37,9 +37,28 @@
         // post 传递参数
         // 通过选项传递参数（默认传递的是 json 格式的数据）
         axios.post("http://localhost:3000/axios", {
-            uname: "李四",
+            name: "李四",
             age: 18
         }).then(res => console.log(res.data));
+        // 通过 URLSearchParams 传递参数
+        let params = new URLSearchParams();
+        params.append("name", "张三");
+        params.append("age", 19);
+        axios.post("http://localhost:3000/axios", params).then(res => console.log(res.data));
+
+        // put 传递参数
+        // 通过选项传参
+        axios.put("http://localhost:3000/axios", {
+            id: 1,
+            name: "李四",
+            age: 18
+        }).then(res => console.log(res.data));
+        // 通过 URLSearchParams 传递参数
+        let params1 = new URLSearchParams();
+        params1.append("id", 2);
+        params1.append("name", "张三");
+        params1.append("age", 19);
+        axios.put("http://localhost:3000/axios", params1).then(res => console.log(res.data));
     </script>
 </body>
 
