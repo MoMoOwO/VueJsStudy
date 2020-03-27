@@ -1654,3 +1654,60 @@
       // 处理响应的错误信息
     });
     ```
+
+### 接口调用 - async/await 用法
+
+1. async/await 的基本用法
+
+    (1) async/await 是 ES7 引入的新语法，可以更加方便地进行异步操作。
+
+    (2) async 关键字用于函数（async 函数的返回值是 Promise 实例对象）
+
+    (3) await 关键字用于 async 函数当中（await 可以得到异步的结果）
+
+    ``` JavaScript
+    // 使用 async/await 处理异步操作
+    async function queryData() {
+        // await 】修饰的语句返回的是一个 Promise 对象
+        let ret = await axios.get("http://localhost:3000/adata");
+        return ret;
+    }
+    // 调用该一部函数之后可以通过 .then 进行下一步操作
+    queryData().then(ret => console.log(ret.data));
+    ```
+
+2. async/awai理多个异步请求
+
+    (1) 处理多个异步请求且保持异步请求按一定顺序进行
+
+    ``` JavaScript
+    // async/await 处理多个异步任务
+    axios.defaults.baseURL = "http://localhost:3000";
+    async function queryData() {
+        // 第一次异步操作
+        let info = await axios.get("/async1");
+        // 第二次异步操作
+        let ret = await axios.get("/async2?info=" + info.data);
+        return ret.data;
+    }
+    queryData().then(res => console.log(res));
+    ```
+
+### 基于接口的案例
+
+1. 案例：基于后台接口重构图书管理案例
+
+2. 案例分析
+
+    (1) 图书相关的操作基于后台接口数据进行操作
+
+    (2) 需要调用接口的功能点
+
+    | 功能                          | 请求方式 | 后台接口                                 |
+    | :---------------------------- | :------- | :--------------------------------------- |
+    | 图书列表数据加载              | GET      | <http://localhost:3000/books>            |
+    | 添加图书                      | POST     | <http://localhost:3000/books>            |
+    | 验证图书名称是否存在          | GET      | <http://localhost:3000/books/book/:name> |
+    | 编辑图书-根据 ID 查询图书信息 | GET      | <http://localhost:3000/books/:id>        |
+    | 编辑图书-提交图书信息         | PUT      | <http://localhost:3000/books/:id>        |
+    | 删除图书                      | DELETE   | <http://localhost:3000/books/:id>        |
