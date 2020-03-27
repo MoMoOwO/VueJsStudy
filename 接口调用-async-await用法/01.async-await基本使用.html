@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/axios.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // async/await 处理异步操作
+        // 传统 axios 异步请求数据
+        axios.get("http://localhost:3000/adata")
+            .then(res => console.log(res.data));
+
+        // 使用 async/await 处理异步操作
+        async function queryData() {
+            // await 修饰的语句返回的是一个 Promise 对象
+            let ret = await axios.get("http://localhost:3000/adata");
+            return ret;
+        }
+        // 调用该一部函数之后可以通过 .then 进行下一步操作
+        queryData().then(ret => console.log(ret.data));
+
+        async function asyncFun() {
+            // await 修饰的语句返回的是一个 Promise 对象
+            let p = await new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    resolve("1s过去了...");
+                }, 1000);
+            });
+            return p;
+        }
+        asyncFun().then(data => console.log(data));
+    </script>
+</body>
+
+</html>
