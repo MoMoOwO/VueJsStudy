@@ -112,6 +112,18 @@ app.get("/axios-json", (req, res, next) => {
   });
 });
 
+// async/await 后台接口
+app.get("/async1", (req, res, next) => {
+  res.send("hello");
+});
+app.get("/async2", (req, res, next) => {
+  if (req.query.info === "hello") {
+    res.send("world");
+  } else {
+    res.send("error");
+  }
+});
+
 
 // 启动监听
 app.listen(3000, () => {
