@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <script src="./js/vue.js"></script>
+    <script src="./js/axios.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="grid">
+            <div>
+                <h1>图书管理</h1>
+                <div class="book">
+                    <div>
+                        <label for="id" v-focus>编号</label>
+                        <!-- disabled 输入框不可编辑状态 -->
+                        <input type="text" id="id" v-model="id" :disabled="isDisabled">
+                        <label for="name" id="name">名称</label>
+                        <input type="text" id="name" v-model="name">
+                        <button @click="submit" :disabled="canSubmit">提交</button>
+                    </div>
+                </div>
+            </div>
+            <div class="total">
+                <span>图书总数</span>
+                <span>{{ total }}</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr :key="item.id" v-for="item in books">
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.date | dateFormat("yyyy-MM-dd hh:mm:ss") }}</td>
+                        <td>
+                            <!-- 采用 .prevent 事件修饰符来屏蔽 a 标签的刷新默认功能 -->
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a>
+                            <span>|</span>
+                            <a href="" @click.prevent="delBook(item.id)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 设置接口基础路径
+        axios.defaults.baseURL = "http://localhost:3000";
+
+        // axios 响应拦截器
+        axios.interceptors.response.use(res => {
+            return res.data; // 直接返回数据
+        }, error => {
+            console.log(error);
+        });
+
+        // 过滤器使用，格式化日期
+        Vue.filter("dateFormat", function (date, format) {
+            // 格式化日期的函数
+            /*
+            yyyy: 年分 MM：月份 dd：日
+            hh：时 mm：分 ss：秒
+            q：季度 S：毫秒
+            */
+            if (typeof date === "string") {
+                let mts = date.match(/(\/Date\((\d+)\)\/)/);
+                if (mts && mts.length >= 3) {
+                    date = parseInt(mts[2]);
+                }
+            }
+
+            date = new Date(date);
+            if (!date || date.toUTCString() == "Invalid Date") {
+                return "";
+            }
+
+            let map = {
+                "M": date.getMonth() + 1, // 月份
+                "d": date.getDate(), // 日
+                "h": date.getHours(), // 小时
+                "m": date.getMinutes(), // 分
+                "s": date.getSeconds(), // 秒
+                "q": Math.floor((date.getMonth() + 3) / 3), // 季度
+                "S": date.getMilliseconds() // 毫秒
+            };
+
+            format = format.replace(/([yMdhmsqS])*/g, function (all, t) {
+                let v = map[t];
+                if (v !== undefined) {
+                    if (all.length > 1) {
+                        v = "0" + v;
+                        v = v.substr(v.length - 2);
+                    }
+                    return v;
+                } else if (t === "y") {
+                    return (date.getFullYear() + "").substr(4 - all.length);
+                }
+                return all;
+            });
+            return format;
+        });
+
+        // 自定义指令，输入框默认获取焦点
+        Vue.directive("focus", {
+            inserted: function (el) {
+                // el 标识指令所绑定的元素
+                el.focus();
+            }
+        });
+
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                id: "", // 图书 id
+                name: "", // 图书名
+                books: [],
+                isDisabled: false, // id 输入框是否可编辑的标志位 false 可编辑，true不可编辑
+                canSubmit: false // 标记提交按钮是否可用
+            },
+            methods: {
+                // 提交按钮点击
+                async submit() {
+                    // 可以使用 isDisabled 标志位来判断是添加图书还是修改图书
+                    if (this.isDisabled) {
+                        // 修改图书
+                        // 将 id 和 name 传递给后台，来修改数据，根据返回的状态码来确定是否求改成功
+                        let res = await axios.put("/books/" + this.id, {
+                            name: this.name
+                        });
+
+                        if (res.status === 200) {
+                            // 修改成功，重新加载数据
+                            this.queryData();
+                        } else {
+                            alert("添加失败！");
+                        }
+                        // id 框可编辑
+                        this.isDisabled = false;
+                    } else {
+                        // 添加图书
+                        let res = await axios.post("/books", {
+                            name: this.name
+                        });
+                        if (res.status == 200) {
+                            // 提交成功，重新加载列表数据
+                            this.queryData();
+                        } else {
+                            alert("添加失败！");
+                        }
+                    }
+
+                    // 清空表单
+                    this.id = "";
+                    this.name = "";
+                },
+                // 修改按钮点击
+                async toEdit(id) {
+                    // 将 id 输入框设为不可编辑状态，用于区分是编辑还是添加
+                    this.isDisabled = true;
+                    // 根据 id 像后台请求数据，将最新的图书信息展示在编辑框中
+                    let res = await axios.get("/books/" + id);
+
+                    // 修改 id name
+                    this.id = res.id;
+                    this.name = res.name;
+                },
+                // 删除图书点击
+                async delBook(id) {
+                    // 删除图书
+                    let res = await axios.delete("/books/" + id);
+                    if (res.status === 200) {
+                        // 删除成功，重新加载数据
+                        this.queryData();
+                    } else {
+                        alert("删除失败！");
+                    }
+                },
+                // 使用 async/await 处理异步获取数据
+                // 调用后台皆苦获取图书列表数据
+                async queryData() {
+                    // let res = await axios.get("/books");
+                    // this.books = res.data;
+
+                    // 添加拦截器之后可以直接赋值
+                    this.books = await axios.get("/books");
+                }
+            },
+            computed: {
+                // 计算属性使用：统计图书数量
+                total: function () {
+                    // 计算图书总数
+                    return this.books.length;
+                }
+            },
+            watch: {
+                // 侦听器使用：验证图书的存在性
+                "name": async function (val) {
+                    // 像后台传递参数验证名称的存在性
+                    let res = await axios.get("/books/book/" + this.name);
+                    if (res.status === 1) {
+                        // 图书名称存在
+                        this.canSubmit = true;
+                    } else {
+                        // 图书名称不存在
+                        this.canSubmit = false;
+                    }
+                }
+            },
+            mounted() {
+                // 获取数据
+                // 直接请求获取数据
+                //axios.get("books").then(res => this.books = res.data);
+
+                // 使用 async/await 处理异步获取数据
+                this.queryData();
+            },
+        });
+    </script>
+</body>
+
+</html>
