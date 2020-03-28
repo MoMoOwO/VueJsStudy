@@ -1668,7 +1668,7 @@
     ``` JavaScript
     // 使用 async/await 处理异步操作
     async function queryData() {
-        // await 】修饰的语句返回的是一个 Promise 对象
+        // await 修饰的语句返回的是一个 Promise 对象
         let ret = await axios.get("http://localhost:3000/adata");
         return ret;
     }
