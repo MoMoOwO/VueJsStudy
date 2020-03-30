@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 导入 vue 文件，为全局 window 对象 挂载 Vue 构造函数 -->
+    <script src="./js/vue.js"></script>
+    <!-- 导入 vue-router wenjian，为全局 window 对象 挂载 VueRouter 构造函数 -->
+    <script src="./js/vue-router.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <!-- router-link 是 vue 中提供的标签，默认会被渲染为 a 标签 -->
+        <!-- to 属性默认会被渲染为 href 属性 -->
+        <!-- to 属性的值默认会被渲染为 # 开头的 hash 地址 -->
+        <router-link to="/user">User</router-link>
+        <router-link to="/register">Register</router-link>
+
+        <!-- 路由填充位（也叫做路由占位符） -->
+        <!-- 将来通过路由规则匹配到的组件，将会被渲染到 router-view 所在的位置 -->
+        <router-view></router-view>
+
+    </div>
+
+</body>
+<script>
+    // 定义路由组件
+    const User = {
+        template: "<div>User</div>"
+    };
+    const Register = {
+        template: "<div>Register</div>"
+    };
+
+    // 创建路由实例对象
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [
+            // 每个路由规则都是一个配置对象，其中至少包含 path 和 component 两个属性
+            // path 表示当前路由规则对应要展示的组件
+            // component 表示当前路由规则对应要展示的组件
+            {
+                path: "/user",
+                component: User
+            },
+            {
+                path: "/register",
+                component: Register
+            }
+        ]
+    });
+
+    // Vue 实例
+    const vm = new Vue({
+        el: "#app",
+        data: {
+
+        },
+        // 为了能够让路由规则生效，必须把路由对象挂载到 vue 实例对象上
+        router
+    });
+</script>
+
+</html>
