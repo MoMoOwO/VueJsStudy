@@ -1873,3 +1873,164 @@
         router
     });
     ```
+
+2. 路由重定向
+
+    (1) 路由重定向指的是，用户在访问地址 A 的时候，强制用户跳转到地址 C，从而展示特定的组件页面。
+
+    (2) 通过路由规则的 `redirect` 属性，指定一个新的路由地址，可以很方便地设置路由的重定向：
+
+    ``` JavaScript
+    const router = new VueRouter({
+      routes: [
+          // 其中，path 表示需要重定向的原地址，redirect 表示将要被重定向到的新地址
+          {
+              path: "/",
+              redirect: "/user"
+          },
+          {
+              path: "/user",
+              component: User
+          },
+          {
+              path: "/register",
+              component: Register
+          }
+      ]
+    });
+    ```
+
+### vue-router 嵌套路由
+
+1. 嵌套路由用法
+
+    (1) 嵌套路由功能分析
+    - 点击父级路由链接显示模板内容
+    - 模板内容中又有子级路由链接
+    - 点击子级路由链接显示子级模板内容
+
+    (2) 父组件路由模板
+    - 父级路由链接
+    - 父级组件路由填充位
+
+      ``` HTML
+      <!-- 父级路由链接 -->
+      <p>
+          <router-link to="/user">User</router-link>
+          <router-link to="/register">Register</router-link>
+      </p>
+
+      <div>
+          <!-- 父组件路由填充位 -->
+          <router-view></router-view>
+      </div>
+      ```
+
+    (3) 子级路由模板
+    - 子级路由链
+    - 子级路由填充位
+
+    ``` JavaScript
+    const Register = {
+        template: `
+            <div>
+                <h1>Register</h1>
+                <hr />
+                <!-- 子级路由链接 -->
+                <router-link to="/register/tab1">Tab1</router-link>
+                <router-link to="/register/tab2">Tab2</router-link>
+
+                <!-- 子级路由填充位 -->
+                <router-view></router-view>
+            </div>`
+    };
+    ```
+
+2. 嵌套路由的实现
+
+    (1) 为子组件创建子组件
+
+    ``` JavaScript
+    // register 的子组件
+    const Tab1 = {
+        template: "<h2>tab1</h2>"
+    };
+    const Tab2 = {
+        template: "<h2>tab2</h2>"
+    };
+    ```
+
+    (2) 完善路由规则，通过 `children` 属性数组来实现子组件中组件的路由
+
+    ``` JavaScript
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [
+            {
+                path: "/",
+                redirect: "/user"
+            },
+            {
+                path: "/user",
+                component: User
+            },
+            {
+                path: "/register",
+                component: Register,
+                // children 数组表示子路由规则
+                children: [{
+                        path: "/register/tab1",
+                        component: Tab1
+                    },
+                    {
+                        path: "/register/tab2",
+                        component: Tab2
+                    }
+                ]
+            }
+        ]
+    });
+    ```
+
+### vue-router 动态路由匹配
+
+1. 动态路由匹配的概念
+
+    (1) 动态路由规则指的是，如果某些路由规则他它们的一部分是完全一样的，只另一部分是动态变化的，这是可以将动态变化的部分形成路由参数，这些路由参数就是动态路路由匹配。
+
+    (2) 应用场景：通过动态路由参数的模式惊醒路由匹配。
+
+2. 动态路由匹配规则使用
+
+    (1) 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+
+    ``` JavaScript
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [{
+                path: "/",
+                redirect: "/user"
+            },
+            {
+                // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+                path: "/user/:id",
+                component: User
+            },
+            {
+                path: "/register",
+                component: Register
+            }
+        ]
+    });
+    ```
+
+    (2) 路由组件中可以通过 `$route.params` 获取路由参数
+
+    ``` JavaScript
+    const User = {
+        // 路由组件中可以通过 `$route.params` 获取路由参数
+        template: "<h1>User --- {{$route.params.id}}</h1>"
+    };
+    ```
+
+3. 动态路由匹配传参
