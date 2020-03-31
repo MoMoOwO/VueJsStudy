@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 导入 vue 文件，为全局 window 对象 挂载 Vue 构造函数 -->
+    <script src="./js/vue.js"></script>
+    <!-- 导入 vue-router wenjian，为全局 window 对象 挂载 VueRouter 构造函数 -->
+    <script src="./js/vue-router.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <router-link to="/user/1">User1</router-link>
+        <router-link to="/user/2">User2</router-link>
+        <router-link to="/user/3">User3</router-link>
+        <router-link to="/register">Register</router-link>
+
+        <router-view></router-view>
+
+    </div>
+
+</body>
+<script>
+    // 定义路由组件
+    const User = {
+        // 路由组件中可以通过 `$route.params` 获取路由参数
+        template: "<h1>User --- {{$route.params.id}}</h1>"
+    };
+    const Register = {
+        template: "<h1>Register</h1>"
+    };
+
+    // 创建路由实例对象
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [{
+                path: "/",
+                redirect: "/user"
+            },
+            {
+                // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+                path: "/user/:id",
+                component: User
+            },
+            {
+                path: "/register",
+                component: Register
+            }
+        ]
+    });
+
+    // Vue 实例
+    const vm = new Vue({
+        el: "#app",
+        data: {
+
+        },
+        // 为了能够让路由规则生效，必须把路由对象挂载到 vue 实例对象上
+        router
+    });
+</script>
+
+</html>
