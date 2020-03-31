@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 导入 vue 文件，为全局 window 对象 挂载 Vue 构造函数 -->
+    <script src="./js/vue.js"></script>
+    <!-- 导入 vue-router wenjian，为全局 window 对象 挂载 VueRouter 构造函数 -->
+    <script src="./js/vue-router.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 父级路由链接 -->
+        <p>
+            <router-link to="/user">User</router-link>
+            <router-link to="/register">Register</router-link>
+        </p>
+
+        <div>
+            <!-- 父组件路由填充位 -->
+            <router-view></router-view>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    // 定义路由组件
+    const User = {
+        template: "<h1>User</h1>"
+    };
+    const Register = {
+        template: `
+            <div>
+                <h1>Register</h1>
+                <hr />
+                <!-- 子级路由链接 -->
+                <router-link to="/register/tab1">Tab1</router-link>
+                <router-link to="/register/tab2">Tab2</router-link>
+
+                <!-- 子级路由填充位 -->
+                <router-view></router-view>
+            </div>`
+    };
+    // register 的子组件
+    const Tab1 = {
+        template: "<h2>tab1</h2>"
+    };
+    const Tab2 = {
+        template: "<h2>tab2</h2>"
+    };
+
+    // 创建路由实例对象
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [
+            // 每个路由规则都是一个配置对象，其中至少包含 path 和 component 两个属性
+            // path 表示当前路由规则对应要展示的组件
+            // component 表示当前路由规则对应要展示的组件
+            // 通过路由规则的 redirect 属性，指定一个新的路由地址，可以设置路由的重定向
+            // 其中，path 表示需要重定向的原地址，redirect 表示将要被重定向到的新地址
+            {
+                path: "/",
+                redirect: "/user"
+            },
+            {
+                path: "/user",
+                component: User
+            },
+            {
+                path: "/register",
+                component: Register,
+                // children 数组表示子路由规则
+                children: [{
+                        path: "/register/tab1",
+                        component: Tab1
+                    },
+                    {
+                        path: "/register/tab2",
+                        component: Tab2
+                    }
+                ]
+            }
+        ]
+    });
+
+    // Vue 实例
+    const vm = new Vue({
+        el: "#app",
+        data: {
+
+        },
+        // 为了能够让路由规则生效，必须把路由对象挂载到 vue 实例对象上
+        router
+    });
+</script>
+
+</html>
