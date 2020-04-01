@@ -2033,4 +2033,104 @@
     };
     ```
 
-3. 动态路由匹配传参
+3. 路由组件传递参数
+
+    (1) `$route` 与对应路由形成高度耦合，不够灵活，所以可以使用 `props` 将组件和路由解耦。
+
+    (2) 使用方式一：将 `props` 的值为布尔类型
+
+    ``` JavaScript
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [
+            {
+                // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+                path: "/user/:id",
+                component: User,
+                // 如果 props 被设置为 true，route.params 将会被设置为组件属性
+                props: true
+            }
+        ]
+    });
+
+    // 定义路由组件
+    const User = {
+        props: ["id"], // 在子组件中可以使用 props 接收被解耦的 route.props 路由参数
+        template: "<h1>User --- {{id}}</h1>"
+    };
+    ```
+
+    (2) 使用方式二：`props` 的值为对象类型
+
+    ``` JavaScript
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [
+            {
+                // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+                path: "/user/:id",
+                component: User,
+                // 如果 props 是一个对象，他会被按原样设置为组件属性
+                props: {
+                    uname: "sam",
+                    age: 18
+                }
+            }
+        ]
+    });
+
+    // 定义路由组件
+    const User = {
+        props: ["id", "uname", "age"], // 在子组件中可以使用 props 接收路由传参
+        template: "<h1>User --- id：{{id}} --- 姓名：{{uname}} --- 年龄：{{age}}</h1>"
+    };
+    ```
+
+    (3) 使用方式三：`props` 的值为函数类型，此时可以既传递静态数据也可以传递动态参数
+
+    ``` JavaScript
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [
+            {
+                // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+                path: "/user/:id",
+                component: User,
+                // 如果 props 是一个函数，则这个函数接收 route 对象为自己的形参
+                props: route => ({uname: "tom", age: 13, id: route.params.id})
+            }
+        ]
+    });
+
+    const User = {
+        props: ["id", "uname", "age"], // 在子组件中可以使用 props 接收被解耦的 route.props 路由参数
+        // 路由组件中可以通过 `$route.params` 获取路由参数
+        template: "<h1>User --- id：{{id}} --- 姓名：{{uname}} --- 年龄：{{age}}</h1>"
+    };
+    ```
+
+### vue-router 命名路由
+
+1. 命名路由的匹配规则，为了更加方便地表示路由的路径，可以给卢欧规则请一个别名，既为“命名路由”。
+
+2. 命名路由使用
+
+``` JavaScript
+const router = new VueRouter({
+    // routes 是路由规则数据
+    routes: [
+        {
+            // 在定义路由规则时，使用 name 属性来命名路由
+            name: "user",
+            path: "/user/:id",
+            component: User
+        }
+    ]
+});
+```
+
+``` HTML
+<!-- 在使用命名路由的时候，需要给 router-link 的 to 属性添加属性绑定，绑定一个对象，
+name 属性设置跳转的路由，params 设置要传递的参数 -->
+<router-link :to="{name: 'user', params: {id: 3}}">User3</router-link>
+```
