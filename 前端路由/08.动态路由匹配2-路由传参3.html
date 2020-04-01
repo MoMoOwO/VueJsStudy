@@ -27,8 +27,9 @@
 <script>
     // 定义路由组件
     const User = {
+        props: ["id", "uname", "age"], // 在子组件中可以使用 props 接收被解耦的 route.props 路由参数
         // 路由组件中可以通过 `$route.params` 获取路由参数
-        template: "<h1>User --- {{$route.params.id}}</h1>"
+        template: "<h1>User --- id：{{id}} --- 姓名：{{uname}} --- 年龄：{{age}}</h1>"
     };
     const Register = {
         template: "<h1>Register</h1>"
@@ -44,7 +45,13 @@
             {
                 // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
                 path: "/user/:id",
-                component: User
+                component: User,
+                // 如果 props 是一个函数，则这个函数接收 route 对象为自己的形参
+                props: route => ({
+                    uname: "tom",
+                    age: 13,
+                    id: route.params.id
+                })
             },
             {
                 path: "/register",
