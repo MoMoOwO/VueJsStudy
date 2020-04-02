@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 导入 vue 文件，为全局 window 对象 挂载 Vue 构造函数 -->
+    <script src="./js/vue.js"></script>
+    <!-- 导入 vue-router 文件，为全局 window 对象 挂载 VueRouter 构造函数 -->
+    <script src="./js/vue-router.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <router-link to="/user/1">User1</router-link>
+        <router-link to="/user/2">User2</router-link>
+        <router-link :to="{name: 'user', params: {id: 3}}">User3</router-link>
+        <router-link to="/register">Register</router-link>
+
+        <router-view></router-view>
+
+    </div>
+
+</body>
+<script>
+    // 定义路由组件
+    const User = {
+        props: ["id", "uname", "age"], // 在子组件中可以使用 props 接收被解耦的 route.props 路由参数
+        // 路由组件中可以通过 `$route.params` 获取路由参数
+        template: `
+            <div>
+                <h1>User --- id：{{id}} --- 姓名：{{uname}} --- 年龄：{{age}}</h1>
+                <button @click="goRegister">跳转到注册页面</button>
+            </div>
+        `,
+        methods: {
+            goRegister() {
+                // 编程式导航，直接跳转
+                this.$router.push("/register");
+            }
+        }
+    };
+    const Register = {
+        template: `
+            <div>
+                <h1>Register</h1>
+                <button @click="goBack">后退</button>
+            </div>
+        `,
+        methods: {
+            goBack() {
+                // 编程式导航，实现后退
+                this.$router.go(-1);
+            }
+        }
+    };
+
+    // 创建路由实例对象
+    const router = new VueRouter({
+        // routes 是路由规则数据
+        routes: [{
+                path: "/",
+                redirect: "/user"
+            },
+            {
+                // 命名路由
+                name: "user",
+                // 在配置路由规则是，使用 `path` 指定路由地址时，在动态路径参数以冒号开头
+                path: "/user/:id",
+                component: User,
+                // 如果 props 是一个函数，则这个函数接收 route 对象为自己的形参
+                props: route => ({
+                    uname: "tom",
+                    age: 13,
+                    id: route.params.id
+                })
+            },
+            {
+                path: "/register",
+                component: Register
+            }
+        ]
+    });
+
+    // Vue 实例
+    const vm = new Vue({
+        el: "#app",
+        data: {
+
+        },
+        // 为了能够让路由规则生效，必须把路由对象挂载到 vue 实例对象上
+        router
+    });
+</script>
+
+</html>
