@@ -2484,7 +2484,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 
     - 运行 `npm install webpack webpack-cli -D` 命令，安装 webpack 相关的包
     - 在项目根目录中，创建名为 webpack.config.js 的 webpack 配置文件
-    - 在 webpack 的配置文件中，初始化如下基本配置
+    - 在 webpack 的配置文件中，初始化如下基本配置，`mode` 属性用来指定构建模式，有两个可选值 `develpoment` 和 `production`，前者不会对转换的代码进行压缩与混淆，转换时间可能会较长，而后者则相反。
 
         ``` JavaScript
         module.exports = {
@@ -2501,3 +2501,85 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
         ```
 
     - 在终端中运行 `npm run dev` 命令，启动 webpack 进行项目打包
+
+    (3) webpack 配置打包的入口与出口
+
+    - webpack 的 4.x 版本中默认约定：打包的入口文件为 src/index.js，而打包的输出口文件为 dist/main.js
+    - 如果要修改打包的入口与出口，可以在 webpack.config.js 中新增如下配置信息
+
+        ``` JavaScript
+        const path = require("path"); // 导入 node.js 中专门操作路径的模块
+        module.exports = {
+            entry: path.join(__dirname, "./src/index.js"), // 打包入口文件的路径
+            output: {
+                path: path.join(__dirname, "./dist"), // 输出文件的存放路径
+                filename: "bundle.js" // 输出文件的名称
+            }
+        }
+        ```
+
+    (4) 配置 webpack 的自动打包功能
+
+    - 运行 `npm install webpack-dev-server -D` 命令，安装支持项目自动打包的工具
+    - 修改 package.json 文件中 scripts 节点下的 dev 命令如下
+
+        ``` json
+        "scripts": {
+            "dev": "webpack-dev-server"
+        }
+        ```
+
+    - 将 src/index.html 中 script 脚本的引用路径修改为 `/bundle.js`
+    - 运行 `npm run dev` 命令，重新进行打包
+    - 在浏览器中访问 <http://localhost:8080> 地址，查看自动打包效果
+    - 注意：
+      - webpack-dev-server 会启动一个实时打包的 http 服务器
+      - webpack-dev-server 打包生成的输出文件，默认放到了项目根目录中，而且是虚拟的、看不见的。
+
+    (5) 配置 html-webpack-plugin 生成预览页面
+    - 运行 `npm install html-webpack-plugin -D` 命令，安装生成预览页面的插件
+    - 修改 webpack.config.js 文件头部区域，添加如下配置信息
+
+        ``` JavaScript
+        // 导入生成预览页面的插件，得到一个构造函数
+        const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+        const htmlPlugin = new HtmlWebpackPlugin({ // 创建插件的实例对象
+            template: "./webpack_base_using/src/index.html", // 指定要用到的模板文件
+            filename: "index.html" // 指定生成的文件的名称，该文件存在于内存中，在目录中不显示
+        });
+        ```
+
+    - 修改 webpack.config.js 文件中向外暴漏配置对象，新增如下配置节点
+
+        ``` JavaScript
+        module.exports = {
+            plugins: [htmlPlugin] // plugins 数组是 webpack 打包期间会用到的一些插件列表
+        }
+        ```
+
+    (6) 配置自动打包相关的参数，在 package.json 文件的 `script` 节点中的 `dev` 节点下进行参数配置。参数：`--open` 标识打包完成后自动打开浏览器页面，`--host` 配置 IP 地址，`port` 配置端口。
+
+    ``` json
+    "script": {
+        "dev": "webpack-dev-server --open --host 217.0.0.1 --port 8000"
+    }
+    ```
+
+3. webpack 中的加载器
+
+    (1) 通过 loader 打包非 js 模块
+
+    - 在实际开发过程中，webpack 默认只能打包处理以 .js 后缀名结尾的模块，其他非 .js 后缀名结尾的模块，webpack 默认处理不了，需要调用 loader 加载器才可以正常打包，否则就会报错！
+    - loader 加载器可以协助 webpack 打包处理特定的文件模块，比如
+      - less-loader 可以打包处理 .less 相关的文件
+      - sass-loader 可以打包处理 .scss 相关的文件
+      - url-loader 可以打包处理 css 中与 url 路径相关的文件
+
+    (2) loader 的调用过程
+
+    ![loader 调用过程](http://image.acmx.xyz/msj%2FloaderP.jpg)
+
+4. webpack 中加载器的基本使用
+
+    (1) 打包处理 css 文件
