@@ -2583,3 +2583,245 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 4. webpack 中加载器的基本使用
 
     (1) 打包处理 css 文件
+
+    - 运行 `npm i style-loader css-loader -D` 命令，安装处理 css 文件内的 loader
+    - 在 webpack.config.js 暴漏出口中添加 `module` 属性属性值为一个对象，该对象中中添加 `rules` 数组，该数组管理各类 loader 加载器匹配规则，每一条规则为一个对象，其中 `test` 表示匹配的文件类型，`use` 表示对应要调用的 loader，css 文件的 loader 处理如下
+
+        ``` JavaScript
+         // 所有第三方文件模块的匹配规则
+        module: {
+            rules: [{
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            }]
+        }
+        ```
+
+    - 注意：
+      - `use` 数组中指定的 loader 顺序是固定的
+      - 多个 loader 的调用顺序是从后往前调用
+
+    (2) 打包处理 less 文件
+
+    - 运行 `npm i less-loader less -D` 命令
+    - 在 webpack.config.js 的第三方文件匹配规则 `rules` 数组中添加如下 loader 规则
+
+        ``` JavaScript
+        module: {
+            rules: [{
+                    test: /\.less$/,
+                    use: ["style-loader", "css-loader", "less-loader"]
+                }
+            ]
+        }
+        ```
+
+    (3) 打包处理 scss 文件
+
+    - 运行 `npm i sass-loader node-sass -D` 命令
+    - 在 webpack.config.js 的第三方文件匹配规则 `rules` 数组中添加如下 loader 规则
+
+        ``` JavaScript
+        module: {
+            rules: [{
+                    test: /\.scss/,
+                    use: ["style-loader", "css-loader", "sass-loader"]
+                }
+            ]
+        }
+        ```
+
+    (4) 配置 postCSS 自动添加 css 的兼容前缀
+
+    - 运行 `npm i postcss-loader autoprefixer -D` 命令
+    - 在项目根目录中创建 postcss 的配置文件 postcss.config.js 并初始化如下配置
+
+        ``` JavaScript
+        const autoprefixer = require("autoprefixer"); // 导入自动添加前缀的插件
+        module.exports = {
+            plugins: [autoprefixer] // 挂载插件
+        }
+        ```
+
+    - 在 webpack.config.js 的第三方文件匹配规则 `rules` 数组中修改 css 的 loader 规则
+
+        ``` JavaScript
+        module: {
+            rules: [{
+                    test: /\.css$/,
+                    use: ["style-loader", "css-loader", "postcss-loader"]
+                }
+            ]
+        }
+        ```
+
+    (5) 打包样式表中的图片和字体文件
+
+    - 运行 `npm i url-loader file-loader -D` 命令
+    - 在 webpack.config.js 的第三方文件匹配规则 `rules` 数组中添加如下 loader 规则，其中 `?` 之后的是 loader 的参数项。`limit` 用来指定图片的大小，单位是字节（byte），只有小于 `limit` 大小的图片，才会转为 base64 图片。
+
+        ``` JavaScript
+        module: {
+            rules: [
+                {
+                    test: /\.jpg|png|gif|bmp|ttf|eot|svg|woff|woff2$/,
+                    use: "url-loader?limit=16940"
+                }
+            ]
+        }
+        ```
+
+    (6) 打包处理 js 文件中的高级语法
+
+    - 安装 babel 转换器相关的包，运行命令 `npm i babel-loader @babel/core @babel/runtime -D`
+    - 安装 babel 语法插件相关的包，运行命令 `npm i @babel/preset-env @babel/plugin-transform-runtime @babel/plugin-proposal-class-properties -D`
+    - 在项目根目录中，创建 babel 配置文件 babel.config.js 并初始化基本配置如下：
+
+        ``` JavaScript
+        module.exports = {
+            presets: ["@babel/preset-env"],
+            plugins: ["@babel/plugin-transform-runtime", "@babel/plugin-proposal-class-properties"]
+        }
+        ```
+
+    - 在 webpack.config.js 的第三方文件匹配规则 `rules` 数组中添加如下 loader 规则
+
+        ``` JavaScript
+        module: {
+            rules: [
+                // exclude 未排除想，表示 babel-loader 不需要处理 node_modules 中的 js 文件
+                {
+                    test: /\.js$/,
+                    use: "babel-loader",
+                    exclude: /node-modules/
+                }
+            ]
+        }
+        ```
+
+### Vue 单文件组件
+
+1. 传统组件的问题和解决方案
+
+    (1) 问题
+
+    - 全局定义的组件必须保证组件的名称不重复
+    - 字符串模板缺乏语法高亮，在 HTML 有很多行的时候，需要用到丑陋的 `\`
+    - 不支持 CSS，意味着当 HTML 和 JavaScript 组件化时，CSS 明显被遗漏
+    - 没有构建步骤限制，只能使用 HTML 和 ES5 JavaScript，而不能使用预处理器（如：Babel）
+
+    (2) 解决方案：针对传统组建的问题，Vue 提供了一个解决方案，就是使用 Vue 单文件组件。
+
+2. Vue 单文件组件的基本用法
+
+    (1) 单文件的组成结构
+
+    - `template`：组建的模板区域
+    - `script`：业务逻辑区域
+    - `style`：样式区域
+
+    (2) Vue 单文件模板实例
+
+    ``` Vue
+    <template>
+        <!-- 这里用于定义 Vue 组件的模板内容 -->
+    </template>
+
+    <script>
+        // 这里用于定义 Vue 组件的业务逻辑
+        export default {
+            data(){
+                return {} // 私有数据
+            },
+            methods: {
+                // 处理函数
+            },
+            // ... 其他业务逻辑
+        }
+    </script>
+
+    <style scoped>
+        /* 这里用于定义组件的样式 */
+        /* 建议添加 scoped 属性，从而是样式仅在当前组件生效 */
+    </style>
+    ```
+
+3. webpack 进阶及与 Vue 配合使用
+
+    (1) webpack 中配置 vue 组件的加载器
+
+    - 运行 `npm i vue-loader vue-template-compiler -D` 命令
+    - 在 webpack.config.js 配置文件中，添加 vue-loader 的配置项，如下：
+
+        ``` JavaScript
+        // 导入 vue
+        const VueLoaderPlugin = require("vue-loader/lib/plugin");
+
+        module.exports = {
+            plugins: [
+                // ... 其他插件
+                new VueLoaderPlugin() // vue 单文件加载，请确保引入这个插件
+            ],
+            module: {
+                rules: [
+                    // ...其他规则
+                    // vue 加载器
+                    {
+                        test: /\.vue$/,
+                        use: "vue-loader"
+                    }
+                ]
+            }
+        }
+        ```
+
+    (2) 在 webpack 项目中使用 vue
+
+    - 运行 `npm i vue -S` 安装 vue
+    - 在 src/index.js 入口文件中通过 `import Vue form "vue";` 来导入 vue 构造函数
+    - 创建 vue 的实例对象，并指定要控制的 el 区域
+    - 通过 render 函数渲染 App 根组件
+
+        ``` JavaScript
+        // 1. 导入 Vue 构造函数
+        import Vue from "vue";
+        // 2.引入 App 根组件
+        import App from "./components/App.vue";
+
+        const vm = new Vue({
+            // 3. 指定 vm 实例要控制的页面区域
+            el: "#app",
+            // 4. 通过 render 函数，把指定的组件渲染到 el 区域中
+            render: h => h(App)
+        });
+        ```
+
+    (3) webpack 打包发布，项目上线之前需要通过 webpack 将应用进行整体打包，可以通过 package.json 文件配置打包命令，该命令默认加载项目根目录中的 webpack.config.js 配置文件。`scripet` 节点下 `build` 用来打包 `dev` 用于开发调式
+
+    ``` json
+    "script": {
+        "build": "webpack -p",
+        "dev": "webpack-dev-server --open -host 127.0.0.1 8888"
+    }
+    ```
+
+### Vue 脚手架
+
+1. Vue 脚手架的基本用法
+
+    (1) Vue 脚手架用于快速生成 Vue 项目基础架构，[官方网址](https://cli.vuejs.org/zh/)
+
+    (2) 使用步骤，安装 3.x 版本的 Vue 脚手架，运行命令 `npm install -g @vue/cli`
+
+2. 基于 3.x 版本的脚手架创建 vue 项目
+
+    (1) 基于交互式命令行的方式，创建新版 vue 项目，运行命令 `vue create my-project`
+
+    (2) 基于图形化界面的方式，创建新版 vue 项目，运行命令 `vue ui`
+
+    (3) 基于 2.x 的就模板，创建旧版 vue 项目
+
+    ``` bash
+    npm install -g @vue/cli-init
+    vue init webpack my-project
+    ```
