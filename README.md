@@ -2825,3 +2825,152 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     npm install -g @vue/cli-init
     vue init webpack my-project
     ```
+
+3. Vue 脚手架分析生成的项目结构分析
+![项目结构](http://image.acmx.xyz/msj%2Fsturct.jpg)
+
+4. Vue 脚手架的自定义配置
+
+    (1) 方式一：通过 package.json 配置项目
+
+    - 将所有的自定义配置添加到 `vue` 节点下，注意要必须符合规范的 json 语法
+
+        ``` json
+        "vue": {
+            "devServer": {
+                "port": "8888",
+                "open": true
+            }
+        }
+        ```
+
+    - 注意：不推荐使用这种配置方式，因为 package.json 主要用来管理报的配置信息；为了方便维护，推荐将 vue 脚手架相关的配置，单独定义到 vue.config.js 配置文件中。
+
+    (2) 方式二：通过单独的配置文件配置项目
+
+    - 在项目根目录中创建文件 vue.config.js
+    - 在该文件中进行相关配置，从而覆盖默认配置
+
+        ``` JavaScript
+        // vue.config.js
+        module.exports = {
+            devServer: {
+                open: true,
+                port: 8888
+            }
+        };
+        ```
+
+### Element-UI 基本使用
+
+1. Element-UI：是一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库。[官方网站](https://element.eleme.cn/#/zh-CN)
+
+2. 基于命令行方式手动安装
+
+    (1) 安装依赖包 `npm i element-ui -S`
+
+    (2) 在 src/main.js 入口文件中导入 Element-UI 相关资源
+
+    ``` JavaScript
+    // 导入组件库
+    import ElementUI from 'element-ui'
+    // 导入组件相关样式
+    import 'element-ui/lib/theme-chalk/index.css'
+    // 配置 Vue 插件
+    Vue.use(ElementUI)
+    ```
+
+3. 基于图形化界面自动安装
+
+    (1) 运行 `vue ui` 命令，打开图形化界面
+
+    (2) 通过 Vue 项目管理器，进入具体的项目配置面板
+
+    (3) 点击“插件 -> 添加插件”，进入插件查询面板
+
+    (4) 搜索 vue-cli-plugin-element 并安装
+
+    (5) 配置插件，实现按需导入，从而减少打包后项目的体积
+
+## Vue 全家桶-项目实战
+
+1. 学习目标
+
+    (1) 能够基于 Vue 初始化项目
+
+    (2) 能够基于 Vue 技术栈进行项目开发
+
+    (3) 能够使用 Vue 的第三方组件进行项目开发
+
+    (4) 能够说出前后端分离的开发模式
+
+2. 开发目录
+
+    (1) 项目概述
+
+    (2) 项目初始化
+
+    (3) 登录/退出功能
+
+    (4) 主页布局
+
+    (5) 用户管理模块
+
+    (6) 权限管理模块
+
+    (7) 分类管理模块
+
+    (8) 参数管理模块
+
+    (9) 商品管理模块
+
+    (10) 订单管理模块
+
+    (11) 数据统计模块
+
+### 项目概述
+
+1. 电商项目基本业务概述：根据不同的应用场景，电商系统一般都提供了 PC 端、移动 APP、移动 Web、微信小程序等多种终端访问方式。
+![电商](http://image.acmx.xyz/msj%2Fstore.jpg)
+
+2. 电商后台管理系统的功能：电商后台管理系统用于管理用户账号、商品分类、商品信息、订单、数据统计等业务功能。
+![后台管理系统](http://image.acmx.xyz/msj%2Fback.jpg)
+
+3. 电商后台管理系统的开发模式（前后端分离）：电商后台管理系统整体采用前后端分离的开发模式，其中前端项目是基于 Vue 技术栈的 SPA 项目。
+![前后端分离](http://image.acmx.xyz/msj%2Ffb.jpg)
+
+4. 电商后台管理系统的技术选型
+
+    (1) 前端项目技术栈
+
+    - Vue
+    - Vue-router
+    - Element-UI
+    - Axios
+    - Echarts
+
+    (2) 后端项目技术栈
+
+    - node.js
+    - Express
+    - Jwt
+    - Mysql
+    - Sequelize
+
+### 项目初始化
+
+1. 前端项目初始化步骤
+
+    (1) 安装 Vue 脚手架
+
+    (2) 通过 Vue 脚手架创建项目
+
+    (3) 配置 Vue 路由
+
+    (4) 配置 Element-UI 组件库
+
+    (5) 配置 axios 库
+
+    (6) 初始化 git 远程仓库
+
+    (7) 将本地项目托管到 github 或码云中
