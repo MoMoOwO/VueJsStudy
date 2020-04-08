@@ -2974,3 +2974,15 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     (6) 初始化 git 远程仓库
 
     (7) 将本地项目托管到 github 或码云中
+
+2. 后台项目的环境安装配置
+
+    (1) 安装 MySQL 数据库，[MySQL 安装教程](https://www.runoob.com/mysql/mysql-install.html)
+
+    (2) 安装 Node.js 环境，[Node.js 官网](https://nodejs.org/en/) [Node.js 中文网](http://nodejs.cn/)
+
+    (3) 配置项目相关信息
+
+    (4) 启动项目
+
+    (5) 使用 Postman 测试后台项目接口是否正常
