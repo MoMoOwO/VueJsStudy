@@ -1901,7 +1901,7 @@
 
     ``` HTML
     <!-- router-link 是 vue 中提供的标签，默认会被渲染为 a 标签 -->
-    <!-- to 属性默认会被渲染为 href 属性 -->
+    <!-- to 属性默认会被渲染��� href 属性 -->
     <!-- to 属性的值默认会被渲染为 # 开头的 hash 地址 -->
     <router-link to="/user">User</router-link>
     <router-link to="/register">Register</router-link>
@@ -2986,3 +2986,37 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     (4) 启动项目
 
     (5) 使用 Postman 测试后台项目接口是否正常
+
+### 登录/退出功能
+
+1. 登录概述
+
+   (1) 登录业务流程
+
+    - 在登陆页面输入用户名和密码
+    - 调用后台接口进行验证
+    - 通过验证之后，根据后台的响应状态跳转到项目主页
+
+   (2) 登录业务的相关技术点
+
+   - http 无状态的
+   - 通过 cookies 在客户端记录状态
+   - 通过 session 在服务器端记录状态
+   - 通过 token 方式维持状态（存在跨域问题推荐此方式）
+
+2. 登录 - token 原理分析
+![token原理分析](http://image.acmx.xyz/msj%2Ftoken.jpg)
+
+3. 登录功能实现
+
+    (1) 创建子分支 login，运行命令 `git checkout -b login`
+
+    (2) 登陆页面的布局，通过 Element-UI 组件实现布局
+
+    - el-form
+    - el-form-item
+    - el-input
+    - el-button
+    - 字体图标
+
+    (2)
