@@ -3019,4 +3019,46 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     - el-button
     - 字体图标
 
-    (2)
+    (3) 路由到行首为控制访问权限：如果用户没用登录，但是直接通过 URL 访问特定页面，需要重新导导航登陆页面。
+
+    ``` JavaScript
+    // 为路由象添加 beforeEach 导航守卫，to 去哪个页面，from 从哪个页面来，next 放行函数
+    router.beforeEach((to, from, next) => {
+    // 如果用户访问的登录页，直接放行
+    if (to.path === '/login') {
+        return next()
+    } else {
+        // 从 sessionStorage 中获取保存的 token 值
+        const tokenStr = window.sessionStorage.getItem('token')
+        // 没有 token 强制跳转到登录页
+        if (!tokenStr) {
+        return next('/login')
+        } else {
+        next()
+        }
+    }
+    })
+    ```
+
+4. 退出
+
+    (1) 退出功能实现原理：基于 token 的方式实现退出不叫简单，只需要销毁本地的 token 即可。这样，后续的请求就不会携带 token，必须重新新登陆生成一个新的 token 之后才可以继续访问页面。
+
+    (2) 核心代码
+
+    ``` JavaScript
+    // 清空 token
+    window.sessionStorage.clear()
+    // 跳转到登录页
+    this.$router.push('/login')
+    ```
+
+    (3) 提交登录/登出分支
+
+    ``` bash
+    git branch
+    git checkout master
+    git branch
+    git merge login
+    git push
+    ```
