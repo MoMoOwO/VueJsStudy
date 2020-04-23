@@ -3061,4 +3061,64 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     git branch
     git merge login
     git push
+
+    git checkout login
+    git branch
+    git push -u origin login
+    ```
+
+### 主页布局
+
+1. 整体布局
+
+    (1) 页面效果
+
+    (2) 整体布局：像上下划分，再左右划分，主要代码如下
+
+    ``` HTML
+    <el-container>
+        <!-- 头部区域 -->
+        <el-header>Header</el-header>
+        <!-- 页面主题区域 -->
+        <el-container>
+        <!-- 左侧侧边栏 -->
+        <el-aside width="200px">Aside</el-aside>
+        <!-- 右侧主题内容区域 -->
+        <el-main>Main</el-main>
+        </el-container>
+    </el-container>
+    ```
+
+2. 左侧菜单
+
+    (1) 效果
+
+    (2) 菜单分为二级，并且可以折叠，主要代码如下
+
+    ``` HTML
+    <el-menu>
+        <el-submenu>
+            <!-- 这个 template 是一级菜单的内容模板 -->
+            <i class=el-icon-menu></i>
+            <span>一级菜单</span>
+            <!-- 在一级菜单中，可以嵌套二级菜单 -->
+            <el-menu-item>
+                <i class="el-icon-menu"></i>
+                <span slot="title">二级菜单</span>
+            </el-menu-item>
+        </el-submenu>
+    </el-menu>
+    ```
+
+3. 通过接口获取菜单数据
+
+    通过 axios 请求拦截器添加 token，保证拥有获取数据的权限。
+
+    ``` JavaScript
+    // Axios 请求拦截器
+    Axios.interceptors.request.use(config => {
+        // 为请求头对象添加 Token 验证的 Authorization 字段
+        config.headers.Authorization = window.sessionStorage.getItem('token')
+        return config
+    })
     ```
