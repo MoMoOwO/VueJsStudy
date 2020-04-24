@@ -16,6 +16,7 @@
         <div class="toggle-button" @click="toogleCollapse">|||</div>
         <!-- 侧边栏菜单区域 -->
         <el-menu
+          router
           unique-opened
           background-color="#333744"
           text-color="#fff"
@@ -34,7 +35,7 @@
             </template>
             <!-- 二级菜单 -->
             <el-menu-item
-              :index="subItem.id + ''"
+              :index="'/' + subItem.path"
               v-for="subItem in item.children"
               :key="subItem.id"
             >
@@ -49,7 +50,10 @@
         </el-menu>
       </el-aside>
       <!-- 右侧主题内容区域 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
