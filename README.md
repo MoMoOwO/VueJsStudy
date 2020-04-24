@@ -3056,6 +3056,11 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     (3) 提交登录/登出分支
 
     ``` bash
+    git status
+    git add .
+    git status
+    git commit -m "完成了登录功能"
+
     git branch
     git checkout master
     git branch
@@ -3118,7 +3123,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     // Axios 请求拦截器
     Axios.interceptors.request.use(config => {
         // 为请求头对象添加 Token 验证的 Authorization 字段
-        config.headers.Authorization = window.sessionStorage.getItem('token')
+        config.headers.Authoriztion = window.sessionStorage.getItem('token')
         return config
     })
     ```
