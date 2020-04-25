@@ -16,6 +16,7 @@
         <div class="toggle-button" @click="toogleCollapse">|||</div>
         <!-- 侧边栏菜单区域 -->
         <el-menu
+          :default-active="activePath"
           router
           unique-opened
           background-color="#333744"
@@ -38,6 +39,7 @@
               :index="'/' + subItem.path"
               v-for="subItem in item.children"
               :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)"
             >
               <template slot="title">
                 <!-- 图表 -->
@@ -76,13 +78,17 @@ export default {
         145: 'el-icon-s-data'
       },
       // 是否折叠菜单
-      isCollapse: false
+      isCollapse: false,
+      // 激活的路由链接地址
+      activePath: ''
     }
   },
 
   created () {
     // 获取左侧菜单项数据
     this.getMenuList()
+    // 为路由地址赋值
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
 
   computed: {},
@@ -112,6 +118,12 @@ export default {
     // 点击按钮切换菜单的折叠与展开
     toogleCollapse () {
       this.isCollapse = !this.isCollapse
+    },
+    // 保存链接的激活状态
+    saveNavState (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      // 为路由地址赋值
+      this.activePath = window.sessionStorage.getItem('activePath')
     }
   }
 }
