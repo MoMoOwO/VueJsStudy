@@ -21,13 +21,40 @@
       </el-row>
       <!-- 用户列表表格 -->
       <el-table :data="userlist" border strip>
+        <el-table-column type="index"></el-table-column>
         <el-table-column prop="username" label="姓名"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="mobile" label="电话"></el-table-column>
         <el-table-column prop="role_name" label="角色"></el-table-column>
-        <el-table-column prop="mg_state" label="状态"></el-table-column>
-        <el-table-column label="操作"></el-table-column>
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.mg_state"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="180px">
+          <!-- <template slot-scope="scope"> -->
+          <template>
+            <!-- 修改按钮 -->
+            <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
+            <!-- 删除按钮 -->
+            <el-button size="mini" type="danger" icon="el-icon-delete"></el-button>
+            <el-tooltip :enterable="false" effect="dark" content="分配权限" placement="top">
+              <!-- 分配权限按钮 -->
+              <el-button size="mini" type="warning" icon="el-icon-setting"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
+      <!-- 分页区域 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 5, 10]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
     </el-card>
   </div>
 </template>
@@ -44,7 +71,9 @@ export default {
       // 获取用户列表的参数对象
       queryInfo: {
         query: '',
+        // 当前页数
         pagenum: 1,
+        // 当前每页显示多少条数据
         pagesize: 2
       }
     }
@@ -61,6 +90,7 @@ export default {
   mounted () { },
 
   methods: {
+    // 获取用户列表
     async getUserList () {
       const { data: res } = await this.axios.get('users', { params: this.queryInfo })
       // console.log(res)
@@ -70,6 +100,18 @@ export default {
         this.userlist = res.data.users
         this.total = res.data.total
       }
+    },
+    // 监听 pagesize 改变的事件
+    handleSizeChange (newSize) {
+      // console.log(newSize)
+      this.queryInfo.pagesize = newSize
+      this.getUserList()
+    },
+    // 监听页码值改变的事件
+    handleCurrentChange (newPage) {
+      // console.log(newPage)
+      this.queryInfo.pagenum = newPage
+      this.getUserList()
     }
   }
 }

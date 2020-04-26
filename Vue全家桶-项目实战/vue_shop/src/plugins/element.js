@@ -19,7 +19,10 @@ import {
   Row,
   Col,
   Table,
-  TableColumn
+  TableColumn,
+  Switch,
+  Tooltip,
+  Pagination
 } from 'element-ui'
 
 Vue.use(Button)
@@ -41,5 +44,8 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Switch)
+Vue.use(Tooltip)
+Vue.use(Pagination)
 // 全局挂载 message 组件
 Vue.prototype.$message = Message
