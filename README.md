@@ -3077,6 +3077,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 1. 整体布局
 
     (1) 页面效果
+    ![整体页面布局](http://image.acmx.xyz/msj%2Flayout.jpg)
 
     (2) 整体布局：像上下划分，再左右划分，主要代码如下
 
@@ -3097,6 +3098,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 2. 左侧菜单
 
     (1) 效果
+    ![左侧菜单栏效果](http://image.acmx.xyz/msj%2Fmenu.jpg)
 
     (2) 菜单分为二级，并且可以折叠，主要代码如下
 
@@ -3126,4 +3128,45 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
         config.headers.Authoriztion = window.sessionStorage.getItem('token')
         return config
     })
+    ```
+
+### 其他功能设计
+
+1. 用户列表页设计
+
+    (1) 用户列表效果
+    ![用户列表](http://image.acmx.xyz/msj%2Fusers.jpg)
+
+    (2) 用户列表页主要使用面包屑和表格来完成，主体代码如下
+
+    ``` HTML
+    <!-- 面包屑导航区域 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+    </el-breadcrumb>
+    <!-- 卡片视图区域 -->
+    <el-card>
+      <!-- 搜索与添加区域 -->
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <el-input placeholder="请输入内容">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="primary">添加用户</el-button>
+        </el-col>
+      </el-row>
+      <!-- 用户列表表格 -->
+      <el-table :data="userlist" border strip>
+        <el-table-column prop="username" label="姓名"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column prop="mobile" label="电话"></el-table-column>
+        <el-table-column prop="role_name" label="角色"></el-table-column>
+        <el-table-column prop="mg_state" label="状态"></el-table-column>
+        <el-table-column label="操作"></el-table-column>
+      </el-table>
+    </el-card>
     ```
