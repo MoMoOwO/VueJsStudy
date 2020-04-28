@@ -201,27 +201,6 @@ export default {
           { required: true, message: '请输入手机', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' }
         ]
-      },
-      // 删除用户按钮点击
-      async removeUserById (id) {
-        // 弹窗确认是否删除用户，如果用户点击确认，则返回字符串 'confirm'，如果点击取消则返回字符串 'cancel'
-        const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).catch(err => err)
-        if (confirmResult !== 'confirm') { // 取消
-          return this.$message.info('已经取消删除')
-        } else {
-          const { data: res } = await this.axios.delete('users/' + id)
-          if (res.meta.status !== 200) {
-            return this.$message.error('删除用户失败！')
-          } else {
-            this.$message.success('删除用户成功！')
-            // 刷新用户列表
-            this.getUserList()
-          }
-        }
       }
     }
   },
@@ -334,6 +313,27 @@ export default {
           }
         }
       })
+    },
+    // 删除用户按钮点击
+    async removeUserById (id) {
+      // 弹窗确认是否删除用户，如果用户点击确认，则返回字符串 'confirm'，如果点击取消则返回字符串 'cancel'
+      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmResult !== 'confirm') { // 取消
+        return this.$message.info('已经取消删除')
+      } else {
+        const { data: res } = await this.axios.delete('users/' + id)
+        if (res.meta.status !== 200) {
+          return this.$message.error('删除用户失败！')
+        } else {
+          this.$message.success('删除用户成功！')
+          // 刷新用户列表
+          this.getUserList()
+        }
+      }
     }
   }
 }
