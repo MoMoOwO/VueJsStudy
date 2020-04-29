@@ -3170,3 +3170,34 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
       </el-table>
     </el-card>
     ```
+
+2. 权限管理功能
+
+    (1) 权限管理业务分析：通过权限管理模块控制不同的用户可以进行哪些操作，具体可以通过角色的方式进行控制，即每个用户分配一个特定的角色，角色包括不同的功能权限。
+    ![权限管理业务](http://image.acmx.xyz/msj%2Frights.jpg)
+
+    (2) 权限列表设计
+
+    - 权限列表页面效果
+    ![权限列表效果](http://image.acmx.xyz/msj%2Frightslist.jpg)
+
+    - 主要页面布局代码
+
+    ``` HTML
+    <!-- 面包屑导航区域 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
+      <el-breadcrumb-item>权限列表</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <!-- 卡片视图 -->
+    <el-card>
+      <el-table :data="rightsList" border stripe>
+        <el-table-column type="index"></el-table-column>
+        <el-table-column label="权限名称" prop="authName"></el-table-column>
+        <el-table-column label="路径" prop="path"></el-table-column>
+        <el-table-column label="权限等级" prop="level"></el-table-column>
+      </el-table>
+    </el-card>
+    ```
