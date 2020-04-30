@@ -262,7 +262,7 @@ export default {
         if (!valid) {
           return 0
         } else {
-          // 可以发起添加用户的网路请求
+          // 可以发起添加用户的网络请求
           const { data: res } = await this.axios.post('users', this.addForm)
           if (res.meta.status !== 201) {
             return this.$message.error('添加用户失败！')
@@ -280,7 +280,7 @@ export default {
     async showEditDialog (id) {
       // console.log(id)
       // 获取要编辑的用户信息
-      const { data: res } = await this.axios.get('/users/' + id)
+      const { data: res } = await this.axios.get('users/' + id)
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户信息失败！')
       } else {
@@ -288,7 +288,7 @@ export default {
       }
       this.editDialogVisible = true
     },
-    // 修改用户对对话框关闭事件
+    // 修改用户对话框关闭事件
     editDialogClosed () {
       this.$refs.editFormRef.resetFields() // 重置表单项
     },
