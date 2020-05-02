@@ -94,7 +94,7 @@
     </el-card>
 
     <!-- 添加角色的对话框 -->
-    <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed">
+    <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <!-- 内容主体区域 -->
       <el-form :model="addForm" :rules="formRules" ref="addFormRef" label-width="70px">
         <el-form-item label="角色名称" prop="roleName">
@@ -112,7 +112,7 @@
     </el-dialog>
 
     <!-- 编辑角色的对话框 -->
-    <el-dialog title="编辑角色" :visible.sync="editDialogVisible" width="30%" @close="editDialogClosed">
+    <el-dialog title="编辑角色" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
       <!-- 内容主体区域 -->
       <el-form :model="editForm" :rules="formRules" ref="editFormRef" label-width="70px">
         <el-form-item label="角色名称" prop="roleName">
@@ -130,18 +130,21 @@
     </el-dialog>
 
     <!-- 分配权限对话框 -->
-    <el-dialog
-      title="编辑角色"
-      :visible.sync="setRightDialogVisible"
-      width="30%"
-      @close="setRightDialogVisible = false"
-    >
+    <el-dialog title="编辑角色" :visible.sync="setRightDialogVisible" width="50%" @close="defKeys = []">
       <!-- 权限树形控件 -->
-      <el-tree :data="rightsList" :props="treeProps"></el-tree>
+      <el-tree
+        :data="rightsList"
+        :props="treeProps"
+        show-checkbox
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="defKeys"
+        ref="treeRef"
+      ></el-tree>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editRoleInfo">确 定</el-button>
+        <el-button type="primary" @click="allotRight">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -185,7 +188,11 @@ export default {
       treeProps: {
         label: 'authName',
         children: 'children'
-      }
+      },
+      // 默认选中的权限节点 id 值数组
+      defKeys: [],
+      // 要分配权限的角色 id
+      roleId: ''
     }
   },
 
@@ -315,14 +322,42 @@ export default {
       }
     },
     // 展示分配权限对话框
-    async showSetRightDialog () {
+    async showSetRightDialog (role) {
+      this.roleId = role.id
       // 获取所有权限数据
       const { data: res } = await this.axios.get('rights/tree')
       if (res.meta.status !== 200) {
         return this.$message.error('获取权限数据失败！')
       } else {
         this.rightsList = res.data
+        // 递归获取三级节点的 id 数组
+        this.getLeafKeys(role, this.defKeys)
         this.setRightDialogVisible = true
+      }
+    },
+    // 通过递归的形式获取角色下所有三级权限的 id，并保存到 defKeys 数组中
+    getLeafKeys (node, arr) {
+      // 如果当前 node 节点不包含 children 属性，则是三级节点
+      if (!node.children) {
+        return arr.push(node.id)
+      } else {
+        node.children.forEach(item => {
+          this.getLeafKeys(item, arr)
+        })
+      }
+    },
+    // 点击确定提交分配的权限
+    async allotRight () {
+      const keys = [...this.$refs.treeRef.getCheckedKeys(), ...this.$refs.treeRef.getHalfCheckedKeys()]
+      // console.log(keys)
+      const idStr = keys.join(',')
+      const { data: res } = await this.axios.post(`roles/${this.roleId}/rights`, { rids: idStr })
+      if (res.meta.status !== 200) {
+        return this.$message.error('分配权限失败！')
+      } else {
+        this.$message.success('分配权限成功！')
+        this.getRolesList()
+        this.setRightDialogVisible = false
       }
     }
   }
