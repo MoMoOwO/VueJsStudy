@@ -49,7 +49,12 @@
             ></el-button>
             <el-tooltip :enterable="false" effect="dark" content="分配权限" placement="top">
               <!-- 分配权限按钮 -->
-              <el-button size="mini" type="warning" icon="el-icon-setting"></el-button>
+              <el-button
+                size="mini"
+                type="warning"
+                icon="el-icon-setting"
+                @click="setRole(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -64,6 +69,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
+    </el-card>
 
       <!-- 添加用户的对话框 -->
       <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
@@ -201,7 +207,15 @@ export default {
           { required: true, message: '请输入手机', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' }
         ]
-      }
+      },
+      // 分配权限对话框是否显示
+      setRoleDialogVisible: false,
+      // 要分配权限的用户信息
+      userInfo: {},
+      // 可选角色列表
+      roleList: [],
+      // 新选中的角色
+      selectedRoleId: ''
     }
   },
 
@@ -334,6 +348,39 @@ export default {
           this.getUserList()
         }
       }
+    },
+    // 展示分配权限对话框
+    async setRole (userInfo) {
+      this.setRoleDialogVisible = true
+      // 保存当前要分配角色的用户的信息
+      this.userInfo = userInfo
+      // 获取所有角色信息
+      const { data: res } = await this.axios.get('roles')
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取角色列表失败！')
+      } else {
+        this.roleList = res.data
+      }
+    },
+    // 点击确定，分配角色
+    async saveRoleInfo () {
+      if (!this.selectedRoleId) {
+        return this.$message.error('请选择要新分配的角色！')
+      } else {
+        const { data: res } = await this.axios.put(`users/${this.userInfo.id}/role`, { rid: this.selectedRoleId })
+        if (res.meta.status !== 200) {
+          return this.$message.error('分配角色失败！')
+        } else {
+          this.$message.success('分配角色成功！')
+          this.getUserList()
+          this.setRoleDialogVisible = false
+        }
+      }
+    },
+    // 监听分配角色对话框的关闭事件
+    serRoleDialogClosed () {
+      this.selectedRoleId = ''
+      this.userInfo = {}
     }
   }
 }
