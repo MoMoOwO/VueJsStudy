@@ -379,6 +379,7 @@ export default {
     },
     // 监听分配角色对话框的关闭事件
     serRoleDialogClosed () {
+      // 置空
       this.selectedRoleId = ''
       this.userInfo = {}
     }
