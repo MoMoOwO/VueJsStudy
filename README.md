@@ -3205,3 +3205,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 3. 分类管理
 
     (1) 商品分类用于在购物时，快速找到所要购买的商品，可以通过电商平台主页直观的看到。
+
+    (2) 安装第三方依赖 `npm i vue-table-with-tree-grid -S -D`，[vue-table-with-tree-grid](https://www.npmjs.com/package/vue-table-with-tree-grid)
+
+    (3) 基本页面结构
