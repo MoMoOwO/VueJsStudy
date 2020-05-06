@@ -6,6 +6,8 @@ import './plugins/element.js'
 import './assets/css/global.css'
 // 导入组件相关样式
 import 'element-ui/lib/theme-chalk/index.css'
+// 导入表格插件
+import TreeTable from 'vue-table-with-tree-grid'
 
 // 导入axios
 import Axios from 'axios'
@@ -23,6 +25,9 @@ Axios.interceptors.request.use(config => {
 Vue.use(VueAxios, Axios)
 
 Vue.config.productionTip = false
+
+// 注册第三方组件，全局可用的组件
+Vue.component('tree-table', TreeTable)
 
 new Vue({
   router,
