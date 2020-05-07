@@ -3205,7 +3205,70 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 3. 分类管理
 
     (1) 商品分类用于在购物时，快速找到所要购买的商品，可以通过电商平台主页直观的看到。
+    ![实现效果](http://image.acmx.xyz/msj%2Fgoodscate.jpg)
 
     (2) 安装第三方依赖 `npm i vue-table-with-tree-grid -S -D`，[vue-table-with-tree-grid](https://www.npmjs.com/package/vue-table-with-tree-grid)
 
     (3) 基本页面结构
+
+    ``` HTML
+    <!-- 面包屑导航区域 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      <el-breadcrumb-item>商品分类</el-breadcrumb-item>
+    </el-breadcrumb>
+    <!-- 商品分类卡片视图 -->
+    <el-card>
+      <el-row>
+        <el-col>
+          <el-button type="primary">添加分类</el-button>
+        </el-col>
+      </el-row>
+      <!-- 分类表格 -->
+      <tree-table
+        class="treeTable"
+        :data="cateList"
+        :columns="columns"
+        :selection-type="false"
+        :expand-type="false"
+        show-index
+        index-text
+        border
+        :show-row-hover="false"
+      >
+        <!-- 是否有效列的模板 -->
+        <template slot="isok" slot-scope="scope">
+          <i
+            class="el-icon-success"
+            v-if="scope.row.cat_deleted === false"
+            style="color: lightgreen;"
+          ></i>
+          <i class="el-icon-error" v-else style="color: red;"></i>
+        </template>
+        <!-- 排序列的模板 -->
+        <template slot="order" slot-scope="scope">
+          <el-tag size="mini" v-if="scope.row.cat_level === 0">一级</el-tag>
+          <el-tag size="mini" type="success" v-else-if="scope.row.cat_level === 1">二级</el-tag>
+          <el-tag size="mini" type="warning" v-else>三级</el-tag>
+        </template>
+        <!-- 操作列模板 -->
+        <!-- <template slot="opt" slot-scope="scope"> -->
+        <template slot="opt">
+          <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
+          <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
+        </template>
+      </tree-table>
+
+      <!-- 分页区域 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[3, 5, 10, 15]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </el-card>
+    ```
