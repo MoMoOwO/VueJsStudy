@@ -1901,7 +1901,7 @@
 
     ``` HTML
     <!-- router-link 是 vue 中提供的标签，默认会被渲染为 a 标签 -->
-    <!-- to 属性默认会被渲染��� href 属性 -->
+    <!-- to 属性默认会被渲染������� href 属性 -->
     <!-- to 属性的值默认会被渲染为 # 开头的 hash 地址 -->
     <router-link to="/user">User</router-link>
     <router-link to="/register">Register</router-link>
@@ -3356,37 +3356,10 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
         </el-tab-pane>
       </el-tabs>
     </el-card>
-
-    <!-- 添加属性/参数的对话框 -->
-    <el-dialog
-      :title="'添加' + titleText"
-      :visible.sync="addDialogVisible"
-      width="50%"
-      @close="addDialogClosed"
-    >
-      <!-- 添加数据的表单 -->
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-        <el-form-item :label="titleText" prop="attr_name">
-          <el-input v-model="addForm.attr_name"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addParams">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <!-- 编辑属性/参数的对话框 -->
-    <el-dialog :title="'修改' + titleText" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
-      <!-- 修改数据的表单 -->
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
-        <el-form-item :label="titleText" prop="attr_name">
-          <el-input v-model="editForm.attr_name"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editParams">确 定</el-button>
-      </span>
-    </el-dialog>
     ```
+
+5. 商品列表管理
+
+    (1) 最终效果
+
+    (2) 页面布局主要代码
