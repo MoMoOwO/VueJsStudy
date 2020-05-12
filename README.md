@@ -3477,3 +3477,26 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
       ></el-pagination>
     </el-card>
     ```
+
+7. 统计报表
+
+    (1) 安装依赖，通过 vue-echarts 实现，`cnpm i echarts vue-echarts -S -D`，[官网](https://github.com/ecomfe/vue-echarts/)
+
+    (1) 最终效果
+    ![报表](http://image.acmx.xyz/msj%2Freport.jpg)
+
+    (2) 主要代码
+
+    ``` HTML
+    <!-- 面包屑导航区域 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>数据统计</el-breadcrumb-item>
+      <el-breadcrumb-item>数据报表</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <!-- 报表卡片区域 -->
+    <el-card>
+      <v-chart :options="areaStackOptions" />
+    </el-card>
+    ```
