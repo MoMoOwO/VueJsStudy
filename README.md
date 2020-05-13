@@ -3500,3 +3500,237 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
       <v-chart :options="areaStackOptions" />
     </el-card>
     ```
+
+### 项目优化上线
+
+1. 学习目标：能够优化 Vue 项目，能够部署 Vue 项目。
+
+2. 学习内容：项目优化，项目上线
+
+3. 项目优化
+
+    (1) 项目优化策略
+
+    - 生成打包报告
+    - 第三方库启用 CDN
+    - Element-UI 组件按需加载
+    - 路由懒加载
+    - 首页内容定制
+
+    (2) 生成打包报告：
+
+    -打包时，为了直观发现项目中存在的问题，可以在打包时生成报告。生成报告的方式有两种：
+    - 通过命令行参数的形式生成报告
+
+        ``` b0ash
+        // 通过 vue-cli 的命令行选项可以生成打包报告
+        // --report 选项可以生成 report.html 以帮助分析包内容
+        vue-cli-service build --report
+        ```
+
+    - 通过可视化的 UI 面板直接查看报告（推荐），在可视化的 UI 面板中，通过控制台和分析面板，可以方便地到项目中所存在的问题。
+
+    (3) 通过 vue.config.js 修改 webpack 的默认配置
+
+    - 通过 vue-cli 3.0 工具生成的项目，默认隐藏了所有的 webpack 的配置项，目的是为了屏蔽项目的配置程，让程序员把工作的中心放到具体功能和业务逻辑的实现上。
+    - 如果程序员有修改 wwebpack 默认配置的需求，可以在项目根目录中，按需创建 vue.config.js 这个配置件，从而对项目的打包发布过程做自定义的配置，[具体配置参考](https://cli.vuejs.org/zh/config#vue-config-js)
+
+        ``` JavaScript
+        // vue.config.js
+        // 这个文件中，应该导出一个包含了自定义配置选项的对象
+        module.exports = {
+            // 选项....
+        }
+        ```
+
+    - 为开发模式与发布模式指定不同的打包入口：
+      - 默认情况下，Vue 项目的开发模式与发布模式，公用同一个打包的口文件（即 `src/main.js`）。
+      - 为了将项目的开发过程与发布过程分离，我们可以为两种模式，各自指定打包的口文件，即：开发模式的入口文件为 `src/main-dev.js`，发布模式的入口文件为 `src/main-prod.js`。
+    - configureWebpack 和 chainWebpack：
+      - 在 vue.config.js 导出的配置对象中，新增configureWebpack 或 chainWebpack 节点，来自定义 webpack 的打包配置。
+      - 在这里 configureWebpack 和 chainWebpack 的租用相同，唯一的区别就是他们修改 webpack 配置的方式不同chainWebpack 通过链式编程的形式来修改默认的 webapack 配置，configureWebpack 通过操作对象的式，来修改默认的 webpack 配置。[参考地址](https://cli.vuejs.org/zh/guide/webpack.html)
+      - 通过 chainWebpack 自定义打包入口
+
+        ``` JavaScript
+        module.exports = {
+            chainWebpack: config => {
+                config.when(process.env.NODE_ENV === 'production', config => {
+                    config.entry('app').clear().add('./src/main-prod.js')
+                })
+                config.when(process.env.NODE_ENV === 'development', config => {
+                    config.entry('app').clear().add('./src/main-dev.js')
+                })
+            }
+        }
+        ```
+
+    (4) 通过 externals 加载外部 CDN 资源
+
+    - 默认情况下，通过 import 语法导入的第三方依赖包，最终会被打包合并到同一个文件中，从而导致打包成功后，但文件体积过大的问题。
+    - 为了解决上述问题，可以通过 webpack 的 externals 节点，来配置并加载外部的 CDN 资源。凡是声明在 externals 中的第三方依赖包，都不会被打包。
+    - 具体配置代码
+
+        ``` JavaScript
+        config.set('externals', {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            axios: 'axios',
+            lodash: '_',
+            echarts: 'echarts',
+            nprogress: 'NProgress',
+            'vue-quill-editor': 'VueQuillEditor'
+        })
+        ```
+
+    - 同时，需要在 `public/index.html` 文件的头部，添加如下的 CDN 资源引用
+
+        ``` HTML
+        <!-- nprogress 的样式表文件 -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css">
+        <!-- 富文本编辑器的样式表文件 -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/quill/1.3.4/quill.core.min.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/quill/1.3.4/quill.snow.min.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/quill/1.3.4/quill.bubble.min.css">
+        ```
+
+    - 同时，需要在 `public/index.html` 文件的头部，添加如下的 CDN 资源引用
+
+        ``` HTML
+        <!-- js 文件 -->
+        <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue/3.1.6/vue-router.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue/0.19.2/axios.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue/4.7.0/echarts.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue/0.2.0/nprogress.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue/0.2.0/nprogress.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue/1.3.4/quill.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-quill-editor@3.0.6/dist/vue-quill-editor.js"></script>
+        ```
+
+    - 通过 CDN 优化 ElementUI 的打包，虽然在开发阶段，我们启用了 element-ui 组建的按需加载，尽可能地减少了打包的体积，但是那些被按需加载的组件，还是占用了较大的文件体积。此时我们可以将 element-ui 中的组件，也通过 CDN 的形式来加载，这样能够进一步减小打包后的文件体积。具体操作流程如下：
+      - 在 main-prod.js 中，注释掉 element-ui 按需加载的代码
+      - 在 index.html 的头部区域中，通过 CDN 加载 element-ui 的 js 和 css 样式
+
+        ``` HTML
+        <!-- element-ui 样式表 -->
+        <link rel="stylesheet" href="https://cdn.staticfilr.org/element-ui/2.13.0/theme-chalk/index.css">
+        <!-- element-ui 的 js 文件 -->
+        <script src="https://cdn.staticfile.org/element-ui/2.13.0/index.js"></script>
+        ```
+
+    (5) 首页内容定制
+
+    - 在不同的打包环境下，首页内容可能会有所不同。我们可以通过插件的方式进行定制，插件配置如下：
+
+        ``` JavaScript
+        module.exports = {
+            chainWebpack: config => {
+                // 发布模式
+                config.when(process.env.NODE_ENV === 'production', config => {
+                    config.plugin('html').tap(args => {
+                        args[0].isProd = true
+                        return args
+                    })
+                })
+                // 开发模式
+                config.when(process.env.NODE_ENV === 'development', config => {
+                    config.plugin('html').tap(args => {
+                        args[0].isProd = false
+                        return args
+                    })
+                })
+            }
+            }
+        ```
+
+    - 在 `public/index.html` 首页中，可以根据 `isProd` 的值，来决定如何渲染页面结构：
+
+        ``` HTML
+        <!-- 按需渲染页面的标题 -->
+        <title><%= htmlWebpackPlugin.options.isProd ? '电商后台管理系统' : 'dev - 电商后台管理系统' %></title>
+        <!-- 按需加载外部的 CDN 资源 -->
+        <% if(htmlWebpackPlugin.options.isProd) { %>
+        <!-- 通过 externals 加载的外部 CDN 资源 -->
+        <% } %>
+        ```
+
+    (6) 路由懒加载
+
+    - 当打包构建项目时，JavaScript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
+    - 具体需要如下 3 步：
+      - 安装 @babel/plugin-syntax-dynamic-import 包
+      - 在 babel.config.js 配置文件中声明该插件
+      - 将路由改为按需加载的形式，示例代码如下：
+
+        ``` JavaScript
+        const Foo = () => import (/* webpackChunkName: "group-foo" */  './Foo.vue')
+        const Bar = () => import (/* webpackChunkName: "group-foo" */  './Bar.vue')
+        const Baz = () => import (/* webpackChunkName: "group-baz" */  './Baz.vue')
+        ```
+
+    - 关于路由懒加载的[详细文档](https://router.vuejs.org/ah/guide/advanced/lazy-loading.html)
+
+4. 项目上线
+
+    (1) 主要步骤
+
+    - 通过 node 创建 web服务器
+    - 开启 gzip 配置
+    - 配置 https 服务
+    - 使用 pm2 管理应用
+
+    (2) 通过 node 创建 web 服务器
+
+    - 创建 node 项目，并安装 express，通过 express 快速创建 web 服务器，将 vue 打包生成的 dist 文件夹托管为静态资源即可，关键代码如下：
+
+        ``` JavaScript
+        const express = require('express')
+        // 创建 web 服务器
+        const app = express()
+        // 托管静态资源
+        app.use(express.static('./dist'))
+        // 启动 web 服务器
+        app.listen(80, () => {
+            console.log('server running at http://127.0.0.1')
+        })
+        ```
+
+    - 将打包好的项目 dist 文件复制到 express 服务器根目录下，通过 `node app` 启动项目即可。
+
+    (2) 项目上线相关配置
+
+    - 开启 gzip 配置
+      - 使用 gzip 可以减少文件体积，是传输速度更快
+      - 安装相应的包：`npm i compression -D`
+      - 可以通过服务器端使用 Express 做 gzip 压缩。其配置如下：
+
+        ``` JavaScript
+        // 导入压缩传输包
+        const compression = require('compression')
+
+        // 启用压缩传输中间件
+        app.use(compression())
+        ```
+
+    - 配置 HTTPS 服务
+      - 为什么要启用 HTTPS 服务？传统的 HTTP 协议传出的数据都是明文，不安全；采用 HTTPS 协议对传输的数据进行了加密处理，可以防止数据被中间人窃取，使用更安全。
+      - [申请 SSL 证书](https://freessl.org)：进入官网，输入要申请的域名并选择品牌；输入自己的邮箱并选择相关选项；验证 DNS（在域名管理后台添加 TXT 记录）；验证通过之后，下载 SSL 证书（full_chain.pem 公钥；private.key 私钥）。
+      - 在后台项目中导入证书
+
+        ``` JavaScript
+        const https = require('https')
+        const fs = require('fs')
+        const options = {
+            cert: fs.readFileSync('./ssl/full_chain.pem'),
+            key: fs.readFileSync('./ssl/private.key')
+        }
+        https.createServer(options, app).listen(443)
+        ```
+
+    - 使用 pm2 管理应用
+      - 安装 pm2 依赖：`npm i pm2 -g`
+      - 启动项目：`pm2 start 脚本 --name 自定义名称`
+      - 查看运行项目：`pm2 ls`
+      - 重启项目：`pm2 restart 自定义名称`
+      - 停止项目：`pm2 stop 自定义名称`
+      - 删除项目：`pm2 delete 自定义名称`
