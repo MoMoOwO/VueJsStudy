@@ -3784,7 +3784,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 
     (11) 支持各种样式预处理器：SASS、LESS、Stylus 等等
 
-### Nuxt.js [环境搭建](https://www.nuxtjs.cn/guide/installation)与 Hello World
+### Nuxt.js [环境搭建](https://www.nuxtjs.cn/guide/installation)
 
 1. Nuxt.js 安装
 
@@ -3792,4 +3792,46 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
 
     (2) 初始化 Nuxt.js 项目，运行命令：`npx create-nuxt-app <项目名>`。
 
-    (3)
+    (3) 接下来需要进行一系列的选择：集成的服务器框架、UI 框架、测试框架、Nuxt 模式、添加 axios module 以轻松地将 HTTP 请求发送到你的应用程序、添加 EsLint 以在保存是代码规范和错误检查、添加 Pretier 以保存是格式化/美化代码。
+
+    (4) 运行完时，将安装所有依赖项。运行代码，则需要运行命令 `npm run dev`，应用将会运行在 http://localhost:3000 上。
+
+2. Nuxt.js 项目目录结构和配置文件
+
+    (1) 目录结构
+
+    - .nuxt 文件夹：运行 `npm run dev` 之后生成的项目静态文件。
+    - assets 文件夹：静态资源目录，例如 Less、Sass、JavaScript 等，但是一般不存放图片这样的静态资源。
+    - components 文件夹：Vue 组件库文件夹。
+    - layouts 文件夹：用于布局的文件夹。
+    - middleware 文件夹：用于存放中间件的文件夹。
+    - node_modules 文件夹：使用 NPM 安装的依赖。
+    - pages 文件夹：主要的工作目录，页面文件。
+    - plugins 文件夹：主要用来存放 JavaScript 插件。
+    - static 文件夹：主要用来存放图片、图表类的静态资源。
+    - store：主要存放 Vuex 状态管理器。
+
+    (2) 配置文件
+
+    - .editorconfig：编辑器的编辑、控制规则配置。
+    - .eslintrc.js：ESLint 配置文件。
+    - nuxt.config.js：nuxt 项目配置文件。
+    - package.json：NPM 自动生成，标识依赖包的文件。
+    - package-lock.json：NPM 自动生成，用于帮助 package.json 的统一性设置。
+
+    (3) Nuxt.js 项目常用配置项
+
+    - 运行主机地址及端口修改，需要在 package.json 文件中添加 `config` 属性，在 `config` 节点中的 `nuxt` 节点下进行配置，`host` 用于配置主机地址，`port` 用于配置端口，如下则将地址修改为 `127.0.0.1`，端口修改为 `4000`：
+
+      ``` json
+      {
+        ...
+        "config": {
+          "nuxt": {
+            "host": "127.0.0.1",
+            "port": "4000"
+          }
+        },
+        ...
+      }
+      ```
