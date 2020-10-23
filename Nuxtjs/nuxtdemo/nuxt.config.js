@@ -11,7 +11,7 @@ export default {
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: ['~assets/css/normalize.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [],
@@ -35,5 +35,16 @@ export default {
   axios: {},
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif|svg)$/,
+        loader: "url-loader",
+        query: {
+          limit: 10000,
+          name: 'img/[name].[hash].[ext]'
+        }
+      }
+    ]
+  },
 }
