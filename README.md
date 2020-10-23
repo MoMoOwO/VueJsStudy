@@ -3835,3 +3835,21 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
         ...
       }
       ```
+
+    - 在开发多页项目时，都会定义一个全局的 CSS 来初始化我们的页面渲染，比如把 `padding` 和 `margin` 设置为 `0`，网上也有非常出名的开源 CSS 文件 normailze.css。要定义这些配置，需要在 nuxt.config.js 里面进行操作。比如我们现在要把页面字体设置为红色，就可以在 assets/css/normalize.css 文件中添加 `html{ color: red; }` 将字体设置为红色，然后需要在 nuxt.config.js 文件夹中添加全局 css 的配置 `css:['~assets/css/normalize.css'],`，重新编译后页面字体可以变为红色。
+    - 配置 webpack 的 loader：在 nuxt.config.js 中可以对 webpack 的基本配置进行覆盖，比如现在我们要配置一个 url-loader 来进行小图片的 64 位打包。就可以在 nuxt.config.js 的 build 节点里进行配置。
+
+      ``` JavaScript
+      build: {
+        rules: [
+          {
+            test: /\.(png|jpe?g|gif|svg)$/,
+            loader: "url-loader",
+            query: {
+              limit: 10000,
+              name: 'img/[name].hash.[ext]'
+            }
+          }
+        ]
+      },
+      ```
