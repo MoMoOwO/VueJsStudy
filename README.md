@@ -3853,3 +3853,88 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
         ]
       },
       ```
+
+### Nuxt.js 路由
+
+1. Nuxt.js 路由与参数传递
+
+    (1) 路由可以体现业务逻辑，把模块串联起来，让程序焕发光彩/那么简单的说路由就是我们跳转机制，也可以简单理解成链接跳转。Nuxt.js 的路由并不复杂，他给我们进行了封装，让我们节省了很多配置环节。
+
+    - 在根目录的 pages 文件下新建两个文件夹-about 和 news，分别在两个目录下新建一个 index.vue 文件，并写入以下代码：
+
+      ``` vue
+      <!-- ./about/index.vue -->
+      <template>
+        <div>
+          <h2>About Index page</h2>
+          <ul>
+            <li><a href="/">Home</a></li>
+          </ul>
+        </div>
+      </template>
+
+      <!-- ./news/index.vue -->
+      <template>
+        <div>
+          <h2>News Index page</h2>
+          <ul>
+            <li><a href="/">Home</a></li>
+          </ul>
+        </div>
+      </template>
+      ```
+
+    - 修改主页 index.js 将原有代码删除，添加如下代码，重新编译运行则完成了前端路由 Demo。在 Nuxt.js 中路由不比我们另外进行配置，它都已经帮我们完成了。
+    ![路由 Demo](https://i.loli.net/2020/10/26/5j72XJbxqZfEhPU.gif)
+
+      ``` vue
+      <template>
+        <div>
+          <ul>
+            <li><a href="/">HOME</a></li>
+            <li><a href="/about">ABOUT</a></li>
+            <li><a href="/news">NEWS</a></li>
+          </ul>
+        </div>
+      </template>
+      <script>
+      export default {}
+      </script>
+      <style></style>
+      ```
+
+    - 虽然上面的例子可以跳转成功，但是 Nuxt.js 并不推荐使用 `<a>` 标签的做法，他为我们准备了 `<nuxt-link>` 标签（Vue 中交组件）。该标签的 `to` 用于绑定跳转的组件。
+
+    (2) 路由传参，路由经常需要传递参数，我们可以简单的使用 `params` 来进行传递参数，我们现在像新闻页面（news）传递个参数，然后再新闻页面进行简单的接收。
+
+    - 先修改 pages 下的 index.vue 文件，给新闻的跳转加上 `params` 参数，传递 `{newsId: 1001}`。
+
+      ``` vue
+      <template>
+        <div>
+          <ul>
+            <li><nuxt-link :to="{ name: 'index' }">HOME</nuxt-link></li>
+            <li><nuxt-link :to="{ name: 'about' }">ABOUT</nuxt-link></li>
+            <li>
+              <nuxt-link :to="{ name: 'news', params: { newsId: 1001 } }"
+                >NEWS</nuxt-link
+              >
+            </li>
+          </ul>
+        </div>
+      </template>
+      ```
+
+    - 在 news 文件夹下的 index.vue 里使用 `$route.params.newsId` 就可以接受传递过来的参数。
+
+      ``` vue
+      <template>
+        <div>
+          <h2>News Index page</h2>
+          <p>NewsID: {{ $route.params.newsId }}</p>
+          <ul>
+            <li><nuxt-link :to="{ name: 'index' }">Home</nuxt-link></li>
+          </ul>
+        </div>
+      </template>
+      ```
