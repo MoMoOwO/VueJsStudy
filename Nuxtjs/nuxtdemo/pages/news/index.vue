@@ -4,6 +4,15 @@
     <p>NewsID: {{ $route.params.newsId }}</p>
     <ul>
       <li><nuxt-link :to="{ name: 'index' }">Home</nuxt-link></li>
+      <li>
+        <nuxt-link to="/news/123"> 新闻 123 </nuxt-link>
+      </li>
+      <li>
+        <nuxt-link to="/news/456"> 新闻 456 </nuxt-link>
+      </li>
+      <li>
+        <nuxt-link to="/news/abc"> 新闻 abc </nuxt-link>
+      </li>
     </ul>
   </div>
 </template>
