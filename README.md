@@ -3938,3 +3938,52 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
         </div>
       </template>
       ```
+
+    (3) Nuxt.js 动态路由和参数校验
+
+    - 简单的路由已经弄清楚了，这节看一下动态路由，其实动态路由就是带参数的路由。比如我们现在新闻模块下面有很多新闻详情页，这时候就需要动态路由的帮助了。
+    - 首先我们在 news 文件夹下面新建 _id.vue 的文件，以下划线为前缀的 Vue 文件就是动态路由，然后再文件里面使用 `$route.params.id` 来接收参数。
+
+      ``` vue
+      <template>
+        <div>
+          <h2>News-Content [{{$route.params.id}}]</h2>
+          <ul>
+            <li><<nuxt-link :to="{name: 'index'}"></nuxt-link> href=""></nuxt><>
+          </ul>
+        </div>
+      </template>
+      ```
+
+    - 在 pages/news/index.vue 中进行修改，增加两个详细页的路由 News-1 和 News-2。这样在新闻页既可以实现路由传参效果。
+
+      ``` vue
+      <template>
+        <div>
+          <h2>News Index page</h2>
+          <p>NewsID: {{ $route.params.newsId }}</p>
+          <ul>
+            <li><nuxt-link :to="{ name: 'index' }">Home</nuxt-link></li>
+            <li>
+              <nuxt-link to="/news/123">新闻 123</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/news/456">新闻 456</nuxt-link>
+            </li>
+          </ul>
+        </div>
+      </template>
+      ```
+
+    - 动态参数校验，我们要为新闻 id 设置校验规则，要求仅为数字 id。Nuxt.js 为我们提供了 `validate()` 方法来进行参数校验。我们仅需要在 _id.vue 文件中的 `script` 标签中暴漏该方法即可；方法中接收参数为 `params`，校验规则根据需要设计，返回值为布尔类型，如果返回 `true` 正常进入页面，如果返回 `false` 则进入 404 页面。
+
+      ``` vue
+      <script>
+      export default {
+        validate({ params }) {
+          // 必须为数字
+          return /^\d+$/.test(params.id)
+        },
+      }
+      </script>
+      ```
