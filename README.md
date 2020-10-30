@@ -3942,7 +3942,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
     (3) Nuxt.js 动态路由和参数校验
 
     - 简单的路由已经弄清楚了，这节看一下动态路由，其实动态路由就是带参数的路由。比如我们现在新闻模块下面有很多新闻详情页，这时候就需要动态路由的帮助了。
-    - 首先我们在 news 文件夹下面新建 _id.vue 的文件，以下划线为前缀的 Vue 文件就是动态路由，然后再文件里面使用 `$route.params.id` 来接收参数。
+    首先我们在 news 文件夹下面新建 _id.vue 的文件，以下划线为前缀的 Vue 文件就是动态路由，然后再文件里面使用 `$route.params.id` 来接收参数。
 
       ``` vue
       <template>
@@ -3955,7 +3955,7 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
       </template>
       ```
 
-    - 在 pages/news/index.vue 中进行修改，增加两个详细页的路由 News-1 和 News-2。这样在新闻页既可以实现路由传参效果。
+      在 pages/news/index.vue 中进行修改，增加两个详细页的路由 News-1 和 News-2。这样在新闻页既可以实现路由传参效果。
 
       ``` vue
       <template>
@@ -3984,6 +3984,52 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
           // 必须为数字
           return /^\d+$/.test(params.id)
         },
+      }
+      </script>
+      ```
+
+    (4) Nuxt.js 路由动画效果，路由的动画效果，也叫作页面的更换效果。Nuxt.js 提供两种方法为路由提供动画效果，一种是全局的另一种是针对单独页面制作的。
+
+    - 全局路由动画：全局动画默认使用 `page` 关键字来进行设置，例如我们现在为每个页面都设置一个进入和退出时的渐隐渐显的效果。我们可以先在 ./assets/css 下简历 main.css 文件。
+
+      ``` css
+      <!-- main.css -->
+      .page-enter-active,
+      .page-leave-active {
+        transition: opacity 2s;
+      }
+      .page-enter,
+      .page-leave-active {
+        opacity: 0;
+      }
+      ```
+
+      然后在 nuxt.config.js 里面加入一个全局的 css 文件就可以了（`css:['assets/css/main.css']`）。这是用在页面切换的时候就会有两秒的动画切换效果，但是你会发现一些页面或者在返回的时候是没有效果的，这是因为路由导航是没有使用 `<nuxt-link>` 组件来制作跳转连接，修改后即可。
+      ![全局路由动画](https://i.loli.net/2020/10/30/6ntAfh3u4ebD5x2.gif)
+
+    - 单独设置页面路由动画：想给一个页面单独设置特殊的效果时，我们只要在 css 里面改变默认的 `page` 关键字为自定义的动画名称，然后在页面组件的配置中加入 `transition` 指定使用的路由过渡动画名称即可。
+
+      ``` css
+      <!-- main.css 中定义了名为 test 的路由过渡动画 -->
+      .test-enter-active,
+      .test-leave-active {
+        transition: all 2s;
+      }
+      .test-enter,
+      .test-leave-active {
+        opacity: 0;
+        font-size: 23px;
+      }
+      ```
+
+      在需要使用自定义过渡动画的组件中进行声明后就可以看到过渡效果了。
+      ![自定义路由过渡动画](https://i.loli.net/2020/10/30/bE1vdGys2TeYuLo.gif)
+
+      ``` vue
+      <script>
+      export default {
+        // 在需要使用路由过度动画的 vue 页面组件中添加对应动画名称的标识即可
+        transition: 'test'
       }
       </script>
       ```
