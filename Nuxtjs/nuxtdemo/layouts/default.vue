@@ -1,6 +1,7 @@
 <template>
   <div>
     <Nuxt />
+    <p>这是应用的底部！</p>
   </div>
 </template>
 
