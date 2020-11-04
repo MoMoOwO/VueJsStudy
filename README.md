@@ -4033,3 +4033,121 @@ name 属性设置跳转的路由，params 设置要传递的参数 -->
       }
       </script>
       ```
+
+    (5) Nuxt.js 的默认模板和默认布局：在开发应用时，经常会用到一些公用的元素，比如网页的标题是一样的，每个页面都是一模一样的标题。这时候我们有两种方法，第一种方法是做一个公用的组件出来，第二种方法是修改默认模板。这两种方法各有利弊，比如公用组件更加灵活，但是每次都需要自己手动引入；模板比较方便，但是只能每个页面都引入。
+
+    - 默认模板：Nuxt.js 为我们提供了超简单的默认模板定制方法，只要在根目录下创建一个 app.html 就可以实现了。现在我们希望每个页面最上边都加入“欢迎使用 Nuxt.js 框架！”这几个字，我们就可以在使用这个模板来完成。
+    ![默认模板](https://i.loli.net/2020/11/03/BvGiPxkc7tMrzbD.gif)
+
+      ``` html
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          {{HEAD}}
+        </head>
+        <body>
+          <p>欢迎使用 Nuxt.js 框架！</p>
+          {{APP}}
+        </body>
+      </html>
+      ```
+
+      这里的 `{{HEAD}}` 读取的是 nuxt.config.js 里的信息，`{{APP}}` 就是我们写的 pages 文件夹下的主题页面了。需要注意的是 `HEAD` 与 `APP` 都需要大写，如果小写会报错。另外因为 nuxt.config.js 中对 HTML 基本页面元素 meta 也进行了声明，所以 app.html 中不必再进行声明。另外建立了默认模板需要重启服务器才能正常使用，但是默认布局是不用重启服务器的。
+
+    - 默认布局：和默认模板类似的功能还有默认布局，但是从名字上就可以看出来，默认布局主要针对页面的统一布局使用。它再位置根目录下的 layouts/default.vue 中。需要注意的是默认布局里面不要加入头部信息，只是关于 `<template>` 标签下的内容统一定制。接下来我们为应用添加一个统一的底部标识，添加文字“这是应用的底部！”，只需要在 layouts/default.vue 文件中这样配置即可，这里的 `<nuxt/>` 就相当于我们每个页面的内容，你也可以把一些通用的央视放入这个默认布局里，但是个人不建议这样写，会增加页面的复杂度。
+    ![默认布局](https://s1.ax1x.com/2020/11/03/By0na9.gif)
+
+      ``` vue
+      <template>
+        <div>
+          <Nuxt />
+          <p>这是应用的底部！</p>
+        </div>
+      </template>
+      ```
+
+    - 总结：要区分默认模板和默认布局的区别，模板可以定制很多头部信息，包括 IE 版本的判断；布局只能定制 `<template>` 里的内容，跟布局有关系。在工作中修改时要看情况来编写代码。
+
+    (6) Nuxt.js 错误页面和个性 meta 设置
+
+    - 错误页面：当用户输入路由错误得时候，我们需要给他们一个明确的指引，所以说在应用程序开发中 404 页面是不必可少的。Nuxt.js 支持直接在默认布局文件夹里面建立错误页面。只需要在根目录的 layouts 文件夹下建立一个 error.vue 文件，它相当于一个显示应用错误的组件。
+
+      ``` vue
+      <!-- error.vue -->
+      <template>
+        <div>
+          <h2 v-if="error.statusCode == 404">404 您访问的页面不存在</h2>
+          <h2 v-else>500 服务器错误</h2>
+          <ul>
+            <li><nuxt-link to="/">Home</nuxt-link></li>
+          </ul>
+        </div>
+      </template>
+      <script>
+      export default {
+        props: {
+          error: {
+            type: Number,
+            default: 200,
+          },
+        },
+      }
+      </script>
+      ```
+
+      代码用 `v-if` 进行判断错误类型，需要注意的是这个错误是你需要在 `<script>` 里进行声明得，如果不声明则程序找不到 `error.statusCode` 的。
+    - 个性 meta 设置：页面的 meta 对于 SEO 的设置非常重要，比如你现在要做个新闻页面，那为了搜索引擎对新闻的收录，需要每个页面对新闻都有不同的 `title` 和 `meta` 设置。直接使用 `head()` 方法来设置当前页面的头信息就可以了。我们现在为 news/123 新闻设置个性的 meta 和 title。首先我们需要在 pages/news/index.vue 的新闻 123 的路由中传递一个 title，目的是为了在新闻具体页面进行接收 title 形成文章的标题。
+
+      ``` vue
+      <li>
+        <nuxt-link
+          :to="{
+            name: 'news-id',
+            params: { id: 123, title: '特没谱怎么了？' },
+          }"
+        >
+          新闻 123
+        </nuxt-link>
+      </li>
+      ```
+
+      接下来我们修改 pages/news/_id.vue，让他根据传递值变成独特的 meta 和 title。
+
+      ``` vue
+      <template>
+        <div>
+          <h2>News Content [{{ $route.params.id }}]</h2>
+          <ul>
+            <li><nuxt-link :to="{ name: 'index' }">首页</nuxt-link></li>
+          </ul>
+        </div>
+      </template>
+
+      <script>
+      export default {
+        components: {},
+        props: [],
+        data() {
+          return {
+            title: this.$route.params.title,
+          }
+        },
+        mounted() {},
+        methods: {},
+        validate({ params }) {
+          // 必须为数字
+          return /^\d+$/.test(params.id)
+        },
+        // 独立设置 head 信息
+        head() {
+          return {
+            title: this.title,
+            // 覆盖掉 nuxt.config.js 中默认的 meta，保证页面只有一个 meta
+            meta: [{ hid: 'description', name: 'news', content: 'I am a new' }],
+          }
+        },
+      }
+      </script>
+      ```
+
+      注意：为了避免子组件中的 `meta` 标签不能正确覆盖父组件中相同的标签而产生重复的现象，建议利用 `hid` 键作为 `meta` 标签配一个唯一的标识编号。
