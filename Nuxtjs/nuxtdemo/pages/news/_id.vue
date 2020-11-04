@@ -12,13 +12,23 @@ export default {
   components: {},
   props: [],
   data() {
-    return {}
+    return {
+      title: this.$route.params.title,
+    }
   },
   mounted() {},
   methods: {},
   validate({ params }) {
     // 必须为数字
     return /^\d+$/.test(params.id)
+  },
+  // 独立设置 head 信息
+  head() {
+    return {
+      title: this.title,
+      // 覆盖掉 nuxt.config.js 中默认的 meta，保证页面只有一个 meta
+      meta: [{ hid: 'description', name: 'news', content: 'I am a new' }],
+    }
   },
 }
 </script>

@@ -5,7 +5,12 @@
     <ul>
       <li><nuxt-link :to="{ name: 'index' }">Home</nuxt-link></li>
       <li>
-        <nuxt-link :to="{ name: 'news-id', params: { id: 123 } }">
+        <nuxt-link
+          :to="{
+            name: 'news-id',
+            params: { id: 123, title: '特没谱怎么了？' },
+          }"
+        >
           新闻 123
         </nuxt-link>
       </li>
